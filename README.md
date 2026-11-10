@@ -23,7 +23,7 @@ python3 -m http.server 8000
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Structure de la page (HUD, salon, boutique, journal, dialogues) |
+| `index.html` | Structure de la page (HUD, salon, boutique, dialogues) |
 | `css/style.css` | Thème Pixel Art : bordures en escalier, polices *Press Start 2P* / *VT323*, palette gothique-néon |
 | `js/sprites.js` | Moteur de pixel art (grille, formes, ombrage, contour), pizza, cartons, icônes, mini-police 3x5 |
 | `js/characters.js` | Les 6 animaux (4 images : repos et marche) et les 5 humains (24x32), dessinés d'après les photos |
@@ -35,7 +35,7 @@ python3 -m http.server 8000
 - **Meute (générateurs, +15 % de coût par achat)** : Chichi (1 PPS), Saphire (8), Bouba (45), Gilbert (260), Idylle (1 400), July la Queen (10 000)
 - **Colocs (managers)** : Janis (-20 % sur le prix des animaux), Anna (+35 % de production), Oliver (compétence *Tournée Générale* : x3 pendant 15 s, recharge 60 s), Laure (1 milliard : x10 000 et cinématique de victoire)
 - **Tattoos (upgrades)** : Haki des Rois (clic x5), Mentalité d'Égoïste (chiens x2), Moto de Kaneda (Gilbert/Idylle/July x2), Vers l'infini et au-delà (x2 global et gains hors-ligne)
-- Pizzas dorées aléatoires, événements d'ambiance, paliers, achat x1 / x10 / MAX, sauvegarde automatique
+- Pizzas dorées aléatoires, paliers racontés par Octave, achat x1 / x10 / MAX, sauvegarde automatique
 
 Sur iPhone : écran fixe sans défilement ni zoom. « Sur l'écran d'accueil » (Partager) lance le jeu en plein écran.
 
