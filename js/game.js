@@ -7,7 +7,8 @@
 (function () {
   'use strict';
 
-  const { ANIMALS, MANAGERS, BOOSTS, GROWTH, MANAGER_MULT, SPEED_MILESTONES, SAVE_KEY, WIN_AT, STORY, OLIVIER_ADVICE } = window.DATA;
+  const { ANIMALS, MANAGERS, BOOSTS, GROWTH, MANAGER_MULT, SPEED_MILESTONES, SAVE_KEY, WIN_AT, STORY, OLIVIER_ADVICE, UI } = window.DATA;
+  const fill = window.Texts.fill;
   const $ = (id) => document.getElementById(id);
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -201,7 +202,7 @@
     if (u.type === 'animal') {
       const a = A[u.id];
       S.seen['a:' + u.id] = true;
-      UL.kicker.textContent = 'NOUVEAU DANS LA MEUTE !';
+      UL.kicker.textContent = UI.unlock_animal;
       UL.name.textContent = a.name.toUpperCase();
       UL.sub.textContent = a.species;
       line = a.desc;
@@ -210,9 +211,9 @@
     } else {
       const m = M[u.id];
       S.seen['m:' + u.id] = true;
-      UL.kicker.textContent = m.boss ? 'LE BOSS FINAL ARRIVE !' : 'NOUVEAU MANAGER !';
+      UL.kicker.textContent = m.boss ? UI.unlock_boss : UI.unlock_manager;
       UL.name.textContent = m.name.toUpperCase();
-      UL.sub.textContent = m.role + ' · gère ' + A[m.animal].name;
+      UL.sub.textContent = m.role + ' · ' + fill(UI.unlock_gere, { animal: A[m.animal].name });
       line = '« ' + m.catch + ' »';
       UL.img.src = Sprites.dataURL(m.id, 5);
       setTimeout(() => Audio8.manager(), 450);
@@ -265,15 +266,12 @@
    * ===================================================================== */
   const animalSound = (a, vol) => (a.sound === 'meow' ? Audio8.meow(a.pitch, vol) : Audio8.bark(a.pitch, vol));
 
-  // On touche un animal : il part chercher des pizzas
+  // On touche un animal : il part chercher des pizzas (rien ne se passe s'il est déjà parti)
   function tapAnimal(id) {
-    const a = A[id], b = S.biz[id];
-    if (!b || !b.n) return;
-    if (b.run) { Room.say(id, a.cry); animalSound(a, 0.15); return; }   // déjà parti
+    const b = S.biz[id];
+    if (!b || !b.n || b.run) return;
     b.run = true; b.t = 0;
     Audio8.click();
-    animalSound(a, 0.2);
-    Room.say(id, a.cry);
   }
 
   // Un animal revient avec ses pizzas
@@ -308,19 +306,21 @@
     Room.syncActors(true);
     if (first) {
       queueUnlock({ type: 'animal', id: a.id });
-    } else if (milestonesReached(lvl(a.id)) > before) {
-      Audio8.upgrade();
-      Room.floatText('⚡ ' + a.name.toUpperCase() + ' : VITESSE x2 !', 160, 40, 'gold');
     } else {
-      Audio8.buy();
-      animalSound(a, 0.2);
+      animalSound(a, 0.55);                                  // il aboie (ou miaule) à chaque amélioration
+      if (milestonesReached(lvl(a.id)) > before) {
+        setTimeout(Audio8.upgrade, 350);
+        Room.floatText(fill(UI.vitesse_flottant, { animal: a.name.toUpperCase() }), 160, 40, 'gold');
+      } else {
+        setTimeout(Audio8.buy, 300);
+      }
     }
     refreshShop();
   }
 
   function buyManager(m) {
     if (hasM(m.id)) return;
-    if (!lvl(m.animal)) { Audio8.error(); Room.floatText('Débloque d\'abord ' + A[m.animal].name, 160, 40, 'gold'); return; }
+    if (!lvl(m.animal)) { Audio8.error(); Room.floatText(fill(UI.manager_verrouille, { animal: A[m.animal].name }), 160, 40, 'gold'); return; }
     if (S.pizzas < m.cost) { Audio8.error(); return; }
     S.pizzas -= m.cost;
     S.mgr[m.id] = true;
@@ -340,7 +340,7 @@
     S.boost[b.id] = true;
     Audio8.upgrade();
     Room.puff(160, 120, ['#6fc3ff', '#ffffff', '#ffcf3f'], 24);
-    Room.floatText('BOOST : ' + b.name.toUpperCase(), 160, 50, 'gold');
+    Room.floatText(fill(UI.boost_flottant, { nom: b.name.toUpperCase() }), 160, 50, 'gold');
     refreshShop();
   }
 
@@ -352,7 +352,7 @@
     S.tourneeEnd = now + 15000;
     S.tourneeReady = now + 60000;
     Audio8.skill();
-    showDialog('oliver', 'OLIVIER (le daron)', pick(OLIVIER_ADVICE), 8000);
+    showDialog('oliver', UI.tournee_titre, pick(OLIVIER_ADVICE), 8000);
   }
   $('btnOliver').addEventListener('click', () => { Audio8.unlock(); useTournee(); });
 
@@ -386,7 +386,7 @@
     onVictory: () => {
       S.victory = true;
       save();
-      $('vicStats').textContent = 'Temps de jeu : ' + fmtDuration((Date.now() - S.started) / 1000) + ' · Pizzas récoltées : ' + fmt(S.total);
+      $('vicStats').textContent = fill(UI.victoire_stats, { duree: fmtDuration((Date.now() - S.started) / 1000), pizzas: fmt(S.total) });
       $('victory').classList.remove('hidden');
     },
     onTap: (pt) => {
@@ -443,8 +443,7 @@
       item.setAttribute('role', 'button'); item.tabIndex = 0;
       const img = el('img', 'item-icon'); img.src = faceOf(m.id, 3); img.alt = m.name;
       const mid = el('div');
-      const effect = 'Automatise ' + A[m.animal].name + ' · ses pizzas x' + MANAGER_MULT +
-        (m.skill ? ' · Compétence « Tournée Générale »' : '') + (m.boss ? ' · Production x10 000 · Victoire' : '');
+      const effect = fill(UI.manager_effet, { animal: A[m.animal].name, mult: MANAGER_MULT }) + (m.skill ? UI.manager_competence : '') + (m.boss ? UI.manager_boss : '');
       const sub = el('div', 'item-sub', m.role);
       const cost = el('div', 'item-cost');
       mid.append(el('div', 'item-name', m.name), sub, el('div', 'item-effect', effect), cost);
@@ -490,23 +489,23 @@
     for (const r of shop.animals) {
       const a = r.a, n = lvl(a.id), revealed = isRevealed(a);
       r.root.classList.toggle('locked', !revealed);
-      setText(r.name, revealed ? a.name : '???');
-      setText(r.lv, n ? 'Niv. ' + n : '');
+      setText(r.name, revealed ? a.name : UI.carte_inconnu);
+      setText(r.lv, n ? fill(UI.carte_niveau, { niveau: n }) : '');
       r.auto.style.display = n && isAuto(a) ? '' : 'none';
       const nm = nextMilestone(n);
-      setText(r.next, !revealed ? 'Continue de récolter pour le découvrir.' : !n ? a.desc :
-        nm ? 'Niv. ' + nm + ' : vitesse x2' : 'Vitesse maximale !');
+      setText(r.next, !revealed ? UI.carte_mystere : !n ? a.desc :
+        nm ? fill(UI.carte_palier, { niveau: nm }) : UI.carte_palier_max);
       const q = n ? qtyFor(a) : 1, cost = bulkCost(a, q);
       const can = revealed && S.pizzas >= cost;
-      setText(r.bl, !n ? 'DÉBLOQUER' : q > 1 ? 'AMÉLIORER x' + q : 'AMÉLIORER');
-      setText(r.bc, revealed ? fmt(cost) + ' 🍕' : '???');
+      setText(r.bl, !n ? UI.bouton_debloquer : q > 1 ? UI.bouton_ameliorer + ' x' + q : UI.bouton_ameliorer);
+      setText(r.bc, revealed ? fmt(cost) + ' 🍕' : UI.carte_inconnu);
       r.buy.classList.toggle('can', can);
       r.buy.disabled = !revealed;
     }
     for (const r of shop.managers) {
       const own = hasM(r.m.id), animalOwned = lvl(r.m.animal) > 0;
       const can = !own && animalOwned && S.pizzas >= r.m.cost;
-      setText(r.cost, own ? 'RECRUTÉ ✓' : animalOwned ? fmt(r.m.cost) + ' 🍕' : 'Débloque d\'abord ' + A[r.m.animal].name);
+      setText(r.cost, own ? UI.manager_recrute : animalOwned ? fmt(r.m.cost) + ' 🍕' : fill(UI.manager_verrouille, { animal: A[r.m.animal].name }));
       r.cost.classList.toggle('no', !own && !can);
       setText(r.count, own ? '★' : '');
       r.item.classList.toggle('owned', own);
@@ -515,7 +514,7 @@
     }
     for (const r of shop.boosts) {
       const own = hasB(r.b.id), can = !own && S.pizzas >= r.b.cost;
-      setText(r.cost, own ? 'ACTIF ✓' : fmt(r.b.cost) + ' 🍕');
+      setText(r.cost, own ? UI.boost_actif : fmt(r.b.cost) + ' 🍕');
       r.cost.classList.toggle('no', !own && !can);
       setText(r.count, own ? '★' : '');
       r.item.classList.toggle('owned', own);
@@ -537,7 +536,7 @@
       r.root.classList.toggle('running', !!b.run);
       setText(r.txt, fast ? '+' + fmt(gain / cyc) + ' 🍕 / s'
         : b.run ? '+' + fmt(gain) + ' 🍕 · ' + fmtSec(Math.max(0, cyc - b.t))
-          : 'TOUCHE ! +' + fmt(gain) + ' 🍕');
+          : fill(UI.carte_touche, { pizzas: fmt(gain) }));
     }
   }
 
@@ -554,19 +553,19 @@
       const now = Date.now(), ready = now >= S.tourneeReady;
       ob.disabled = !ready;
       ob.classList.toggle('ready', ready);
-      setText($('oliverLabel'), ready ? 'TOURNÉE GÉNÉRALE !' : 'RECHARGE ' + Math.ceil((S.tourneeReady - now) / 1000) + 's');
+      setText($('oliverLabel'), ready ? UI.tournee_bouton : fill(UI.tournee_recharge, { secondes: Math.ceil((S.tourneeReady - now) / 1000) }));
     }
     const boosting = tourneeOn();
     $('boostBanner').classList.toggle('hidden', !boosting);
     $('stage').classList.toggle('boost', boosting);
-    if (boosting) setText($('boostTime'), String(Math.ceil((S.tourneeEnd - Date.now()) / 1000)));
+    if (boosting) setText($('boostText'), fill(UI.tournee_bandeau, { secondes: Math.ceil((S.tourneeEnd - Date.now()) / 1000) }));
   }
 
   // Paliers de pizzas racontés par Octave (quand aucune boîte de dialogue n'est ouverte)
   function checkStory() {
     if (S.story < STORY.length && S.total >= STORY[S.story][0] && !Room.cinematic && !UL.cur &&
         dlg.el.classList.contains('hidden')) {
-      showDialog('pizzaMini', '★ PALIER', STORY[S.story][1], 6000);
+      showDialog('pizzaMini', UI.palier_titre, STORY[S.story][1], 6000);
       S.story++;
     }
   }
@@ -636,7 +635,7 @@
       // Début de partie : Chichi est débloqué, Octave explique le principe
       queueUnlock({
         type: 'animal', id: 'chichi',
-        onClose: () => showDialog('octave', 'OCTAVE', 'Touche Chichi : il part chercher des pizzas ! Améliore-le pour qu\'il en rapporte plus, puis recrute Janis pour qu\'il y aille tout seul.', 9000),
+        onClose: () => showDialog('octave', UI.dialogue_octave, UI.tutoriel, 9000),
       });
     } else {
       // gains hors-ligne des animaux automatisés (boost « Vers l'infini »)
@@ -646,7 +645,7 @@
         const gain = pps() * secs;
         if (gain > 0) {
           S.pizzas += gain; S.total += gain;
-          setTimeout(() => showDialog('octave', 'OCTAVE', 'Pendant mon absence (' + fmtDuration(secs) + '), la meute a ramené ' + fmt(gain) + ' pizzas. Bons chiens.', 6000), 600);
+          setTimeout(() => showDialog('octave', UI.dialogue_octave, fill(UI.hors_ligne, { duree: fmtDuration(secs), gain: fmt(gain) }), 6000), 600);
         }
       }
     }
@@ -666,5 +665,6 @@
     state: () => S,
   };
 
-  init();
+  // Les textes du tableur (data/textes.csv) sont chargés avant de démarrer
+  Texts.load('data/textes.csv').then(() => { Texts.applyDom(); init(); });
 })();

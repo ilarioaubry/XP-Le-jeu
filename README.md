@@ -29,6 +29,13 @@ générés avec la Web Audio API : aucun fichier image ou son externe.
 | Idylle | Octave | « Au pied ! Et que ça saute ! » |
 | July la Queen | Laure | « ... Ton capital symbolique est fascinant. » (production x10 000 et victoire) |
 
+### Modifier les textes (tableur)
+
+Tous les textes écrits pour le jeu sont dans **`data/textes.csv`** (colonnes `id ; section ; ou_ca_apparait ; texte`).
+Modifie la dernière colonne (`texte`) sur GitHub (crayon ✏️) ou dans un tableur, enregistre : le jeu les utilise au
+prochain chargement. Une case vide garde le texte d'origine. Garde les mots entre accolades (`{animal}`, `{gain}`…),
+le jeu les remplace. Pour régénérer le tableur depuis les textes par défaut : `node tools/export-textes.js`.
+
 ### Lancer le jeu
 
 ```bash
@@ -48,7 +55,9 @@ Pour tester dans la console du navigateur : `DoggyParty.give(1e9)`.
 | `css/style.css` | Thème Pixel Art : bordures en escalier, polices *Press Start 2P* / *VT323*, palette gothique-néon |
 | `js/sprites.js` | Moteur de pixel art (grille, formes, ombrage, contour), pizza, cartons, icônes, mini-police 3x5 |
 | `js/characters.js` | Les 6 animaux (4 images : repos et marche) et les 5 humains (24x32), dessinés d'après les photos |
-| `js/data.js` | Données : animaux, managers, boosts, textes |
+| `js/data.js` | Données : animaux, managers, boosts, textes par défaut |
+| `js/textes.js` | Charge `data/textes.csv` et remplace les textes par défaut |
+| `data/textes.csv` | Tableur de tous les textes, modifiable |
 | `js/audio.js` | Bruitages 8-bit générés avec la Web Audio API |
 | `js/room.js` | Le salon animé (canvas) : décor, animaux en déplacement, pizza dorée, cinématique de victoire |
 | `js/game.js` | Économie, interface, boucle de jeu, sauvegarde `localStorage` |

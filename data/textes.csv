@@ -1,0 +1,125 @@
+﻿id;section;ou_ca_apparait;texte
+animal.chichi.nom;Animaux;Chichi : nom (carte, animation d'unlock);Chichi
+animal.chichi.espece;Animaux;Chichi : espèce, affichée sous son nom dans l'animation d'unlock;Chien
+animal.chichi.desc;Animaux;Chichi : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Petit chien vif qui gratte les miettes.
+animal.saphire.nom;Animaux;Saphire : nom (carte, animation d'unlock);Saphire
+animal.saphire.espece;Animaux;Saphire : espèce, affichée sous son nom dans l'animation d'unlock;Chien
+animal.saphire.desc;Animaux;Saphire : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Flaire les parts oubliées sous le canapé.
+animal.bouba.nom;Animaux;Bouba : nom (carte, animation d'unlock);Bouba
+animal.bouba.espece;Animaux;Bouba : espèce, affichée sous son nom dans l'animation d'unlock;Chien
+animal.bouba.desc;Animaux;Bouba : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le gros tank qui rapporte des boîtes entières.
+animal.gilbert.nom;Animaux;Gilbert : nom (carte, animation d'unlock);Gilbert
+animal.gilbert.espece;Animaux;Gilbert : espèce, affichée sous son nom dans l'animation d'unlock;Chat
+animal.gilbert.desc;Animaux;Gilbert : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le nouveau chat chaotique qui braque les livreurs.
+animal.idylle.nom;Animaux;Idylle : nom (carte, animation d'unlock);Idylle
+animal.idylle.espece;Animaux;Idylle : espèce, affichée sous son nom dans l'animation d'unlock;Chien (Pékinois)
+animal.idylle.desc;Animaux;Idylle : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);L'élite du dressage, ultra disciplinée.
+animal.july.nom;Animaux;July la Queen : nom (carte, animation d'unlock);July la Queen
+animal.july.espece;Animaux;July la Queen : espèce, affichée sous son nom dans l'animation d'unlock;Chat Ultime
+animal.july.desc;Animaux;July la Queen : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);La reine absolue sur son trône de cartons.
+manager.janis.nom;Managers;Janis : nom (carte COLOC, animation d'unlock);Janis
+manager.janis.role;Managers;Janis : rôle, affiché sous son nom;Coloc · Mode Paysanne
+manager.janis.phrase;Managers;Janis : phrase phare, écrite pendant l'animation d'unlock;On gaspille rien : même les miettes, on les récolte !
+manager.anna.nom;Managers;Anna : nom (carte COLOC, animation d'unlock);Anna
+manager.anna.role;Managers;Anna : rôle, affiché sous son nom;Coloc · Mimi Baddie
+manager.anna.phrase;Managers;Anna : phrase phare, écrite pendant l'animation d'unlock;Wesh la coloc ! Cette meute va devenir virale !
+manager.oliver.nom;Managers;Olivier : nom (carte COLOC, animation d'unlock);Olivier
+manager.oliver.role;Managers;Olivier : rôle, affiché sous son nom;Le Père d'Octave
+manager.oliver.phrase;Managers;Olivier : phrase phare, écrite pendant l'animation d'unlock;Santé fiston ! La tournée est pour moi !
+manager.adeline.nom;Managers;Adeline : nom (carte COLOC, animation d'unlock);Adeline
+manager.adeline.role;Managers;Adeline : rôle, affiché sous son nom;Coloc · Casquette Ciele
+manager.adeline.phrase;Managers;Adeline : phrase phare, écrite pendant l'animation d'unlock;Je repère les bons plans avant tout le monde. De rien !
+manager.octave.nom;Managers;Octave : nom (carte COLOC, animation d'unlock);Octave
+manager.octave.role;Managers;Octave : rôle, affiché sous son nom;Maître-chien · Dressage
+manager.octave.phrase;Managers;Octave : phrase phare, écrite pendant l'animation d'unlock;Au pied ! Et que ça saute !
+manager.laure.nom;Managers;Laure : nom (carte COLOC, animation d'unlock);Laure
+manager.laure.role;Managers;Laure : rôle, affiché sous son nom;Le Crush Gothique · BOSS FINAL
+manager.laure.phrase;Managers;Laure : phrase phare, écrite pendant l'animation d'unlock;... Ton capital symbolique est fascinant.
+boost.coupons.nom;Boosts;Boost Coupons Domino's : nom;Coupons Domino's
+boost.coupons.ref;Boosts;Boost Coupons Domino's : sous-titre;Bon plan de la coloc
+boost.coupons.desc;Boosts;Boost Coupons Domino's : description;Les croquettes en promo, la meute à prix cassé.
+boost.coupons.effet;Boosts;Boost Coupons Domino's : effet affiché en vert;-20% sur le prix de toutes les améliorations
+boost.haki.nom;Boosts;Boost Haki des Rois : nom;Haki des Rois
+boost.haki.ref;Boosts;Boost Haki des Rois : sous-titre;Tattoo One Piece
+boost.haki.desc;Boosts;Boost Haki des Rois : description;Octave dégage une aura de roi. Toute la meute court plus vite.
+boost.haki.effet;Boosts;Boost Haki des Rois : effet affiché en vert;Tous les trajets 2x plus rapides
+boost.egoist.nom;Boosts;Boost Mentalité d'Égoïste : nom;Mentalité d'Égoïste
+boost.egoist.ref;Boosts;Boost Mentalité d'Égoïste : sous-titre;Tattoo Blue Lock
+boost.egoist.desc;Boosts;Boost Mentalité d'Égoïste : description;Chaque chien veut être le numéro 1 de la meute.
+boost.egoist.effet;Boosts;Boost Mentalité d'Égoïste : effet affiché en vert;Chichi, Saphire & Bouba : pizzas x2
+boost.hype.nom;Boosts;Boost Hype TikTok : nom;Hype TikTok
+boost.hype.ref;Boosts;Boost Hype TikTok : sous-titre;La coloc devient virale
+boost.hype.desc;Boosts;Boost Hype TikTok : description;Les livreurs se battent pour livrer à la coloc.
+boost.hype.effet;Boosts;Boost Hype TikTok : effet affiché en vert;Toutes les pizzas +35%
+boost.kaneda.nom;Boosts;Boost Moto de Kaneda : nom;Moto de Kaneda
+boost.kaneda.ref;Boosts;Boost Moto de Kaneda : sous-titre;Tattoo Akira
+boost.kaneda.desc;Boosts;Boost Moto de Kaneda : description;Livraison en dérapage à travers Montpellier.
+boost.kaneda.effet;Boosts;Boost Moto de Kaneda : effet affiché en vert;Gilbert, Idylle & July : pizzas x2
+boost.infinity.nom;Boosts;Boost Vers l'infini et au-delà : nom;Vers l'infini et au-delà
+boost.infinity.ref;Boosts;Boost Vers l'infini et au-delà : sous-titre;Tattoo Toy Story
+boost.infinity.desc;Boosts;Boost Vers l'infini et au-delà : description;La meute ne dort jamais. Même quand Octave dort.
+boost.infinity.effet;Boosts;Boost Vers l'infini et au-delà : effet affiché en vert;Toutes les pizzas x2 + gains hors-ligne
+conseil.01;Conseils d'Olivier;Conseil n°01 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Fiston, la pizza c'est comme le tiercé : faut toujours parier sur celle qui a des olives.
+conseil.02;Conseils d'Olivier;Conseil n°02 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Moi à ton âge j'avais déjà perdu trois fois mon permis. Et regarde-moi : heureux !
+conseil.03;Conseils d'Olivier;Conseil n°03 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Pour séduire une gothique, offre-lui une bougie parfumée du Monoprix. Ça marche à tous les coups. Enfin, une fois.
+conseil.04;Conseils d'Olivier;Conseil n°04 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Le chômage c'est des vacances que l'État te paye. Profite, et ressers-moi une mousse.
+conseil.05;Conseils d'Olivier;Conseil n°05 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Bourdieu ? C'était pas le gardien de Montpellier en 87 ?
+conseil.06;Conseils d'Olivier;Conseil n°06 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Si un chien aboie, c'est qu'il a soif. Donne-lui une bière. ... Non attends, fais pas ça.
+conseil.07;Conseils d'Olivier;Conseil n°07 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Range jamais tes mangas. Comme ça tu sais toujours où ils sont : par terre.
+conseil.08;Conseils d'Olivier;Conseil n°08 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);La sociologie c'est comme le pastis : tout est dans le dosage de l'eau.
+conseil.09;Conseils d'Olivier;Conseil n°09 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Un vrai homme sait plier une boîte à pizza en forme de cygne. Moi je sais pas. Mais un vrai homme, oui.
+conseil.10;Conseils d'Olivier;Conseil n°10 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);T'as déjà vu Palavas un mardi de novembre ? Non ? Moi non plus. Santé !
+conseil.11;Conseils d'Olivier;Conseil n°11 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Le secret d'une bonne relation, c'est la communication. Ou le barbecue. Je confonds toujours.
+conseil.12;Conseils d'Olivier;Conseil n°12 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Ton chat Gilbert m'a regardé bizarrement. Je crois qu'il veut ma bière. Il l'aura pas.
+conseil.13;Conseils d'Olivier;Conseil n°13 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Quand j'étais jeune, on n'avait pas de mangas. On avait des cailloux. Et on était contents.
+conseil.14;Conseils d'Olivier;Conseil n°14 d'Olivier, dit quand on lance la Tournée Générale (un au hasard);Tu sais pourquoi la pizza est ronde mais la boîte est carrée ? Moi non plus. C'est ça la vie, fiston.
+palier.01;Paliers;Dialogue quand le total de pizzas atteint 100;La coloc sent officiellement la pizza. Les voisins commencent à se poser des questions.
+palier.02;Paliers;Dialogue quand le total de pizzas atteint 1 000;1 000 pizzas ! La table basse a disparu sous les cartons.
+palier.03;Paliers;Dialogue quand le total de pizzas atteint 10 000;10 000 pizzas. Le livreur de Domino's connaît désormais Chichi par son prénom.
+palier.04;Paliers;Dialogue quand le total de pizzas atteint 100 000;100 000 pizzas. Midi Libre parle d'une « odeur suspecte de margherita » dans l'Écusson.
+palier.05;Paliers;Dialogue quand le total de pizzas atteint 1 000 000;1 MILLION de pizzas. Laure a levé les yeux de son livre pendant 0,3 seconde.
+palier.06;Paliers;Dialogue quand le total de pizzas atteint 10 000 000;10 millions. La coloc est visible depuis la Comédie. Par l'odeur.
+palier.07;Paliers;Dialogue quand le total de pizzas atteint 100 000 000;100 millions. Laure a noté « phénomène de meute » dans son carnet de terrain.
+palier.08;Paliers;Dialogue quand le total de pizzas atteint 1 000 000 000;1 MILLIARD de pizzas. C'est le moment. Laure attend.
+ui.tutoriel;Dialogues;Octave au tout début de la partie, après l'unlock de Chichi;Touche Chichi : il part chercher des pizzas ! Améliore-le pour qu'il en rapporte plus, puis recrute Janis pour qu'il y aille tout seul.
+ui.hors_ligne;Dialogues;Octave au retour dans le jeu (boost « Vers l'infini »). {duree} = temps d'absence, {gain} = pizzas gagnées;Pendant mon absence ({duree}), la meute a ramené {gain} pizzas. Bons chiens.
+ui.cine_laure;Dialogues;Laure pendant la cinématique de victoire;... Ta meute a un capital symbolique fascinant. Bourdieu n'avait pas prévu Chichi. ... On partage cette pizza ?
+ui.cine_victoire;Dialogues;Gros titre de la cinématique (majuscules sans accents : police pixel limitée);VICTOIRE !
+ui.cine_soustitre;Dialogues;Sous-titre de la cinématique (majuscules sans accents : police pixel limitée);LAURE A DIT OUI
+ui.victoire_titre;Écran de victoire;Titre;♥ VICTOIRE ♥
+ui.victoire_texte;Écran de victoire;Texte principal;Laure a refermé son Bourdieu. Elle te regarde. Elle sourit (un peu). Elle accepte une part de pizza.
+ui.victoire_stats;Écran de victoire;Statistiques. {duree} = temps de jeu, {pizzas} = pizzas récoltées;Temps de jeu : {duree} · Pizzas récoltées : {pizzas}
+ui.victoire_bouton;Écran de victoire;Bouton;CONTINUER LA PARTY
+ui.unlock_animal;Animation d'unlock;Titre quand un animal est débloqué;NOUVEAU DANS LA MEUTE !
+ui.unlock_manager;Animation d'unlock;Titre quand un manager est débloqué;NOUVEAU MANAGER !
+ui.unlock_boss;Animation d'unlock;Titre quand Laure (boss final) est débloquée;LE BOSS FINAL ARRIVE !
+ui.unlock_gere;Animation d'unlock;Fin de la ligne sous le nom du manager. {animal} = animal géré;gère {animal}
+ui.unlock_continuer;Animation d'unlock;Petit texte clignotant en bas;TOUCHE POUR CONTINUER
+ui.palier_titre;Dialogues;Nom affiché au-dessus des paliers d'histoire;★ PALIER
+ui.dialogue_octave;Dialogues;Nom affiché quand Octave parle;OCTAVE
+ui.tournee_titre;Tournée Générale;Nom affiché quand Olivier donne un conseil;OLIVIER (le daron)
+ui.tournee_bouton;Tournée Générale;Bouton quand la compétence est prête;TOURNÉE GÉNÉRALE !
+ui.tournee_recharge;Tournée Générale;Bouton pendant la recharge. {secondes} = secondes restantes;RECHARGE {secondes}s
+ui.tournee_bandeau;Tournée Générale;Bandeau pendant l'effet. {secondes} = secondes restantes;🍺 TOURNÉE GÉNÉRALE x3 · {secondes}s
+ui.onglet_meute;Interface;Onglet de la liste des animaux;MEUTE
+ui.onglet_coloc;Interface;Onglet de la liste des managers;COLOC
+ui.onglet_boosts;Interface;Onglet de la liste des boosts;BOOSTS
+ui.label_achat;Interface;Texte avant les boutons x1 / x10 / MAX;Achat :
+ui.label_pps;Interface;En haut de l'écran, avant le nombre de pizzas par seconde;Pizzas / seconde :
+ui.label_coeur;Interface;Jauge sous le salon;♥ Cœur de Laure
+ui.carte_niveau;Cartes des animaux;Niveau. {niveau} = niveau actuel;Niv. {niveau}
+ui.carte_inconnu;Cartes des animaux;Nom d'un animal pas encore découvert;???
+ui.carte_mystere;Cartes des animaux;Texte d'un animal pas encore découvert;Continue de récolter pour le découvrir.
+ui.carte_palier;Cartes des animaux;Prochain palier de vitesse. {niveau} = niveau du palier;Niv. {niveau} : vitesse x2
+ui.carte_palier_max;Cartes des animaux;Quand tous les paliers de vitesse sont atteints;Vitesse maximale !
+ui.carte_touche;Cartes des animaux;Dans la jauge quand l'animal attend qu'on le touche. {pizzas} = pizzas rapportées;TOUCHE ! +{pizzas} 🍕
+ui.bouton_debloquer;Cartes des animaux;Bouton d'achat d'un animal pas encore possédé;DÉBLOQUER
+ui.bouton_ameliorer;Cartes des animaux;Bouton d'amélioration;AMÉLIORER
+ui.manager_effet;Cartes des managers;Effet affiché en vert. {animal} = animal géré, {mult} = multiplicateur;Automatise {animal} · ses pizzas x{mult}
+ui.manager_competence;Cartes des managers;Ajouté à l'effet d'Olivier; · Compétence « Tournée Générale »
+ui.manager_boss;Cartes des managers;Ajouté à l'effet de Laure; · Production x10 000 · Victoire
+ui.manager_recrute;Cartes des managers;Quand le manager est déjà recruté;RECRUTÉ ✓
+ui.manager_verrouille;Cartes des managers;Quand on n'a pas encore l'animal. {animal} = animal à débloquer;Débloque d'abord {animal}
+ui.boost_actif;Cartes des boosts;Quand le boost est déjà acheté;ACTIF ✓
+ui.boost_flottant;Messages flottants;Quand on achète un boost. {nom} = nom du boost;BOOST : {nom}
+ui.vitesse_flottant;Messages flottants;Quand un animal passe un palier de vitesse. {animal} = son nom;⚡ {animal} : VITESSE x2 !

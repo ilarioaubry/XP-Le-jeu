@@ -30,7 +30,7 @@
         <span id="pizzaCount">0</span>
       </div>
       <div class="stat-row">
-        <span class="stat">Pizzas / seconde : <b id="ppsCount">0</b></span>
+        <span class="stat"><span data-ui="label_pps">Pizzas / seconde :</span> <b id="ppsCount">0</b></span>
       </div>
     </div>
   </header>
@@ -42,7 +42,7 @@
         <div class="stage-inner" id="stageInner">
           <canvas id="room" width="320" height="180" tabindex="0" aria-label="Le salon de la coloc d'Octave à Montpellier. Touche un animal pour qu'il rapporte des pizzas !"></canvas>
           <div id="floaters" class="floaters"></div>
-          <div id="boostBanner" class="boost-banner hidden">🍺 TOURNÉE GÉNÉRALE x3 · <span id="boostTime">15</span>s</div>
+          <div id="boostBanner" class="boost-banner hidden"><span id="boostText">🍺 TOURNÉE GÉNÉRALE x3</span></div>
 
         </div>
 
@@ -59,7 +59,7 @@
 
       <div class="under-stage">
         <div class="laure-meter pixel-box">
-          <span class="meter-label">♥ Cœur de Laure</span>
+          <span class="meter-label" data-ui="label_coeur">♥ Cœur de Laure</span>
           <div class="meter"><div id="laureBar" class="meter-fill"></div></div>
           <span id="laurePct" class="meter-pct">0%</span>
         </div>
@@ -73,12 +73,12 @@
     <!-- ============ BOUTIQUE ============ -->
     <aside class="shop pixel-box">
       <nav class="tabs" role="tablist">
-        <button class="tab active" data-tab="animals" role="tab">MEUTE</button>
-        <button class="tab" data-tab="managers" role="tab">COLOC</button>
-        <button class="tab" data-tab="boosts" role="tab">BOOSTS</button>
+        <button class="tab active" data-tab="animals" role="tab"><span data-ui="onglet_meute">MEUTE</span></button>
+        <button class="tab" data-tab="managers" role="tab"><span data-ui="onglet_coloc">COLOC</span></button>
+        <button class="tab" data-tab="boosts" role="tab"><span data-ui="onglet_boosts">BOOSTS</span></button>
       </nav>
       <div class="buy-mode" id="buyMode">
-        <span>Achat :</span>
+        <span data-ui="label_achat">Achat :</span>
         <button class="px-btn tiny active" data-qty="1">x1</button>
         <button class="px-btn tiny" data-qty="10">x10</button>
         <button class="px-btn tiny" data-qty="max">MAX</button>
@@ -92,15 +92,15 @@
   <!-- ============ FIN DU JEU ============ -->
   <div id="victory" class="modal hidden">
     <div class="modal-box pixel-box">
-      <h2>♥ VICTOIRE ♥</h2>
+      <h2 data-ui="victoire_titre">♥ VICTOIRE ♥</h2>
       <div class="victory-portraits">
         <img id="vicOctave" alt="Octave">
         <img id="vicHeart" alt="♥" class="vic-heart">
         <img id="vicLaure" alt="Laure">
       </div>
-      <p>Laure a refermé son Bourdieu. Elle te regarde. Elle sourit (un peu). Elle accepte une part de pizza.</p>
+      <p data-ui="victoire_texte">Laure a refermé son Bourdieu. Elle te regarde. Elle sourit (un peu). Elle accepte une part de pizza.</p>
       <p id="vicStats" class="vic-stats"></p>
-      <button id="btnContinue" class="px-btn">CONTINUER LA PARTY</button>
+      <button id="btnContinue" class="px-btn" data-ui="victoire_bouton">CONTINUER LA PARTY</button>
     </div>
   </div>
 
@@ -114,13 +114,14 @@
       <div id="unlockName" class="unlock-name"></div>
       <div id="unlockSub" class="unlock-sub"></div>
       <p id="unlockQuote" class="unlock-quote"></p>
-      <div class="unlock-tap">TOUCHE POUR CONTINUER</div>
+      <div class="unlock-tap" data-ui="unlock_continuer">TOUCHE POUR CONTINUER</div>
     </div>
   </div>
 
   <script src="js/sprites.js"></script>
   <script src="js/characters.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/textes.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/room.js"></script>
   <script src="js/game.js"></script>
