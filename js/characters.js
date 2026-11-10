@@ -535,6 +535,32 @@
     define(id, { w: 24, h: 32, palette: HUMAN_PAL[id], frames: [0, 1, 2].map((f) => () => fn(f)) });
   });
 
+
+  /* =====================================================================
+   *  ICÔNES DES BOOSTS généraux sans matrice fixe (coupon et flamme)
+   * ===================================================================== */
+  define('icoCoupon', {
+    w: 16, h: 16, palette: { Y: '#ffd23f', y: '#e8a524', o: '#b8861b', R: '#d7263d', W: '#fff6d8' },
+    frames: [() => {
+      const g = new Grid(16, 16);
+      g.shade(Pg([[1, 3], [15, 3], [15, 13], [1, 13]]), T('Y', 'W', 'y'));
+      g.fill(R(0, 7, 1, 2), 'K'); g.fill(R(15, 7, 1, 2), 'K');                    // encoches du ticket
+      for (let x = 3; x < 14; x += 2) { g.px(x, 4, 'o'); g.px(x, 11, 'o'); }       // pointillés
+      g.fill(R(4, 6, 2, 2), 'R'); g.fill(R(9, 9, 2, 2), 'R'); g.line(10, 5, 5, 11, 'R');   // le signe %
+      return g.outline();
+    }],
+  });
+  define('icoHype', {
+    w: 16, h: 16, palette: { R: '#d7263d', O: '#ff8a1f', Y: '#ffd23f', W: '#fff6d8', r: '#8c1023' },
+    frames: [() => {
+      const g = new Grid(16, 16);
+      g.shade(Pg([[8, 0.5], [11, 4.5], [13.4, 8.6], [12.6, 12.6], [8, 15], [3.4, 12.6], [2.6, 8.4], [5.2, 5.6], [6, 2.6]]), T('R', 'O', 'r'));
+      g.shade(E(8, 10.6, 3.6, 4.2), T('O', 'Y', 'R'));
+      g.shade(E(8, 11.8, 1.9, 2.4), T('Y', 'W', 'O'));
+      return g.outline();
+    }],
+  });
+
   // Portrait (tête et épaules) pour les boîtes de dialogue et la victoire
   global.Sprites.portraitCrop = { x: 0, y: 0, w: 24, h: 24 };
 })(window);

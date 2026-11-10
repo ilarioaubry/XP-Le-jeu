@@ -2,12 +2,32 @@
 
 ## Octave Tycoon : La Quête de Laure
 
-Un jeu *Idle Tycoon / Clicker* en Pixel Art rétro (16-bit / GameBoy Color sombre).
-Octave, maître-chien au chômage à Montpellier, doit récolter **1 milliard de pizzas** avec sa meute
-pour impressionner **Laure**, son crush gothique passionnée de sociologie.
+Un jeu *Idle Tycoon* en Pixel Art rétro (16-bit / GameBoy Color sombre), pensé pour **téléphone**,
+dans l'esprit d'AdVenture Capitalist. Octave, maître-chien au chômage à Montpellier, doit récolter
+**1 milliard de pizzas** avec sa meute pour impressionner **Laure**, son crush gothique passionnée de sociologie.
 
-Tous les graphismes sont dessinés en code sur un `<canvas>` HTML5 à partir de matrices de pixels.
-Les sons sont générés avec la Web Audio API. Le jeu n'utilise aucun fichier image ou son externe.
+Tous les graphismes sont dessinés en code sur un `<canvas>` HTML5 (pixel art procédural) et les sons sont
+générés avec la Web Audio API : aucun fichier image ou son externe.
+
+### Comment jouer
+
+1. **Touche un animal** (sa carte dans la liste, ou directement dans le salon) : il part chercher des pizzas.
+   Le trajet dure un certain temps et rapporte un certain nombre de pizzas.
+2. **Améliore-le** : plus de niveaux = plus de pizzas par trajet. Aux paliers de niveau (25, 50, 100…),
+   ses trajets deviennent 2 fois plus rapides.
+3. **Recrute son manager** (un humain de la coloc) : il automatise les trajets et double la rentabilité de l'animal.
+4. **Achète des boosts** généraux (onglet BOOSTS).
+5. Chaque animal et chaque manager débloqué déclenche une **animation d'UnLock**, avec la phrase phare du manager.
+6. Atteins **1 milliard de pizzas** et recrute **Laure** pour gagner.
+
+| Animal | Manager | Phrase phare |
+|---|---|---|
+| Chichi | Janis | « On gaspille rien : même les miettes, on les récolte ! » |
+| Saphire | Anna | « Wesh la coloc ! Cette meute va devenir virale ! » |
+| Bouba | Olivier | « Santé fiston ! La tournée est pour moi ! » (débloque la *Tournée Générale* : x3 pendant 15 s) |
+| Gilbert | Adeline | « Je repère les bons plans avant tout le monde. De rien ! » |
+| Idylle | Octave | « Au pied ! Et que ça saute ! » |
+| July la Queen | Laure | « ... Ton capital symbolique est fascinant. » (production x10 000 et victoire) |
 
 ### Lancer le jeu
 
@@ -17,27 +37,18 @@ python3 -m http.server 8000
 # puis ouvrir http://localhost:8000
 ```
 
-(Ou `npx serve .`, ou simplement ouvrir `index.html` dans un navigateur.)
+Sur iPhone : écran fixe sans défilement ni zoom. « Sur l'écran d'accueil » (Partager) lance le jeu en plein écran.
+Pour tester dans la console du navigateur : `DoggyParty.give(1e9)`.
 
 ### Architecture
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Structure de la page (HUD, salon, boutique, dialogues) |
+| `index.html` | Structure de la page (en-tête, salon, boutique, dialogues, animation d'UnLock) |
 | `css/style.css` | Thème Pixel Art : bordures en escalier, polices *Press Start 2P* / *VT323*, palette gothique-néon |
 | `js/sprites.js` | Moteur de pixel art (grille, formes, ombrage, contour), pizza, cartons, icônes, mini-police 3x5 |
 | `js/characters.js` | Les 6 animaux (4 images : repos et marche) et les 5 humains (24x32), dessinés d'après les photos |
-| `js/audio.js` | Bruitages 8-bit générés avec la Web Audio API (clic, achat, aboiements, miaulements, rot d'Olivier…) |
-| `js/game.js` | Boucle de jeu, économie, salon animé, cinématique, sauvegarde `localStorage` |
-
-### Contenu
-
-- **Meute (générateurs, +15 % de coût par achat)** : Chichi (1 PPS), Saphire (8), Bouba (45), Gilbert (260), Idylle (1 400), July la Queen (10 000)
-- **Colocs (managers)** : Janis (-20 % sur le prix des animaux), Anna (+35 % de production), Olivier (compétence *Tournée Générale* : x3 pendant 15 s, recharge 60 s), Adeline (pizzas dorées 2x plus fréquentes et 2x plus généreuses), Laure (1 milliard : x10 000 et cinématique de victoire)
-- **Tattoos (upgrades)** : Haki des Rois (clic x5), Mentalité d'Égoïste (chiens x2), Moto de Kaneda (Gilbert/Idylle/July x2), Vers l'infini et au-delà (x2 global et gains hors-ligne)
-- Pizzas dorées aléatoires, paliers racontés par Octave, achat x1 / x10 / MAX, sauvegarde automatique
-
-Jeu pensé pour téléphone uniquement : écran fixe sans défilement ni zoom. « Sur l'écran d'accueil » (Partager) lance le jeu en plein écran.
-
-Raccourcis : `Espace` ou `Entrée` sur le salon pour cliquer la pizza.
-Pour tester dans la console du navigateur : `DoggyParty.give(1e9)`.
+| `js/data.js` | Données : animaux, managers, boosts, textes |
+| `js/audio.js` | Bruitages 8-bit générés avec la Web Audio API |
+| `js/room.js` | Le salon animé (canvas) : décor, animaux en déplacement, pizza dorée, cinématique de victoire |
+| `js/game.js` | Économie, interface, boucle de jeu, sauvegarde `localStorage` |

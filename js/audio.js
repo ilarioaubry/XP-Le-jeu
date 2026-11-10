@@ -140,6 +140,19 @@
       arp([NOTE(67), NOTE(67), NOTE(67), NOTE(72), NOTE(76), NOTE(79)], 0.09, { type: 'square', vol: 0.25, delay: 0 });
     },
 
+    // Petit « ding » quand un animal rapporte ses pizzas
+    collect() {
+      tone({ type: 'triangle', freq: 784, to: 1175, dur: 0.09, vol: 0.22 });
+      tone({ type: 'square', freq: 1568, dur: 0.05, vol: 0.08, delay: 0.06 });
+    },
+
+    // Fanfare d'UnLock : montée d'arpèges + scintillements
+    fanfare() {
+      arp([NOTE(60), NOTE(64), NOTE(67), NOTE(72), NOTE(76), NOTE(79), NOTE(84)], 0.075, { type: 'square', vol: 0.24 });
+      arp([NOTE(48), NOTE(55), NOTE(60)], 0.2, { type: 'triangle', vol: 0.35 });
+      [0.55, 0.65, 0.75, 0.85].forEach((d, i) => tone({ type: 'sine', freq: NOTE(96 + i * 2), dur: 0.14, vol: 0.12, delay: d }));
+    },
+
     golden() {
       arp([NOTE(84), NOTE(88), NOTE(91), NOTE(96)], 0.04, { type: 'triangle', vol: 0.35 });
     },

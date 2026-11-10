@@ -30,8 +30,7 @@
         <span id="pizzaCount">0</span>
       </div>
       <div class="stat-row">
-        <span class="stat">PPS : <b id="ppsCount">0</b></span>
-        <span class="stat">Clic : <b id="clickCount">1</b></span>
+        <span class="stat">Pizzas / seconde : <b id="ppsCount">0</b></span>
       </div>
     </div>
   </header>
@@ -41,7 +40,7 @@
     <section class="stage-col">
       <div class="stage pixel-box" id="stage">
         <div class="stage-inner" id="stageInner">
-          <canvas id="room" width="320" height="180" tabindex="0" aria-label="Le salon de la coloc d'Octave à Montpellier. Clique sur la pizza !"></canvas>
+          <canvas id="room" width="320" height="180" tabindex="0" aria-label="Le salon de la coloc d'Octave à Montpellier. Touche un animal pour qu'il rapporte des pizzas !"></canvas>
           <div id="floaters" class="floaters"></div>
           <div id="boostBanner" class="boost-banner hidden">🍺 TOURNÉE GÉNÉRALE x3 · <span id="boostTime">15</span>s</div>
 
@@ -76,7 +75,7 @@
       <nav class="tabs" role="tablist">
         <button class="tab active" data-tab="animals" role="tab">MEUTE</button>
         <button class="tab" data-tab="managers" role="tab">COLOC</button>
-        <button class="tab" data-tab="upgrades" role="tab">TATTOOS</button>
+        <button class="tab" data-tab="boosts" role="tab">BOOSTS</button>
       </nav>
       <div class="buy-mode" id="buyMode">
         <span>Achat :</span>
@@ -86,7 +85,7 @@
       </div>
       <div class="tab-panel" id="panel-animals"></div>
       <div class="tab-panel hidden" id="panel-managers"></div>
-      <div class="tab-panel hidden" id="panel-upgrades"></div>
+      <div class="tab-panel hidden" id="panel-boosts"></div>
     </aside>
   </main>
 
@@ -105,9 +104,25 @@
     </div>
   </div>
 
+  <!-- ============ ANIMATION D'UNLOCK ============ -->
+  <div id="unlock" class="unlock hidden" role="dialog" aria-live="assertive">
+    <div class="unlock-rays"></div>
+    <div id="unlockSparks" class="unlock-sparks"></div>
+    <div class="unlock-card pixel-box">
+      <div id="unlockKicker" class="unlock-kicker">NOUVEAU !</div>
+      <img id="unlockImg" class="unlock-img" alt="">
+      <div id="unlockName" class="unlock-name"></div>
+      <div id="unlockSub" class="unlock-sub"></div>
+      <p id="unlockQuote" class="unlock-quote"></p>
+      <div class="unlock-tap">TOUCHE POUR CONTINUER</div>
+    </div>
+  </div>
+
   <script src="js/sprites.js"></script>
   <script src="js/characters.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/audio.js"></script>
+  <script src="js/room.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>
