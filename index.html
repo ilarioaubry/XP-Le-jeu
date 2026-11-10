@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Octave Tycoon : La Quête de Laure — Doggy Party</title>
+  <meta name="description" content="Idle Tycoon en Pixel Art : Octave et sa meute récoltent des pizzas dans la coloc de Montpellier pour impressionner Laure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ============ EN-TÊTE ============ -->
+  <header class="topbar pixel-box">
+    <div class="brand">
+      <span class="studio">DOGGY PARTY présente</span>
+      <h1>OCTAVE TYCOON</h1>
+      <span class="subtitle">La Quête de Laure</span>
+    </div>
+    <div class="stats">
+      <div class="stat stat-main">
+        <img id="pizzaIcon" class="px-icon" alt="">
+        <span id="pizzaCount">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat">PPS : <b id="ppsCount">0</b></span>
+        <span class="stat">Clic : <b id="clickCount">1</b></span>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="btnMute" class="px-btn small" title="Son">♪ ON</button>
+      <button id="btnSave" class="px-btn small" title="Sauvegarder">SAVE</button>
+      <button id="btnReset" class="px-btn small danger" title="Recommencer">RESET</button>
+    </div>
+  </header>
+
+  <!-- ============ CORPS ============ -->
+  <main class="layout">
+    <section class="stage-col">
+      <div class="stage pixel-box" id="stage">
+        <div class="stage-inner" id="stageInner">
+          <canvas id="room" width="320" height="180" tabindex="0" aria-label="Le salon de la coloc d'Octave à Montpellier. Clique sur la pizza !"></canvas>
+          <div id="floaters" class="floaters"></div>
+          <div id="boostBanner" class="boost-banner hidden">🍺 TOURNÉE GÉNÉRALE x3 · <span id="boostTime">15</span>s</div>
+
+        </div>
+
+        <!-- Boîte de dialogue RPG -->
+        <div id="dialog" class="rpg-dialog hidden" role="dialog" aria-live="polite">
+          <img id="dialogPortrait" class="dialog-portrait" alt="">
+          <div class="dialog-body">
+            <div id="dialogName" class="dialog-name">???</div>
+            <p id="dialogText" class="dialog-text"></p>
+          </div>
+          <span class="dialog-next">▼</span>
+        </div>
+      </div>
+
+      <div class="under-stage">
+        <div class="laure-meter pixel-box">
+          <span class="meter-label">♥ Cœur de Laure</span>
+          <div class="meter"><div id="laureBar" class="meter-fill"></div></div>
+          <span id="laurePct" class="meter-pct">0%</span>
+        </div>
+        <button id="btnOliver" class="px-btn oliver-btn hidden">
+          <img id="beerIcon" class="px-icon" alt="">
+          <span id="oliverLabel">TOURNÉE GÉNÉRALE</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ BOUTIQUE ============ -->
+    <aside class="shop pixel-box">
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="animals" role="tab">MEUTE</button>
+        <button class="tab" data-tab="managers" role="tab">COLOC</button>
+        <button class="tab" data-tab="upgrades" role="tab">TATTOOS</button>
+      </nav>
+      <div class="buy-mode" id="buyMode">
+        <span>Achat :</span>
+        <button class="px-btn tiny active" data-qty="1">x1</button>
+        <button class="px-btn tiny" data-qty="10">x10</button>
+        <button class="px-btn tiny" data-qty="max">MAX</button>
+      </div>
+      <div class="tab-panel" id="panel-animals"></div>
+      <div class="tab-panel hidden" id="panel-managers"></div>
+      <div class="tab-panel hidden" id="panel-upgrades"></div>
+    </aside>
+  </main>
+
+  <!-- ============ JOURNAL DE BORD ============ -->
+  <section class="journal pixel-box">
+    <h2>▶ JOURNAL DE BORD</h2>
+    <ul id="log" class="log"></ul>
+  </section>
+
+  <footer class="footer">Doggy Party · Octave Tycoon : La Quête de Laure · Pixel art 100% procédural</footer>
+
+  <!-- ============ FIN DU JEU ============ -->
+  <div id="victory" class="modal hidden">
+    <div class="modal-box pixel-box">
+      <h2>♥ VICTOIRE ♥</h2>
+      <div class="victory-portraits">
+        <img id="vicOctave" alt="Octave">
+        <img id="vicHeart" alt="♥" class="vic-heart">
+        <img id="vicLaure" alt="Laure">
+      </div>
+      <p>Laure a refermé son Bourdieu. Elle te regarde. Elle sourit (un peu). Elle accepte une part de pizza.</p>
+      <p id="vicStats" class="vic-stats"></p>
+      <button id="btnContinue" class="px-btn">CONTINUER LA PARTY</button>
+    </div>
+  </div>
+
+  <script src="js/sprites.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
