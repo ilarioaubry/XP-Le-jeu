@@ -1,0 +1,318 @@
+/* =====================================================================
+ *  DOGGY PARTY — Octave Tycoon : La Quête de Laure
+ *  style.css — Thème Pixel Art rétro (16-bit / GameBoy Color sombre)
+ * ===================================================================== */
+:root {
+  --bg: #07040c;           /* noir profond */
+  --bg2: #120a1e;
+  --panel: #1a0f2b;        /* violet nuit */
+  --panel2: #251538;
+  --border: #4a2a6e;       /* violet gothique */
+  --border-hi: #7b2cbf;
+  --border-lo: #0b0612;
+  --red: #d7263d;          /* rouge Akira */
+  --red-dk: #8c1023;
+  --cheese: #ffcf3f;       /* jaune fromage à pizza */
+  --cheese-dk: #e8a524;
+  --neon: #c77dff;
+  --text: #efe6ff;
+  --muted: #9a86b8;
+  --good: #57e389;
+  --px: 4px;
+  --font-title: 'Press Start 2P', monospace;
+  --font-body: 'VT323', monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img, canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(45deg, var(--bg2) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg2) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg2) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg2) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.15;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+button { font-family: inherit; color: inherit; }
+.hidden { display: none !important; }
+
+/* ---------- Bordure pixel art en escalier (style fenêtre RPG) ---------- */
+.pixel-box {
+  position: relative;
+  background: var(--panel);
+  margin: var(--px);
+  box-shadow:
+    /* bordure extérieure à coins coupés */
+    0 calc(var(--px) * -1) 0 0 var(--border),
+    0 var(--px) 0 0 var(--border),
+    calc(var(--px) * -1) 0 0 0 var(--border),
+    var(--px) 0 0 0 var(--border),
+    /* deuxième marche de l'escalier */
+    0 calc(var(--px) * -2) 0 0 var(--border-lo),
+    0 calc(var(--px) * 2) 0 0 var(--border-lo),
+    calc(var(--px) * -2) 0 0 0 var(--border-lo),
+    calc(var(--px) * 2) 0 0 0 var(--border-lo),
+    var(--px) var(--px) 0 0 var(--border-lo),
+    calc(var(--px) * -1) var(--px) 0 0 var(--border-lo),
+    var(--px) calc(var(--px) * -1) 0 0 var(--border-lo),
+    calc(var(--px) * -1) calc(var(--px) * -1) 0 0 var(--border-lo),
+    /* relief intérieur */
+    inset var(--px) var(--px) 0 0 var(--panel2),
+    inset calc(var(--px) * -1) calc(var(--px) * -1) 0 0 var(--border-lo);
+}
+
+/* ---------- Boutons pixel ---------- */
+.px-btn {
+  font-family: var(--font-title);
+  font-size: 10px;
+  background: var(--border);
+  color: var(--text);
+  border: none;
+  padding: 10px 12px;
+  margin: var(--px);
+  cursor: pointer;
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--border-lo),
+    0 var(--px) 0 0 var(--border-lo),
+    calc(var(--px) * -1) 0 0 0 var(--border-lo),
+    var(--px) 0 0 0 var(--border-lo),
+    inset 0 calc(var(--px) * -1) 0 0 var(--border-lo),
+    inset var(--px) var(--px) 0 0 var(--border-hi);
+  transition: transform 40ms steps(1);
+  image-rendering: pixelated;
+}
+.px-btn:hover:not(:disabled) { background: var(--border-hi); }
+.px-btn:active:not(:disabled) { transform: translateY(2px); box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--border-lo),
+    0 var(--px) 0 0 var(--border-lo),
+    calc(var(--px) * -1) 0 0 0 var(--border-lo),
+    var(--px) 0 0 0 var(--border-lo),
+    inset var(--px) var(--px) 0 0 var(--border-lo); }
+.px-btn:disabled { opacity: .45; cursor: not-allowed; filter: grayscale(.6); }
+.px-btn:focus-visible, .tab:focus-visible, canvas:focus-visible { outline: 2px dashed var(--cheese); outline-offset: 4px; }
+.px-btn.small { font-size: 8px; padding: 8px 8px; }
+.px-btn.tiny { font-size: 8px; padding: 5px 7px; margin: 2px 4px; }
+.px-btn.active { background: var(--red); box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--border-lo),
+    0 var(--px) 0 0 var(--border-lo),
+    calc(var(--px) * -1) 0 0 0 var(--border-lo),
+    var(--px) 0 0 0 var(--border-lo),
+    inset var(--px) var(--px) 0 0 #ff5a6e; }
+.px-btn.danger:hover { background: var(--red-dk); }
+
+.px-icon { width: 32px; height: 32px; vertical-align: middle; }
+
+/* ---------- En-tête ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; flex-direction: column; gap: 4px; }
+.brand h1 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 22px;
+  color: var(--cheese);
+  text-shadow: 3px 3px 0 var(--red-dk), 6px 6px 0 var(--border-lo);
+  letter-spacing: 1px;
+}
+.studio { font-family: var(--font-title); font-size: 7px; color: var(--muted); letter-spacing: 2px; }
+.subtitle { font-family: var(--font-title); font-size: 9px; color: var(--neon); }
+
+.stats { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.stat-main { font-family: var(--font-title); font-size: 20px; color: var(--cheese); display: flex; align-items: center; gap: 10px; text-shadow: 2px 2px 0 var(--red-dk); }
+.stat-row { display: flex; gap: 18px; color: var(--muted); font-size: 20px; }
+.stat-row b { color: var(--text); font-weight: normal; }
+.controls { display: flex; flex-wrap: wrap; }
+
+/* ---------- Mise en page ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 12px;
+  margin-top: 12px;
+  align-items: start;
+}
+
+/* ---------- Scène (canvas du salon) ---------- */
+.stage { padding: 8px; }
+.stage-inner { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+#room { display: block; width: 100%; height: 100%; cursor: pointer; touch-action: manipulation; }
+.stage.boost { animation: boostFlash .3s steps(1) infinite; }
+@keyframes boostFlash {
+  0% { box-shadow:
+    0 -4px 0 0 var(--cheese), 0 4px 0 0 var(--cheese), -4px 0 0 0 var(--cheese), 4px 0 0 0 var(--cheese),
+    0 -8px 0 0 var(--red), 0 8px 0 0 var(--red), -8px 0 0 0 var(--red), 8px 0 0 0 var(--red); }
+  50% { box-shadow:
+    0 -4px 0 0 var(--red), 0 4px 0 0 var(--red), -4px 0 0 0 var(--red), 4px 0 0 0 var(--red),
+    0 -8px 0 0 var(--cheese), 0 8px 0 0 var(--cheese), -8px 0 0 0 var(--cheese), 8px 0 0 0 var(--cheese); }
+}
+
+.floaters { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.floater {
+  position: absolute;
+  font-family: var(--font-title);
+  font-size: 12px;
+  color: var(--cheese);
+  text-shadow: 2px 2px 0 var(--border-lo), -1px -1px 0 var(--border-lo);
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  animation: floatUp 1s steps(10) forwards;
+}
+.floater.bubble { color: #fff; font-size: 9px; background: var(--border-lo); padding: 4px 6px; border: 2px solid #fff; animation: bubble 1.4s steps(7) forwards; }
+.floater.gold { color: #fff6a8; font-size: 14px; }
+@keyframes floatUp {
+  0% { opacity: 1; margin-top: 0; }
+  100% { opacity: 0; margin-top: -60px; }
+}
+@keyframes bubble {
+  0% { opacity: 0; margin-top: 6px; }
+  15% { opacity: 1; margin-top: 0; }
+  85% { opacity: 1; }
+  100% { opacity: 0; margin-top: -8px; }
+}
+
+.boost-banner {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-title); font-size: 10px;
+  background: var(--red); color: var(--cheese); padding: 6px 10px;
+  border: 3px solid var(--cheese);
+  animation: blink .4s steps(1) infinite;
+  white-space: nowrap;
+}
+@keyframes blink {
+  0% { background: var(--red); color: var(--cheese); border-color: var(--cheese); }
+  50% { background: var(--cheese); color: var(--red); border-color: var(--red); }
+}
+
+/* ---------- Boîte de dialogue RPG ---------- */
+.rpg-dialog {
+  position: absolute; left: 4%; right: 4%; top: 6%;
+  z-index: 5;
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(7, 4, 12, .94);
+  border: 4px solid var(--text);
+  outline: 4px solid var(--border-lo);
+  padding: 10px 28px 10px 12px;
+  cursor: pointer;
+}
+.dialog-portrait { width: 64px; height: 64px; background: var(--panel); border: 3px solid var(--border-hi); flex: none; }
+.dialog-body { flex: 1; min-width: 0; }
+.dialog-name { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin-bottom: 6px; }
+.dialog-text { margin: 0; font-size: 22px; line-height: 1.1; }
+.dialog-next { position: absolute; right: 10px; bottom: 6px; color: var(--cheese); animation: blink2 .6s steps(1) infinite; }
+@keyframes blink2 { 0% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ---------- Sous la scène ---------- */
+.under-stage { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.laure-meter { flex: 1; display: flex; align-items: center; gap: 10px; padding: 8px 12px; min-width: 240px; }
+.meter-label { font-family: var(--font-title); font-size: 8px; color: var(--neon); white-space: nowrap; }
+.meter { flex: 1; height: 14px; background: var(--border-lo); border: 2px solid var(--border); position: relative; }
+.meter-fill { height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--red) 0 6px, #ff5a6e 6px 8px); transition: width .3s steps(8); }
+.meter-pct { font-family: var(--font-title); font-size: 8px; min-width: 48px; text-align: right; }
+
+.oliver-btn { display: flex; align-items: center; gap: 8px; background: #8a5a12; }
+.oliver-btn:hover:not(:disabled) { background: #b5781a; }
+.oliver-btn.ready { animation: pulse 1s steps(1) infinite; }
+@keyframes pulse { 0% { background: #8a5a12; } 50% { background: #c98a1f; } }
+
+/* ---------- Boutique ---------- */
+.shop { padding: 10px; display: flex; flex-direction: column; max-height: calc(100vh - 200px); min-height: 420px; }
+.tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+.tab {
+  flex: 1; font-family: var(--font-title); font-size: 9px; padding: 10px 4px;
+  background: var(--border-lo); border: 3px solid var(--border); cursor: pointer; color: var(--muted);
+}
+.tab.active { background: var(--border); color: var(--cheese); border-color: var(--border-hi); }
+.buy-mode { display: flex; align-items: center; gap: 2px; font-size: 18px; color: var(--muted); margin-bottom: 6px; }
+.tab-panel { overflow-y: auto; flex: 1; padding: 2px 6px 6px 2px; scrollbar-color: var(--border) var(--border-lo); }
+
+.item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 10px; align-items: center;
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  border-bottom-width: 5px;
+  padding: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.item:hover { border-color: var(--border-hi); background: #1e1230; }
+.item.can { border-color: var(--good); }
+.item.cannot { opacity: .62; cursor: not-allowed; }
+.item.owned { border-color: var(--cheese); cursor: default; opacity: 1; }
+.item.locked { filter: brightness(.35) grayscale(1); cursor: default; }
+.item-icon { width: 56px; height: 56px; background: var(--border-lo); border: 2px solid var(--border); }
+.item-name { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin-bottom: 4px; line-height: 1.4; }
+.item-sub { font-size: 16px; color: var(--neon); }
+.item-desc { font-size: 17px; color: var(--muted); }
+.item-effect { font-size: 17px; color: var(--good); }
+.item-cost { font-size: 18px; color: var(--text); margin-top: 2px; }
+.item-cost.no { color: #ff6b7d; }
+.item-count { font-family: var(--font-title); font-size: 16px; color: var(--text); opacity: .8; text-align: right; min-width: 30px; }
+.item.boss { border-color: var(--red); background: linear-gradient(180deg, #1a0710, var(--bg2)); }
+.item.boss .item-name { color: #ff6b7d; }
+
+/* ---------- Journal ---------- */
+.journal { margin-top: 12px; padding: 10px 14px; }
+.journal h2 { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin: 0 0 8px; }
+.log { list-style: none; margin: 0; padding: 0; height: 150px; overflow-y: auto; font-size: 19px; }
+.log li { padding: 1px 0; border-bottom: 1px dashed #2a1a3a; }
+.log .time { color: var(--muted); margin-right: 8px; }
+.log .buy { color: var(--good); }
+.log .manager { color: var(--neon); }
+.log .upgrade { color: #6fc3ff; }
+.log .oliver { color: #f2a81d; }
+.log .laure { color: #ff6b7d; }
+.log .event { color: var(--text); }
+.log .gold { color: #fff6a8; }
+.log .sys { color: var(--muted); }
+
+.footer { text-align: center; font-size: 16px; color: var(--muted); margin: 16px 0 4px; }
+
+/* ---------- Modale de victoire ---------- */
+.modal { position: fixed; inset: 0; background: rgba(7, 4, 12, .82); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
+.modal-box { max-width: 520px; padding: 22px; text-align: center; }
+.modal-box h2 { font-family: var(--font-title); color: #ff6b7d; font-size: 18px; text-shadow: 3px 3px 0 var(--border-lo); }
+.victory-portraits { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 12px 0; }
+.victory-portraits img { width: 96px; height: 96px; }
+.victory-portraits .vic-heart { width: 42px; height: 36px; animation: blink2 .8s steps(1) infinite; }
+.vic-stats { color: var(--cheese); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .shop { max-height: none; min-height: 0; }
+  .tab-panel { max-height: 60vh; }
+}
+@media (max-width: 560px) {
+  body { padding: 8px 16px; font-size: 18px; }
+  .brand h1 { font-size: 15px; }
+  .stat-main { font-size: 15px; }
+  .topbar { justify-content: center; text-align: center; }
+  .brand { align-items: center; }
+  .item { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  .item-icon { width: 44px; height: 44px; }
+  .rpg-dialog { position: relative; left: auto; right: auto; top: auto; margin-top: 10px; }
+  .dialog-portrait { width: 44px; height: 44px; }
+  .dialog-text { font-size: 18px; }
+  .boost-banner { font-size: 7px; }
+  .floater { font-size: 9px; }
+}
