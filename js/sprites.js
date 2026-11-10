@@ -46,13 +46,25 @@
   }
 
   function define(name, def) {
+    // frames : tableaux de lignes OU fonctions () => Grid / tableau de lignes
     const w = def.w || def.frames[0][0].length;
     const h = def.h || def.frames[0].length;
     defs[name] = {
       w, h,
       palette: Object.assign({}, BASE, def.palette || {}),
-      frames: def.frames.map((f) => norm(f, w)),
+      frames: def.frames,
+      rows: [],
     };
+  }
+
+  function frameRows(d, fi) {
+    if (!d.rows[fi]) {
+      let f = d.frames[fi];
+      if (typeof f === 'function') f = f();
+      if (f && typeof f.rows === 'function') f = f.rows();
+      d.rows[fi] = norm(f, d.w);
+    }
+    return d.rows[fi];
   }
 
   function render(name, frame) {
@@ -64,7 +76,7 @@
     const c = document.createElement('canvas');
     c.width = d.w; c.height = d.h;
     const x = c.getContext('2d');
-    const rows = d.frames[fi];
+    const rows = frameRows(d, fi);
     for (let j = 0; j < d.h; j++) {
       const row = rows[j] || '';
       for (let i = 0; i < d.w; i++) {
@@ -78,6 +90,132 @@
     }
     cache[key] = c;
     return c;
+  }
+
+  /* =====================================================================
+   *  MOTEUR PIXEL ART : une grille de caractères que l'on remplit avec des
+   *  formes (ellipses, polygones, rectangles), ombrées automatiquement,
+   *  puis détourées. Le résultat est une matrice de pixels comme les autres.
+   * ===================================================================== */
+  const inEll = (cx, cy, rx, ry) => (x, y) => {
+    const dx = (x - cx) / rx, dy = (y - cy) / ry;
+    return dx * dx + dy * dy <= 1;
+  };
+  const inPoly = (pts) => (x, y) => {
+    let c = false;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const xi = pts[i][0], yi = pts[i][1], xj = pts[j][0], yj = pts[j][1];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  };
+  const inRect = (x0, y0, w, h) => (x, y) => x >= x0 && x < x0 + w && y >= y0 && y < y0 + h;
+
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  class Grid {
+    constructor(w, h) {
+      this.w = w; this.h = h;
+      this.a = [];
+      for (let y = 0; y < h; y++) this.a.push(new Array(w).fill('.'));
+    }
+    get(x, y) { return (x < 0 || y < 0 || x >= this.w || y >= this.h) ? '.' : this.a[y][x]; }
+    px(x, y, c) {
+      x = Math.floor(x); y = Math.floor(y);
+      if (x >= 0 && y >= 0 && x < this.w && y < this.h) this.a[y][x] = c;
+      return this;
+    }
+    // Remplit les pixels dont le centre est dans la forme (option : seulement sur certains caractères)
+    fill(inside, c, only) {
+      for (let y = 0; y < this.h; y++) {
+        for (let x = 0; x < this.w; x++) {
+          if (!inside(x + 0.5, y + 0.5)) continue;
+          if (only && only.indexOf(this.a[y][x]) < 0) continue;
+          this.a[y][x] = c;
+        }
+      }
+      return this;
+    }
+    // Remplit avec 3 tons : lumière en haut à gauche, ombre en bas à droite
+    shade(inside, pal, only, s) {
+      s = s || 1;
+      for (let y = 0; y < this.h; y++) {
+        for (let x = 0; x < this.w; x++) {
+          const cx = x + 0.5, cy = y + 0.5;
+          if (!inside(cx, cy)) continue;
+          if (only && only.indexOf(this.a[y][x]) < 0) continue;
+          let c = pal.b;
+          if (!inside(cx - s, cy - s)) c = pal.h;
+          else if (!inside(cx + s, cy + s)) c = pal.d;
+          this.a[y][x] = c;
+        }
+      }
+      return this;
+    }
+    // Change la couleur de ce qui existe déjà (taches, plastron…) en gardant l'ombrage
+    recolor(inside, map) {
+      for (let y = 0; y < this.h; y++) {
+        for (let x = 0; x < this.w; x++) {
+          if (!inside(x + 0.5, y + 0.5)) continue;
+          const n = map[this.a[y][x]];
+          if (n) this.a[y][x] = n;
+        }
+      }
+      return this;
+    }
+    line(x0, y0, x1, y1, c, thick) {
+      x0 = Math.floor(x0); y0 = Math.floor(y0); x1 = Math.floor(x1); y1 = Math.floor(y1);
+      const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0);
+      const sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+      let err = dx + dy;
+      for (;;) {
+        this.px(x0, y0, c);
+        if (thick) this.px(x0 + 1, y0, c);
+        if (x0 === x1 && y0 === y1) break;
+        const e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; }
+        if (e2 <= dx) { err += dx; y0 += sy; }
+      }
+      return this;
+    }
+    // Poils : ajoute des pixels aléatoires autour de la silhouette (fourrure ébouriffée)
+    fluff(chars, seed, p) {
+      const r = rng(seed || 1);
+      const add = [];
+      for (let y = 0; y < this.h; y++) {
+        for (let x = 0; x < this.w; x++) {
+          const c = this.a[y][x];
+          if (chars.indexOf(c) < 0) continue;
+          [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([dx, dy]) => {
+            if (this.get(x + dx, y + dy) === '.' && r() < p) add.push([x + dx, y + dy, c]);
+          });
+        }
+      }
+      add.forEach(([x, y, c]) => this.px(x, y, c));
+      return this;
+    }
+    // Contour sombre autour de la silhouette
+    outline(c) {
+      c = c || 'K';
+      const add = [];
+      for (let y = 0; y < this.h; y++) {
+        for (let x = 0; x < this.w; x++) {
+          if (this.a[y][x] !== '.') continue;
+          if (this.get(x - 1, y) !== '.' || this.get(x + 1, y) !== '.' ||
+              this.get(x, y - 1) !== '.' || this.get(x, y + 1) !== '.') add.push([x, y]);
+        }
+      }
+      add.forEach(([x, y]) => this.a[y][x] = c);
+      return this;
+    }
+    rows() { return this.a.map((r) => r.join('')); }
   }
 
   /* =====================================================================
@@ -195,319 +333,8 @@
     ]],
   });
 
-  /* =====================================================================
-   *  LES MINEURS : LA MEUTE DE LA COLOC
-   * ===================================================================== */
-
-  // 1. CHICHI — petit chihuahua nerveux
-  const chichiA = [
-    '................',
-    '................',
-    '................',
-    '................',
-    '................',
-    '..........K..K..',
-    '.........KDKKDK.',
-    '.........KBBBBK.',
-    '.........KBEBEK.',
-    '..K......KBBBNK.',
-    '.KBK......KBBK..',
-    '..KBKKKKKKBBK...',
-    '...KBBBBBBBBK...',
-    '...KBLLLLLBBK...',
-    '...KBK...KBK....',
-    '...KKK...KKK....',
-  ];
-  define('chichi', {
-    palette: { B: '#d9a066', D: '#a8703a', L: '#f0d0a0' },
-    frames: [
-      chichiA,
-      patch(chichiA, {
-        9: 'K........KBBBNK.',
-        10: '.KK.......KBBK..',
-        14: '....KBK.KBK.....',
-        15: '....KKK.KKK.....',
-      }),
-    ],
-  });
-
-  // 2. SAPHIRE — chienne au pelage bleu-gris, collier saphir
-  const saphireA = [
-    '................',
-    '................',
-    '..........KK.KK.',
-    '.........KDDKDDK',
-    '.........KBBBBBK',
-    '.........KBEBBEK',
-    '.........KBBBBBK',
-    '.K.......KBBBNNK',
-    'KBK.......KBBTK.',
-    '.KBKKKKKKKCCCK..',
-    '..KBBBBBBBBBBK..',
-    '..KBBBBBBBBBBK..',
-    '..KDBLLLLLLBDK..',
-    '..KBKBK....KBKBK',
-    '..KBKBK....KBKBK',
-    '..KKKKK....KKKKK',
-  ];
-  define('saphire', {
-    palette: { B: '#6b7fa8', D: '#46557a', L: '#aab6d6', C: '#2a6bff' },
-    frames: [
-      saphireA,
-      patch(saphireA, {
-        7: '.........KBBBNNK',
-        8: '..........KBBTK.',
-        9: 'KBBKKKKKKKCCCK..',
-        13: '...KBKBK..KBKBK.',
-        14: '...KBKBK..KBKBK.',
-        15: '...KKKKK..KKKKK.',
-      }),
-    ],
-  });
-
-  // 3. BOUBA — le gros tank
-  const boubaA = [
-    '....................',
-    '..............KKKK..',
-    '.............KDBBDK.',
-    '............KDBBBBDK',
-    '............KBEBBEBK',
-    '............KBBBBBBK',
-    '............KBBBNNNK',
-    '............KBBTTKK.',
-    '...KKKKKKKKKKBBBBK..',
-    '..KDBBBBBBBBBBBBBK..',
-    '.KDBBBBBBBBBBBBBBBK.',
-    '.KDBBBBBBBBBBBBBBBK.',
-    '.KDBBLLLLLLLLLLBBBK.',
-    '.KDDBLLLLLLLLLLBBDK.',
-    '..KBBBK......KBBBK..',
-    '..KKKKK......KKKKK..',
-  ];
-  define('bouba', {
-    palette: { B: '#6a4430', D: '#3a2418', L: '#9a7050' },
-    frames: [
-      boubaA,
-      patch(boubaA, {
-        7: '............KBBBBKK.',
-        14: '...KBBBK....KBBBK...',
-        15: '...KKKKK....KKKKK...',
-      }),
-    ],
-  });
-
-  // 4. GILBERT — chat roux à masque de bandit
-  const gilbertA = [
-    '................',
-    '................',
-    '..........K...K.',
-    '.........KBK.KBK',
-    '.........KBBKBBK',
-    '.........KBBBBBK',
-    '.........KMMMMMK',
-    '.........KMYMYMK',
-    '.K.......KBBNBBK',
-    'KBK.......KBBBK.',
-    'KBK..KKKKKKBBK..',
-    '.KBKKBDBDBDBBK..',
-    '..KBBDBDBDBBBK..',
-    '..KBBBBLLLLBBK..',
-    '..KBK..KBK.KBK..',
-    '..KKK..KKK.KKK..',
-  ];
-  define('gilbert', {
-    palette: { B: '#e8892b', D: '#a8561a', L: '#f6c88a', M: '#1a1020', Y: '#c6ff3a', N: '#ff7a9a' },
-    frames: [
-      gilbertA,
-      patch(gilbertA, {
-        8: 'K........KBBNBBK',
-        9: 'KB........KBBBK.',
-        10: '.KK..KKKKKKBBK..',
-        14: '...KBK.KBK.KBK..',
-        15: '...KKK.KKK.KKK..',
-      }),
-    ],
-  });
-
-  // 5. IDYLLE — l'élite du dressage, assise au garde-à-vous
-  const idylleA = [
-    '................',
-    '...KK......KK...',
-    '..KDDK....KDDK..',
-    '..KDBBKKKKBBDK..',
-    '..KBBBBBBBBBBK..',
-    '..KBDEBBBBEDBK..',
-    '..KBBBBBBBBBBK..',
-    '...KBBBNNBBBK...',
-    '....KBBTTBBK....',
-    '....KRRRRRRK....',
-    '...KBBRRGRBBK...',
-    '...KBBBBGBBBK...',
-    '...KBBDBBBBBK...',
-    '..KBBBDBBBBBBK..',
-    '..KBLBKBBKBLBK..',
-    '..KKKKKKKKKKKK..',
-  ];
-  define('idylle', {
-    palette: { B: '#f2efe8', D: '#2a2230', L: '#cfc8d8' },
-    frames: [
-      idylleA,
-      patch(idylleA, {
-        5: '..KBDKBBBBKDBK..',
-        8: '....KBBBBBBK....',
-      }),
-    ],
-  });
-
-  // 6. JULY LA QUEEN — chat ultime couronné
-  const julyA = [
-    '.....G.GG.G.....',
-    '.....GGGGGG.....',
-    '..K..GRGGRG..K..',
-    '.KBK.KKKKKK.KBK.',
-    '.KBBKBBBBBBKBBK.',
-    '.KBBBBBBBBBBBBK.',
-    '.KBBEEBBBBEEBBK.',
-    '.KBBBBBNNBBBBBK.',
-    '..KBBBBBBBBBBK..',
-    '...KKBBBBBBKK...',
-    '..KBBLLLLLLBBK..',
-    '.KBBLLLLLLLLBBK.',
-    '.KBBLLLLLLLLBBKK',
-    '.KBBBLLLLLLBBBKB',
-    '.KBBBBBBBBBBBBKK',
-    '..KKKKKKKKKKKK..',
-  ];
-  define('july', {
-    palette: { B: '#d8c8ef', L: '#ffffff', E: '#39d98a', N: '#ff8fb0' },
-    frames: [
-      julyA,
-      patch(julyA, {
-        0: '.....W.GG.W.....',
-        6: '.KBBKKBBBBKKBBK.',
-        12: '.KBBLLLLLLLLBBK.',
-        13: '.KBBBLLLLLLBBBKK',
-        14: '.KBBBBBBBBBBBBKB',
-      }),
-    ],
-  });
-
-  /* =====================================================================
-   *  LES HUMAINS DE LA COLOC (gabarit chibi 16x16)
-   * ===================================================================== */
-  const HUMAN = [
-    '................',
-    '.....KKKKKK.....',
-    '....KHHHHHHK....',
-    '...KHHHHHHHHK...',
-    '...KHSSSSSSHK...',
-    '...KSSESSESSK...',
-    '...KSSSSSSSSK...',
-    '....KSSMMSSK....',
-    '.....KKSSKK.....',
-    '....KCCCCCCK....',
-    '...KCCCCCCCCK...',
-    '..KSKCCCCCCKSK..',
-    '..KSKCCCCCCKSK..',
-    '...KKccccccKK...',
-    '....KccKKccK....',
-    '....KKK..KKK....',
-  ];
-  // frame 2 : clignement des yeux + respiration
-  function humanFrames(rows, blinkRow) {
-    const blink = patch(rows, { [blinkRow || 5]: rows[blinkRow || 5].replace(/E/g, 'K') });
-    return [rows, rows, bob(blink, 13)];
-  }
-
-  // OCTAVE — maître-chien, veste rouge Kaneda, tattoos sur les bras
-  const octave = patch(HUMAN, {
-    0: '.....K..K.......',
-    1: '....KKHKKHKK....',
-    10: '...KCCCCWWCCK...',
-    11: '..KXKCCCCCCKXK..',
-    12: '..KSKCCCCCCKSK..',
-  });
-  define('octave', {
-    palette: { H: '#1b1b2f', S: '#e8b796', C: '#d7263d', c: '#2b2d42', M: '#7a3b3b', X: '#3a6b7a' },
-    frames: humanFrames(octave),
-  });
-
-  // JANIS — mode paysanne : fichu, tablier, robe longue
-  const janis = patch(HUMAN, {
-    1: '.....KKKKKK.....',
-    2: '....KHHFHHHKK...',
-    3: '...KHHHHHHHHKHK.',
-    4: '...KhSSSSSShK...',
-    9: '....KCWWWWCK....',
-    10: '...KCCWWWWCCK...',
-    11: '..KSKCWWWWCKSK..',
-    12: '..KSKCWWWWCKSK..',
-    13: '...KCCWWWWCCK...',
-    14: '...KCCCCCCCCK...',
-    15: '....KKKKKKKK....',
-  });
-  define('janis', {
-    palette: { H: '#5b7a3a', h: '#7a4a2a', F: '#ff6f91', S: '#f1c6a0', C: '#b8945a', W: '#efe3c2', M: '#b0505a' },
-    frames: humanFrames(janis),
-  });
-
-  // ANNA — mimi baddie : cheveux roses, crop top, boucles d'oreilles
-  const anna = patch(HUMAN, {
-    4: '..KHHSSSSSSHHK..',
-    5: '..KHSSESSESSHK..',
-    6: '..KGSSSSSSSSGK..',
-    7: '..KHKSSMMSSKHK..',
-    8: '..KHHKKSSKKHHK..',
-    9: '...KHCCCCCCHK...',
-    12: '..KSKSSSSSSKSK..',
-  });
-  define('anna', {
-    palette: { H: '#ff5fa2', S: '#f3c1a5', C: '#1a1020', c: '#b03aa8', M: '#ff2e7e' },
-    frames: humanFrames(anna),
-  });
-
-  // OLIVER — le père : calvitie, barbe grise, chemise hawaïenne, bière
-  const oliver = patch(HUMAN, {
-    1: '.....KKKKKK.....',
-    2: '....KSSSSSSK....',
-    3: '...KHSSSSSSHK...',
-    4: '...KHSSSSSSHK...',
-    7: '....KZZMMZZK....',
-    8: '.....KZZZZK.....',
-    9: '....KCCCCCCK....',
-    10: '...KCFCCCFCCKWK.',
-    11: '..KSKCCCCCCKSYK.',
-    12: '..KSKCCFCCCKSYK.',
-    13: '...KCCCCCCCCK...',
-    14: '....KccKKccK....',
-  });
-  define('oliver', {
-    palette: { H: '#9a9aa8', S: '#eab08e', Z: '#bdbdc8', C: '#f28c28', F: '#3ad6c5', c: '#3b4a7a', M: '#7a2b2b', Y: '#f2a81d' },
-    frames: humanFrames(oliver),
-  });
-
-  // LAURE — le crush gothique : cheveux noirs, ras-de-cou, livre de Bourdieu
-  const laure = patch(HUMAN, {
-    1: '.....KKKKKK.....',
-    2: '....KHHHHHHK....',
-    3: '...KHHHHHHHHK...',
-    4: '..KHHHHSSSSHHK..',
-    5: '..KHSSESSESSHK..',
-    6: '..KHSSSSSSSSHK..',
-    7: '..KHKSSMMSSKHK..',
-    8: '..KHHKPPPPKHHK..',
-    9: '..KHKCCCCCCKHK..',
-    10: '...KCCPCCPCCK...',
-    11: '..KSRRRRRRRRSK..',
-    12: '..KSRWWWWWWRSK..',
-    13: '...KCCCCCCCCK...',
-    14: '..KCCPCCCCPCCK..',
-    15: '..KKKKKKKKKKKK..',
-  });
-  define('laure', {
-    palette: { H: '#1a1024', S: '#ece0ea', E: '#3a0a4a', C: '#241430', M: '#6a1a7b', R: '#5a0f22', W: '#d8cfc0' },
-    frames: [laure, laure, patch(laure, { 5: '..KHSSKSSKSSHK..', 12: '..KSRWWKWWWRSK..' })],
-  });
+  /* Les animaux et les humains sont dessinés dans characters.js,
+   * avec le moteur de pixel art (Sprites.Grid) défini ci-dessus. */
 
   /* =====================================================================
    *  ICÔNES D'UPGRADES (tattoos d'Octave)
@@ -665,15 +492,18 @@
       }
     },
     // Exporte un sprite en image (portraits & icônes de l'interface)
-    dataURL(name, scale, frame) {
+    // crop = {x, y, w, h} en pixels du sprite (ex. portrait = tête et épaules)
+    dataURL(name, scale, frame, crop) {
       const src = render(name, frame || 0);
+      const k = crop || { x: 0, y: 0, w: src.width, h: src.height };
       const c = document.createElement('canvas');
-      c.width = src.width * scale; c.height = src.height * scale;
+      c.width = k.w * scale; c.height = k.h * scale;
       const x = c.getContext('2d');
       x.imageSmoothingEnabled = false;
-      x.drawImage(src, 0, 0, c.width, c.height);
+      x.drawImage(src, k.x, k.y, k.w, k.h, 0, 0, c.width, c.height);
       return c.toDataURL();
     },
+    define, Grid, inEll, inPoly, inRect, rng,
     drawText,
     textWidth,
   };
