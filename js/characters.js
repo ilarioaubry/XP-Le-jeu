@@ -471,6 +471,35 @@
     return g.outline();
   }
 
+
+  /* ---------- ILARIO : cheveux blonds en bataille, barbe de quelques jours, pull noir à zip, AirPods, téléphone ---------- */
+  function ilario(f) {
+    const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
+    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });
+    arm(g, true, 18 + dy, 26, 25, CT); arm(g, false, 18 + dy, 25, 25, CT);
+    // pull noir à col zippé
+    g.shade(Pg([[4.6, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [19.4, 17.4 + dy], [20, 26], [4, 26]]), CT);
+    g.shade(Pg([[8.4, 16 + dy], [15.6, 16 + dy], [15.2, 19 + dy], [8.8, 19 + dy]]), T('c', 'c', 'd'));   // col montant
+    g.fill(R(11.6, 17 + dy, 0.9, 3.6), 'N'); g.px(12, 20.8 + dy, 'N');                                  // zip
+    // le téléphone (coque sombre, autocollant jaune) tenu devant
+    g.shade(Pg([[14.4, 20.4 + dy], [18.6, 20.4 + dy], [18.6, 26.4 + dy], [14.4, 26.4 + dy]]), T('Z', 'z', 'y'));
+    g.fill(R(15, 21 + dy, 1.4, 1.4), 'E'); g.fill(R(15.6, 23.6 + dy, 2, 1.8), 'Y'); g.px(16, 24 + dy, 'q');
+    g.shade(E(14.6, 25.6 + dy, 1.8, 1.4), SK);
+    skinHead(g, dy);
+    // cheveux blonds en bataille, mèches sur le front
+    g.shade(E(12, 4.4 + dy, 7.8, 5), HR);
+    g.shade(Pg([[4.8, 6 + dy], [12, 5.6 + dy], [19.2, 6 + dy], [19.6, 12 + dy], [18, 9.4 + dy], [16.4, 8.6 + dy], [14.2, 8.2 + dy], [12, 7.4 + dy], [9.6, 8.4 + dy], [7, 9.2 + dy], [5.2, 10.4 + dy], [4.6, 12 + dy]]), HR);
+    for (const [x, y] of [[5, 2], [18.6, 2.4], [8, 0.4], [15.4, 0.8], [4.4, 5], [19.4, 5.4], [11, 8.6], [13.6, 8.8]]) g.px(x, y + dy, 'I');
+    g.fill(R(4.4, 8 + dy, 1.4, 4), 'H'); g.fill(R(18.2, 8 + dy, 1.4, 4), 'H');
+    brows(g, dy, 'J', false); eyes(g, dy, f);
+    g.px(11, 13 + dy, 'D'); g.px(12, 13 + dy, 'D');
+    g.fill(R(9, 14 + dy, 6, 1), 'J');                              // moustache blonde
+    g.fill(R(10.6, 15.2 + dy, 2.8, 1), 'M');
+    g.fill(R(10, 16 + dy, 4, 1), 'J'); g.px(8, 14.6 + dy, 'D'); g.px(15, 14.6 + dy, 'D'); g.px(7, 15.4 + dy, 'D'); g.px(16, 15.4 + dy, 'D');   // barbe de quelques jours
+    g.px(4, 11 + dy, 'w'); g.px(4, 12 + dy, 'w'); g.px(19, 11 + dy, 'w'); g.px(19, 12 + dy, 'w');                                            // AirPods
+    return g.outline();
+  }
+
   /* ---------- ADELINE : casquette kaki Ciele, grandes lunettes écaille, sweat rose duveteux ---------- */
   function adeline(f) {
     const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
@@ -526,12 +555,16 @@
     anna: { S: '#f2c4a8', L: '#ffdcc4', D: '#c8987c', H: '#ff5fa2', I: '#ff94c4', J: '#c02a78',
       C: '#1a1020', c: '#ff5fa2', d: '#0c0610', P: '#6a8ad0', p: '#8aaae8', u: '#4a62a0',
       F: '#f4ecd8', f: '#ffffff', g: '#b8b0c0', G: '#ffd23f', Z: '#14101a', E: '#0b0710', X: '#0b0710', w: '#ffffff', M: '#ff2e7e' },
+    ilario: { S: '#f0d0b4', L: '#ffe4cc', D: '#c8a084', H: '#e6cb82', I: '#f8e8b0', J: '#b8944a',
+      C: '#17151d', c: '#2c2a34', d: '#0a0a10', P: '#262632', p: '#363644', u: '#16161e',
+      F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', N: '#d8d8e8', Z: '#3a3a40', z: '#55555d', y: '#25252b', Y: '#ffc41f', q: '#8a5a10',
+      E: '#2a3c4c', w: '#ffffff', M: '#b07070', R: '#e8a090' },
     adeline: { S: '#eac2a4', L: '#f6d6bc', D: '#c49878', H: '#2a1c20', I: '#4a3a40', J: '#1a1014',
       C: '#e0b0b0', c: '#f2cccc', d: '#b88a8c', P: '#3a4262', p: '#4a5478', u: '#262c46',
       F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', Q: '#8f9a78', q: '#aab494', z: '#6a7458', Z: '#a6aa86', y: '#8a8e6c',
       B: '#a8734a', b: '#d29a66', G: '#ffd23f', E: '#2a160e', w: '#ffffff', M: '#b8505a' },
   };
-  const humans = { octave, laure, oliver, janis, anna, adeline };
+  const humans = { octave, laure, oliver, janis, anna, adeline, ilario };
   Object.keys(humans).forEach((id) => {
     const fn = humans[id];
     define(id, { w: 24, h: 32, palette: HUMAN_PAL[id], frames: [0, 1, 2].map((f) => () => fn(f)) });

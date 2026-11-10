@@ -29,9 +29,9 @@ manager.oliver.phrase;Managers;Olivier : phrase phare, écrite pendant l'animati
 manager.adeline.nom;Managers;Adeline : nom (carte COLOC, animation d'unlock);Adeline
 manager.adeline.role;Managers;Adeline : rôle, affiché sous son nom;Coloc · Casquette Ciele
 manager.adeline.phrase;Managers;Adeline : phrase phare, écrite pendant l'animation d'unlock;Je repère les bons plans avant tout le monde. De rien !
-manager.octave.nom;Managers;Octave : nom (carte COLOC, animation d'unlock);Octave
-manager.octave.role;Managers;Octave : rôle, affiché sous son nom;Maître-chien · Dressage
-manager.octave.phrase;Managers;Octave : phrase phare, écrite pendant l'animation d'unlock;Au pied ! Et que ça saute !
+manager.ilario.nom;Managers;Ilario : nom (carte COLOC, animation d'unlock);Ilario
+manager.ilario.role;Managers;Ilario : rôle, affiché sous son nom;Maître-chien · Dressage
+manager.ilario.phrase;Managers;Ilario : phrase phare, écrite pendant l'animation d'unlock;Au pied ! Et que ça saute !
 manager.laure.nom;Managers;Laure : nom (carte COLOC, animation d'unlock);Laure
 manager.laure.role;Managers;Laure : rôle, affiché sous son nom;Le Crush Gothique · BOSS FINAL
 manager.laure.phrase;Managers;Laure : phrase phare, écrite pendant l'animation d'unlock;... Ton capital symbolique est fascinant.

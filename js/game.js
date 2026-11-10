@@ -14,7 +14,7 @@
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const A = Object.fromEntries(ANIMALS.map((a) => [a.id, a]));
   const M = Object.fromEntries(MANAGERS.map((m) => [m.id, m]));
-  const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna', 'adeline'];
+  const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna', 'adeline', 'ilario'];
 
   /* ---- Pas de zoom : pincement, double-tap et menu contextuel bloqués ---- */
   ['gesturestart', 'gesturechange', 'gestureend'].forEach((ev) =>

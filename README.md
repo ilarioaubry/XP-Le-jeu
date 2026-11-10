@@ -26,7 +26,7 @@ générés avec la Web Audio API : aucun fichier image ou son externe.
 | Saphire | Anna | « Wesh la coloc ! Cette meute va devenir virale ! » |
 | Bouba | Olivier | « Santé fiston ! La tournée est pour moi ! » (débloque la *Tournée Générale* : x3 pendant 15 s) |
 | Gilbert | Adeline | « Je repère les bons plans avant tout le monde. De rien ! » |
-| Idylle | Octave | « Au pied ! Et que ça saute ! » |
+| Idylle | Ilario | « Au pied ! Et que ça saute ! » |
 | July la Queen | Laure | « ... Ton capital symbolique est fascinant. » (production x10 000 et victoire) |
 
 ### Modifier les textes (tableur)

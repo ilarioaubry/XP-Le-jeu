@@ -31,6 +31,7 @@
     janis: { x: 46, y: 138 },
     oliver: { x: 208, y: 120 },
     adeline: { x: 202, y: 150 },
+    ilario: { x: 172, y: 148 },
     anna: { x: 240, y: 120 },
     laure: { x: 300, y: 128 },
     laureWin: { x: 96, y: 146 },
@@ -384,6 +385,7 @@
       if (host.boost()) Sprites.draw(ctx, 'beer', POS.oliver.x + 8, POS.oliver.y - 17 + Math.round(Math.sin(time * 12) * 2));
     } });
     if (host.has('adeline')) ents.push({ y: POS.adeline.y, draw: () => drawHuman('adeline', POS.adeline.x, POS.adeline.y, 0.5, 2) });
+    if (host.has('ilario')) ents.push({ y: POS.ilario.y, draw: () => drawHuman('ilario', POS.ilario.x, POS.ilario.y, 0.9, 2) });
     if (host.has('anna')) ents.push({ y: POS.anna.y, draw: () => drawHuman('anna', POS.anna.x, POS.anna.y, 1.1, 2.5) });
     if (host.has('laure') && !laureCine) ents.push({ y: POS.laureWin.y, draw: () => drawHuman('laure', POS.laureWin.x, POS.laureWin.y, 0.1, 1.2) });
     ents.push({ y: POS.octave.y, draw: () => drawHuman('octave', POS.octave.x, POS.octave.y, 0, host.busy() ? 6 : 2) });

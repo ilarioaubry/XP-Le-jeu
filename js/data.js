@@ -27,7 +27,7 @@
       { id: 'saphire', name: 'Saphire', species: 'Chien', desc: 'Flaire les parts oubliées sous le canapé.', cost: 100, time: 5, pps: 8, manager: 'anna', sound: 'bark', pitch: 1.2, speed: 20 },
       { id: 'bouba', name: 'Bouba', species: 'Chien', desc: 'Le gros tank qui rapporte des boîtes entières.', cost: 1100, time: 10, pps: 45, manager: 'oliver', sound: 'bark', pitch: 0.65, speed: 12 },
       { id: 'gilbert', name: 'Gilbert', species: 'Chat', desc: 'Le nouveau chat chaotique qui braque les livreurs.', cost: 12000, time: 20, pps: 260, manager: 'adeline', sound: 'meow', pitch: 1.1, speed: 30 },
-      { id: 'idylle', name: 'Idylle', species: 'Chien (Pékinois)', desc: "L'élite du dressage, ultra disciplinée.", cost: 130000, time: 40, pps: 1400, manager: 'octave', sound: 'bark', pitch: 1.0, speed: 14 },
+      { id: 'idylle', name: 'Idylle', species: 'Chien (Pékinois)', desc: "L'élite du dressage, ultra disciplinée.", cost: 130000, time: 40, pps: 1400, manager: 'ilario', sound: 'bark', pitch: 1.0, speed: 14 },
       { id: 'july', name: 'July la Queen', species: 'Chat Ultime', desc: 'La reine absolue sur son trône de cartons.', cost: 1400000, time: 80, pps: 10000, manager: 'laure', sound: 'meow', pitch: 0.8, speed: 0, still: true },
     ],
 
@@ -37,7 +37,7 @@
       { id: 'anna', animal: 'saphire', name: 'Anna', role: 'Coloc · Mimi Baddie', catch: 'Wesh la coloc ! Cette meute va devenir virale !', cost: 15000 },
       { id: 'oliver', animal: 'bouba', name: 'Olivier', role: "Le Père d'Octave", catch: 'Santé fiston ! La tournée est pour moi !', cost: 180000, skill: true },
       { id: 'adeline', animal: 'gilbert', name: 'Adeline', role: 'Coloc · Casquette Ciele', catch: 'Je repère les bons plans avant tout le monde. De rien !', cost: 2100000 },
-      { id: 'octave', animal: 'idylle', name: 'Octave', role: 'Maître-chien · Dressage', catch: 'Au pied ! Et que ça saute !', cost: 24000000 },
+      { id: 'ilario', animal: 'idylle', name: 'Ilario', role: 'Maître-chien · Dressage', catch: 'Au pied ! Et que ça saute !', cost: 24000000 },
       { id: 'laure', animal: 'july', name: 'Laure', role: 'Le Crush Gothique · BOSS FINAL', catch: '... Ton capital symbolique est fascinant.', cost: 1e9, boss: true },
     ],
 
