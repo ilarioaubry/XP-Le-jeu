@@ -25,6 +25,17 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+  touch-action: pan-x pan-y;
+}
+/* Aucune barre de défilement visible nulle part */
+* { scrollbar-width: none; -ms-overflow-style: none; -webkit-tap-highlight-color: transparent; }
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }
 img, canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
 
 body {
@@ -40,8 +51,21 @@ body {
   font-family: var(--font-body);
   font-size: 20px;
   line-height: 1.15;
-  padding: 16px;
-  min-height: 100vh;
+  /* Plein écran fixe : le jeu ne défile pas, ne rebondit pas, respecte l'encoche et la barre iPhone */
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: calc(10px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 button { font-family: inherit; color: inherit; }
@@ -142,17 +166,19 @@ button { font-family: inherit; color: inherit; }
 
 /* ---------- Mise en page ---------- */
 .layout {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 380px;
   gap: 12px;
-  margin-top: 12px;
-  align-items: start;
+  align-items: stretch;
 }
+.stage-col { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 
 /* ---------- Scène (canvas du salon) ---------- */
 .stage { padding: 8px; }
-.stage-inner { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
-#room { display: block; width: 100%; height: 100%; cursor: pointer; touch-action: manipulation; }
+.stage-inner { position: relative; width: min(100%, calc((100dvh - 240px) * 16 / 9)); margin: 0 auto; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+#room { display: block; width: 100%; height: 100%; cursor: pointer; touch-action: none; }
 .stage.boost { animation: boostFlash .3s steps(1) infinite; }
 @keyframes boostFlash {
   0% { box-shadow:
@@ -211,7 +237,7 @@ button { font-family: inherit; color: inherit; }
   padding: 10px 28px 10px 12px;
   cursor: pointer;
 }
-.dialog-portrait { width: 64px; height: 64px; background: var(--panel); border: 3px solid var(--border-hi); flex: none; }
+.dialog-portrait { width: 64px; height: 64px; object-fit: contain; background: var(--panel); border: 3px solid var(--border-hi); flex: none; }
 .dialog-body { flex: 1; min-width: 0; }
 .dialog-name { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin-bottom: 6px; }
 .dialog-text { margin: 0; font-size: 22px; line-height: 1.1; }
@@ -232,7 +258,7 @@ button { font-family: inherit; color: inherit; }
 @keyframes pulse { 0% { background: #8a5a12; } 50% { background: #c98a1f; } }
 
 /* ---------- Boutique ---------- */
-.shop { padding: 10px; display: flex; flex-direction: column; max-height: calc(100vh - 200px); min-height: 420px; }
+.shop { padding: 10px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
 .tabs { display: flex; gap: 4px; margin-bottom: 8px; }
 .tab {
   flex: 1; font-family: var(--font-title); font-size: 9px; padding: 10px 4px;
@@ -240,7 +266,7 @@ button { font-family: inherit; color: inherit; }
 }
 .tab.active { background: var(--border); color: var(--cheese); border-color: var(--border-hi); }
 .buy-mode { display: flex; align-items: center; gap: 2px; font-size: 18px; color: var(--muted); margin-bottom: 6px; }
-.tab-panel { overflow-y: auto; flex: 1; padding: 2px 6px 6px 2px; scrollbar-color: var(--border) var(--border-lo); }
+.tab-panel { overflow-y: auto; flex: 1; min-height: 0; padding: 2px 6px 6px 2px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 
 .item {
   display: grid;
@@ -259,7 +285,7 @@ button { font-family: inherit; color: inherit; }
 .item.cannot { opacity: .62; cursor: not-allowed; }
 .item.owned { border-color: var(--cheese); cursor: default; opacity: 1; }
 .item.locked { filter: brightness(.35) grayscale(1); cursor: default; }
-.item-icon { width: 56px; height: 56px; background: var(--border-lo); border: 2px solid var(--border); }
+.item-icon { width: 56px; height: 56px; object-fit: contain; background: var(--border-lo); border: 2px solid var(--border); }
 .item-name { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin-bottom: 4px; line-height: 1.4; }
 .item-sub { font-size: 16px; color: var(--neon); }
 .item-desc { font-size: 17px; color: var(--muted); }
@@ -270,49 +296,49 @@ button { font-family: inherit; color: inherit; }
 .item.boss { border-color: var(--red); background: linear-gradient(180deg, #1a0710, var(--bg2)); }
 .item.boss .item-name { color: #ff6b7d; }
 
-/* ---------- Journal ---------- */
-.journal { margin-top: 12px; padding: 10px 14px; }
-.journal h2 { font-family: var(--font-title); font-size: 10px; color: var(--cheese); margin: 0 0 8px; }
-.log { list-style: none; margin: 0; padding: 0; height: 150px; overflow-y: auto; font-size: 19px; }
-.log li { padding: 1px 0; border-bottom: 1px dashed #2a1a3a; }
-.log .time { color: var(--muted); margin-right: 8px; }
-.log .buy { color: var(--good); }
-.log .manager { color: var(--neon); }
-.log .upgrade { color: #6fc3ff; }
-.log .oliver { color: #f2a81d; }
-.log .laure { color: #ff6b7d; }
-.log .event { color: var(--text); }
-.log .gold { color: #fff6a8; }
-.log .sys { color: var(--muted); }
-
-.footer { text-align: center; font-size: 16px; color: var(--muted); margin: 16px 0 4px; }
-
 /* ---------- Modale de victoire ---------- */
 .modal { position: fixed; inset: 0; background: rgba(7, 4, 12, .82); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px; }
 .modal-box { max-width: 520px; padding: 22px; text-align: center; }
 .modal-box h2 { font-family: var(--font-title); color: #ff6b7d; font-size: 18px; text-shadow: 3px 3px 0 var(--border-lo); }
 .victory-portraits { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 12px 0; }
-.victory-portraits img { width: 96px; height: 96px; }
+.victory-portraits img { width: 96px; height: 96px; object-fit: contain; }
 .victory-portraits .vic-heart { width: 42px; height: 36px; animation: blink2 .8s steps(1) infinite; }
 .vic-stats { color: var(--cheese); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
-  .layout { grid-template-columns: 1fr; }
-  .shop { max-height: none; min-height: 0; }
-  .tab-panel { max-height: 60vh; }
+  .layout { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 8px; }
+  .stage-inner { width: 100%; }
+  .shop { padding: 8px; }
 }
 @media (max-width: 560px) {
-  body { padding: 8px 16px; font-size: 18px; }
-  .brand h1 { font-size: 15px; }
-  .stat-main { font-size: 15px; }
-  .topbar { justify-content: center; text-align: center; }
-  .brand { align-items: center; }
-  .item { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  body { font-size: 18px; gap: 6px; padding-left: calc(12px + env(safe-area-inset-left)); padding-right: calc(12px + env(safe-area-inset-right)); }
+  .topbar { padding: 6px 10px; gap: 4px 8px; }
+  .studio, .subtitle { display: none; }
+  .brand h1 { font-size: 12px; text-shadow: 2px 2px 0 var(--red-dk); }
+  .stats { flex-direction: row; gap: 10px; order: 3; width: 100%; justify-content: space-between; }
+  .stat-main { font-size: 14px; gap: 6px; }
+  .stat-row { gap: 10px; font-size: 17px; }
+  .px-icon { width: 24px; height: 24px; }
+  .controls { margin-left: auto; }
+  .px-btn.small { padding: 6px 6px; font-size: 7px; margin: 3px; }
+  .stage { padding: 4px; }
+  .under-stage { margin-top: 4px; gap: 4px; }
+  .laure-meter { min-width: 0; padding: 4px 8px; gap: 6px; }
+  .meter-label { font-size: 7px; }
+  .oliver-btn { font-size: 8px; padding: 6px 8px; }
+  .tabs { margin-bottom: 4px; }
+  .tab { padding: 8px 2px; font-size: 8px; }
+  .buy-mode { margin-bottom: 2px; font-size: 16px; }
+  .item { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 8px; padding: 6px; margin-bottom: 6px; }
   .item-icon { width: 44px; height: 44px; }
-  .rpg-dialog { position: relative; left: auto; right: auto; top: auto; margin-top: 10px; }
+  .item-name { font-size: 9px; margin-bottom: 2px; }
+  .item-desc { display: none; }
+  .item-sub, .item-effect, .item-cost { font-size: 16px; }
   .dialog-portrait { width: 44px; height: 44px; }
-  .dialog-text { font-size: 18px; }
-  .boost-banner { font-size: 7px; }
+  .dialog-text { font-size: 17px; }
+  .dialog-name { font-size: 8px; margin-bottom: 3px; }
+  .rpg-dialog { padding: 6px 22px 6px 8px; gap: 8px; border-width: 3px; }
+  .boost-banner { font-size: 7px; padding: 4px 6px; }
   .floater { font-size: 9px; }
 }

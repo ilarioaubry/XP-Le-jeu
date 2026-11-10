@@ -2,7 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Doggy Party">
+  <meta name="theme-color" content="#07040c">
+  <meta name="format-detection" content="telephone=no">
   <title>Octave Tycoon : La Quête de Laure — Doggy Party</title>
   <meta name="description" content="Idle Tycoon en Pixel Art : Octave et sa meute récoltent des pizzas dans la coloc de Montpellier pour impressionner Laure.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,14 +95,6 @@
     </aside>
   </main>
 
-  <!-- ============ JOURNAL DE BORD ============ -->
-  <section class="journal pixel-box">
-    <h2>▶ JOURNAL DE BORD</h2>
-    <ul id="log" class="log"></ul>
-  </section>
-
-  <footer class="footer">Doggy Party · Octave Tycoon : La Quête de Laure · Pixel art 100% procédural</footer>
-
   <!-- ============ FIN DU JEU ============ -->
   <div id="victory" class="modal hidden">
     <div class="modal-box pixel-box">
@@ -113,6 +111,7 @@
   </div>
 
   <script src="js/sprites.js"></script>
+  <script src="js/characters.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/game.js"></script>
 </body>
