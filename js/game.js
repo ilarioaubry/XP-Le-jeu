@@ -38,7 +38,8 @@
   const MANAGERS = [
     { id: 'janis', name: 'Janis', role: 'Coloc · Mode Paysanne', desc: "Gère l'intendance.", effect: '-20% sur le prix de tous les animaux', cost: 2500 },
     { id: 'anna', name: 'Anna', role: 'Coloc · Mimi Baddie', desc: 'Met la hype dans la coloc.', effect: '+35% de production globale', cost: 250000 },
-    { id: 'oliver', name: 'Oliver', role: "Le Père d'Octave", desc: 'Boit des bières, toujours de bonne humeur, zéro conseil pertinent.', effect: 'Compétence « Tournée Générale » : prod x3 pendant 15s (recharge 60s)', cost: 40000 },
+    { id: 'oliver', name: 'Olivier', role: "Le Père d'Octave", desc: 'Boit des bières, toujours de bonne humeur, zéro conseil pertinent.', effect: 'Compétence « Tournée Générale » : prod x3 pendant 15s (recharge 60s)', cost: 40000 },
+    { id: 'adeline', name: 'Adeline', role: 'Coloc · Casquette Ciele', desc: 'Repère les bons plans à des kilomètres, lunettes sur le nez.', effect: 'Pizzas dorées 2x plus fréquentes et 2x plus généreuses', cost: 3000000 },
     { id: 'laure', name: 'Laure', role: 'Le Crush Gothique · BOSS FINAL', desc: 'Hyper distante, lit Bourdieu dans un coin sombre.', effect: 'Production x10 000 + cinématique de victoire', cost: 1e9, boss: true },
   ];
 
@@ -87,21 +88,13 @@
       boostEnd: 0, oliverReady: 0,
       victory: false, golds: 0, milestone: 0,
       started: Date.now(), lastSave: Date.now(),
-      muted: false,
     };
   }
   let S = freshState();
-  let resetting = false;
 
-  function save(manual) {
-    if (resetting) return;
+  function save() {
     S.lastSave = Date.now();
-    try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(S));
-      if (manual) floatText('SAUVEGARDÉ ✓', W / 2, 24, 'gold');
-    } catch (e) {
-      if (manual) floatText('SAUVEGARDE IMPOSSIBLE', W / 2, 24, 'gold');
-    }
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) { /* stockage bloqué */ }
   }
 
   function load() {
@@ -194,7 +187,7 @@
    * ===================================================================== */
   const dlg = { el: $('dialog'), name: $('dialogName'), text: $('dialogText'), portrait: $('dialogPortrait'), full: '', i: 0, timer: null, close: null };
   const portraitCache = {};
-  const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna'];
+  const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna', 'adeline'];
   const faceOf = (name, scale) => Sprites.dataURL(name, scale, 0, HUMANS.includes(name) ? Sprites.portraitCrop : undefined);
   function portrait(name) {
     if (!portraitCache[name]) portraitCache[name] = faceOf(name, 4);
@@ -252,6 +245,7 @@
     octave: { x: 124, y: 146 },
     janis: { x: 46, y: 138 },
     oliver: { x: 208, y: 120 },
+    adeline: { x: 202, y: 150 },
     anna: { x: 240, y: 120 },
     laure: { x: 300, y: 128 },
     laureWin: { x: 96, y: 146 },
@@ -524,6 +518,7 @@
 
   /* ---- Pizza dorée (bonus aléatoire) ---- */
   let golden = null;
+  const goldenDelay = () => rand(50, 120) * (hasM('adeline') ? 0.5 : 1);
   let nextGolden = rand(40, 90);
 
   /* ---- Cinématique de victoire ---- */
@@ -601,6 +596,7 @@
       drawHuman('oliver', POS.oliver.x, POS.oliver.y, 0.7, boostActive() ? 8 : 2);
       if (boostActive()) Sprites.draw(ctx, 'beer', POS.oliver.x + 8, POS.oliver.y - 17 + Math.round(Math.sin(time * 12) * 2));
     } });
+    if (hasM('adeline')) ents.push({ y: POS.adeline.y, draw: () => drawHuman('adeline', POS.adeline.x, POS.adeline.y, 0.5, 2) });
     if (hasM('anna')) ents.push({ y: POS.anna.y, draw: () => drawHuman('anna', POS.anna.x, POS.anna.y, 1.1, 2.5) });
     if (hasM('laure') && !laureCine) {
       const p = POS.laureWin;
@@ -755,13 +751,13 @@
   }
 
   function catchGolden() {
-    const reward = Math.max(pps(true) * 45, clickValue() * 60, 30);
+    const reward = Math.max(pps(true) * 45, clickValue() * 60, 30) * (hasM('adeline') ? 2 : 1);
     S.pizzas += reward; S.total += reward; S.golds++;
     Audio8.golden();
     puff(golden.x, golden.y, ['#fff6a8', '#ffd23f', '#ffffff'], 24);
     floatText('+' + fmt(reward) + ' ✨', golden.x, golden.y - 10, 'gold');
     golden = null;
-    nextGolden = rand(50, 120);
+    nextGolden = goldenDelay();
   }
 
   canvas.addEventListener('pointerdown', (e) => {
@@ -813,6 +809,7 @@
       const lines = {
         janis: "J'ai fait les comptes de la coloc. Avec moi, les croquettes coûtent 20% moins cher. Et j'ai planté du basilic sur le balcon.",
         anna: "Wesh la coloc ! Je poste une story avec la meute, ça va exploser. +35% de hype, minimum.",
+        adeline: "Avec ma casquette Ciele, je repère les pizzas dorées deux fois plus vite. Et elles valent le double !",
         oliver: "Salut fiston ! J'ai ramené un pack de 24. Quand t'as besoin d'un coup de pouce, appuie sur le bouton bière. Santé !",
       };
       showDialog(m.id, m.name.toUpperCase(), lines[m.id], 6000);
@@ -839,7 +836,7 @@
     S.boostEnd = now + 15000;
     S.oliverReady = now + 60000;
     Audio8.skill();
-    showDialog('oliver', 'OLIVER (le daron)', pick(OLIVER_ADVICE), 8000);
+    showDialog('oliver', 'OLIVIER (le daron)', pick(OLIVER_ADVICE), 8000);
     puff(POS.oliver.x, POS.oliver.y - 18, ['#f2a81d', '#ffffff', '#ffcf3f'], 22);
   }
   $('btnOliver').addEventListener('click', () => { Audio8.unlock(); useOliver(); });
@@ -1000,7 +997,6 @@
     $('boostBanner').classList.toggle('hidden', !boosting);
     $('stage').classList.toggle('boost', boosting);
     if (boosting) $('boostTime').textContent = Math.ceil((S.boostEnd - Date.now()) / 1000);
-    $('btnMute').textContent = S.muted ? '♪ OFF' : '♪ ON';
   }
 
   /* =====================================================================
@@ -1040,7 +1036,7 @@
     // pizza dorée
     if (golden) {
       golden.life -= dt;
-      if (golden.life <= 0) { golden = null; nextGolden = rand(50, 120); }
+      if (golden.life <= 0) { golden = null; nextGolden = goldenDelay(); }
     } else if (!cine) {
       nextGolden -= dt;
       if (nextGolden <= 0) {
@@ -1083,7 +1079,6 @@
     buildShop();
 
     const hadSave = load();
-    Audio8.setMuted(S.muted);
     syncActors(false);
 
     if (!hadSave) {
@@ -1106,19 +1101,6 @@
   }
 
   /* ---- Boutons système ---- */
-  $('btnMute').addEventListener('click', () => {
-    S.muted = !S.muted;
-    Audio8.setMuted(S.muted);
-    if (!S.muted) { Audio8.unlock(); Audio8.click(); }
-    refreshHud();
-  });
-  $('btnSave').addEventListener('click', () => save(true));
-  $('btnReset').addEventListener('click', () => {
-    if (!confirm('Tout recommencer ? La meute, les colocs et les tattoos seront perdus.')) return;
-    resetting = true;
-    try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* stockage bloqué */ }
-    location.reload();
-  });
   $('btnContinue').addEventListener('click', () => {
     $('victory').classList.add('hidden');
   });

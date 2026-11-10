@@ -26,6 +26,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 html {
+  background: var(--bg);
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
@@ -53,8 +54,11 @@ body {
   line-height: 1.15;
   /* Plein écran fixe : le jeu ne défile pas, ne rebondit pas, respecte l'encoche et la barre iPhone */
   position: fixed;
-  inset: 0;
+  top: 0; bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 520px;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
@@ -162,7 +166,6 @@ button { font-family: inherit; color: inherit; }
 .stat-main { font-family: var(--font-title); font-size: 20px; color: var(--cheese); display: flex; align-items: center; gap: 10px; text-shadow: 2px 2px 0 var(--red-dk); }
 .stat-row { display: flex; gap: 18px; color: var(--muted); font-size: 20px; }
 .stat-row b { color: var(--text); font-weight: normal; }
-.controls { display: flex; flex-wrap: wrap; }
 
 /* ---------- Mise en page ---------- */
 .layout {
@@ -177,7 +180,7 @@ button { font-family: inherit; color: inherit; }
 
 /* ---------- Scène (canvas du salon) ---------- */
 .stage { padding: 8px; }
-.stage-inner { position: relative; width: min(100%, calc((100dvh - 240px) * 16 / 9)); margin: 0 auto; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+.stage-inner { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
 #room { display: block; width: 100%; height: 100%; cursor: pointer; touch-action: none; }
 .stage.boost { animation: boostFlash .3s steps(1) infinite; }
 @keyframes boostFlash {
@@ -306,12 +309,10 @@ button { font-family: inherit; color: inherit; }
 .vic-stats { color: var(--cheese); }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 980px) {
+/* ---------- Téléphone uniquement ---------- */
   .layout { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 8px; }
   .stage-inner { width: 100%; }
   .shop { padding: 8px; }
-}
-@media (max-width: 560px) {
   body { font-size: 18px; gap: 6px; padding-left: calc(12px + env(safe-area-inset-left)); padding-right: calc(12px + env(safe-area-inset-right)); }
   .topbar { padding: 6px 10px; gap: 4px 8px; }
   .studio, .subtitle { display: none; }
@@ -320,7 +321,6 @@ button { font-family: inherit; color: inherit; }
   .stat-main { font-size: 14px; gap: 6px; }
   .stat-row { gap: 10px; font-size: 17px; }
   .px-icon { width: 24px; height: 24px; }
-  .controls { margin-left: auto; }
   .px-btn.small { padding: 6px 6px; font-size: 7px; margin: 3px; }
   .stage { padding: 4px; }
   .under-stage { margin-top: 4px; gap: 4px; }
@@ -336,9 +336,8 @@ button { font-family: inherit; color: inherit; }
   .item-desc { display: none; }
   .item-sub, .item-effect, .item-cost { font-size: 16px; }
   .dialog-portrait { width: 44px; height: 44px; }
-  .dialog-text { font-size: 17px; }
+  .dialog-text { font-size: 16px; line-height: 1.05; }
   .dialog-name { font-size: 8px; margin-bottom: 3px; }
   .rpg-dialog { padding: 6px 22px 6px 8px; gap: 8px; border-width: 3px; }
   .boost-banner { font-size: 7px; padding: 4px 6px; }
   .floater { font-size: 9px; }
-}

@@ -29,47 +29,47 @@
   }
 
   /* =====================================================================
-   *  1. CHICHI — chihuahua merle gris-bleu à taches noires, grandes oreilles
+   *  1. CHICHI — chihuahua merle, bien enrobé
    * ===================================================================== */
   function chichi(f) {
-    const g = new Grid(30, 24), s = stride(f), alt = f % 2;
-    // queue en faucille, derrière tout
-    g.shade(Pg([[5, 14], [2.6, 12], [1.6, 8.6], [2.2, 5], [4, 4.4], [3.8, 8], [5, 10.4], [7, 13]]), PRI);
-    if (alt) g.fill(Pg([[1.6, 8.6], [2.2, 5], [4, 4.4], [3.4, 8]]), 'A');
-    else g.fill(R(2, 5, 2, 2), 'A');
-    // pattes lointaines
-    leg(g, 9.5, 16, 23, 2, s, FAR, 'U');
-    leg(g, 17, 16, 23, 2, -s, FAR, 'U');
-    // corps
-    g.shade(E(13, 15, 9, 4.6), PRI);
-    g.shade(E(7, 16.4, 3.2, 3.4), PRI);                       // cuisse
-    g.recolor(E(18.6, 16, 3, 3.6), { B: 'W', H: 'Y', D: 'X' }); // poitrail blanc
-    // pattes proches
-    leg(g, 5, 17, 23, 2, -s, PRI, 'T');
-    leg(g, 18, 17, 23, 2, s, PRI, 'T');
-    // cou, tête, museau
-    g.shade(E(19.5, 11.6, 3.5, 3.8), PRI);
-    g.shade(E(22, 9, 5, 4.6), PRI);
-    g.shade(E(26.2, 11, 3.2, 2.4), SEC);
+    const g = new Grid(32, 24), s = Math.round(stride(f) / 2), alt = f % 2;
+    // queue en tire-bouchon posée sur le dos rebondi
+    g.shade(Pg([[6, 11], [3.4, 9.8], [2.8, 6.8], [4.4, 5.2], [6.2, 5.6], [5.4, 7.8], [6.8, 9.6], [8, 11.6]]), PRI);
+    g.fill(R(3.8, 5.2, 2, 1.6), 'A');
+    // pattes lointaines, minuscules
+    leg(g, 9, 20, 23, 2.4, s, FAR, 'U');
+    leg(g, 20, 20, 23, 2.4, -s, FAR, 'U');
+    // énorme corps tout rond
+    g.shade(E(14, 15.2, 11.6, 6.9), PRI);
+    g.recolor(E(14, 20.6, 9, 2), { B: 'D', H: 'D' });             // ventre qui touche presque le sol
+    g.recolor(E(21.2, 17, 3.8, 4.4), { B: 'W', H: 'Y', D: 'X' }); // plastron blanc
+    // pattes proches : deux moignons sous le ventre
+    leg(g, 6, 20, 23, 2.8, -s, PRI, 'T');
+    leg(g, 18.4, 20, 23, 2.8, s, PRI, 'T');
+    // cou inexistant, double menton, tête ronde
+    g.shade(E(23.4, 13.6, 4.2, 3), PRI);
+    g.shade(E(23.6, 10.2, 5.4, 4.9), PRI);
+    g.shade(E(28.6, 12.2, 2.9, 2.3), SEC);
     // oreilles
-    g.shade(Pg([[17.2, 6.6], [16, 0.4], [21, 4.6]]), FAR);
-    g.shade(Pg([[21.4, 4.8], [25, 0], [26.6, 6.6]]), PRI);
-    g.fill(Pg([[22.6, 5.2], [24.8, 1.8], [25.6, 6]]), 'P');
+    g.shade(Pg([[19.8, 7.6], [18.8, 1.6], [23.6, 5.4]]), FAR);
+    g.shade(Pg([[24, 5.2], [27.6, 1], [29.4, 7.4]]), PRI);
+    g.fill(Pg([[25.2, 5.6], [27.4, 2.4], [28.2, 6.6]]), 'P');
     // taches merle
     const m = { B: 'A', H: 'a', D: 'Z' };
-    g.recolor(E(10.5, 13.6, 3, 2.2), m);
-    g.recolor(E(15.5, 17.2, 2, 1.5), m);
-    g.recolor(E(6.5, 17.6, 1.6, 1.3), m);
-    g.recolor(E(19.8, 7, 2.1, 2.1), m);
-    g.recolor(E(12.5, 18, 1.4, 1), m);
+    g.recolor(E(9.6, 13, 3.4, 2.6), m);
+    g.recolor(E(17.2, 18.6, 2.6, 2), m);
+    g.recolor(E(6.4, 17.6, 2, 1.8), m);
+    g.recolor(E(21.4, 8, 2.2, 2.2), m);
+    g.recolor(E(12.6, 19.2, 1.6, 1.1), m);
+    // bourrelets
+    for (const [x, y] of [[10, 11], [9, 12], [9, 13], [10, 14], [15, 10], [14, 11], [14, 12], [15, 13], [19, 12], [18, 13], [18, 14]]) g.fill(R(x, y, 1, 1), 'D', 'BHAa');
     // visage
-    g.fill(R(22, 5, 3, 1), 'T', 'BHDA');                       // sourcil feu
-    g.fill(R(23, 7, 2, 2), 'E'); g.px(23, 7, 'w');            // œil
-    g.fill(R(28, 9, 2, 2), 'N');                               // truffe
-    g.fill(R(25, 13, 4, 1), 'u');                              // bouche
-    if (alt) { g.fill(R(27, 13, 2, 2), 'P'); }                 // langue
-    // collier rouge + médaille
-    g.fill(R(17.4, 12.4, 3, 1.6), 'R'); g.px(19, 14, 'G');
+    g.fill(R(24.4, 6.6, 3, 1), 'T', 'BHDA');
+    g.fill(R(25, 8, 2, 2), 'E'); g.px(25, 8, 'w');
+    g.fill(R(30, 10.4, 2, 2), 'N');
+    g.fill(R(26.6, 14, 4, 1), 'u');
+    if (alt) g.fill(R(28.4, 14.4, 2, 2), 'P');                    // langue pendante
+    g.fill(R(19.6, 14.2, 3.4, 1.6), 'R'); g.px(21, 15.8, 'G');    // collier qui serre
     return g.outline();
   }
 
@@ -173,79 +173,86 @@
   }
 
   /* =====================================================================
-   *  5. IDYLLE — border collie noir et blanc, assise au garde-à-vous, gilet de dressage
+   *  5. IDYLLE — pékinois marron clair, crinière de lion, gilet de dressage
    * ===================================================================== */
   function idylle(f) {
-    const g = new Grid(28, 30), alt = f % 2;
-    // queue sur le sol
-    g.shade(Pg([[5, 28], [0.4, 27.4], [0.6, 25.4], [5, 25.6]]), PRI);
-    g.fill(R(0.4, 26, 1.4, 1.6), 'W');
-    // arrière-train assis + torse
-    g.shade(E(9.4, 24, 6.8, 5), PRI);
-    g.shade(E(13, 17.6, 5.2, 8.6), PRI);
-    g.recolor(E(16.6, 19, 2.4, 6), { B: 'W', H: 'Y', D: 'X' });   // poitrail blanc
-    // gilet de dressage rouge à boutons dorés
-    g.shade(Pg([[8.6, 12], [15.4, 12.6], [15.8, 21], [9.4, 24]]), SEC);
-    g.px(13.4, 15.5, 'G'); g.px(13.4, 18.5, 'G'); g.px(13.4, 21.5, 'G');
-    // pattes avant blanches
-    g.shade(E(15.6, 25, 1.7, 5), WHT);
-    g.shade(E(12.6, 26, 1.5, 4), T('X', 'X', 'X'));
-    g.shade(E(17.4, 29, 3, 1.4), WHT);
-    g.shade(E(14, 29, 2.4, 1.2), T('X', 'X', 'X'));
-    // fraise blanche, cou et tête
-    g.shade(E(15.6, 11.6, 3.8, 2), WHT);
-    g.shade(E(15.6, 8.4, 4.9, 4.6), PRI);
-    g.shade(E(20, 10.6, 3.4, 2.4), WHT);                          // museau blanc
-    g.fill(Pg([[15.6, 4.2], [17.4, 4.2], [19, 10], [16.2, 11]]), 'W', 'BHD'); // liste blanche
-    // oreilles mi-dressées
-    g.shade(Pg([[12.2, 6.4], [10.6, 2.4], [15.2, 4.2]]), PRI);
-    g.shade(Pg([[15.8, 4.2], [18.6, 0.8], [19.2, 5.6]]), PRI);
-    // visage
-    g.fill(R(16.4, 6.8, 2, 2), 'Q'); g.px(16, 6.8, 'w'); g.px(16.4, 6.8, 'w');  // œil ambre
-    g.fill(R(22, 9.4, 2, 2), 'N');
-    g.fill(R(19.6, 12.2, 3.6, 1), 'u');
-    if (alt) g.fill(R(21, 13, 2, 2), 'P');
+    const g = new Grid(30, 22), alt = f % 2;
+    // panache de queue enroulé sur le dos
+    g.shade(E(7, 9.4 + (alt ? -0.6 : 0), 4.8, 3.8), PRI);
+    g.shade(E(10.4, 7.8, 3.4, 2.8), PRI);
+    // pattes lointaines
+    g.shade(E(9.4, 20, 2.6, 2.2), T('D', 'D', 'D'));
+    g.shade(E(20.6, 20, 2.6, 2.2), T('D', 'D', 'D'));
+    // corps long et bas, tout en poils
+    g.shade(E(13.4, 15.2, 10.8, 5.4), PRI);
+    g.shade(E(7.6, 20, 3, 2.4), PRI);
+    g.shade(E(18.6, 20.2, 3, 2.2), PRI);
+    // crinière de lion
+    g.shade(E(20.6, 12.6, 5.8, 6.2), PRI);
+    g.recolor(E(20.4, 16.4, 3.6, 3), { B: 'W', H: 'Y', D: 'X' });
+    // gilet de dressage
+    g.shade(Pg([[9.4, 10.4], [15.8, 10.4], [16.2, 14.6], [9.8, 14.8]]), SEC);
+    g.px(12.6, 12.4, 'G');
+    // tête et masque noir écrasé
+    g.shade(E(23.4, 11.2, 5, 4.7), PRI);
+    g.fill(E(25.4, 12.6, 3.9, 3.1), 'A');
+    // longues oreilles à franges
+    g.shade(Pg([[19.4, 7], [22, 6.6], [22, 14.4], [19.6, 18], [17.8, 14]]), T('D', 'D', 'D'));
+    g.fluff('BHDWYX', 21 + f, 0.4);
+    // visage : gros yeux, mini truffe haute, bouche renfrognée
+    g.fill(R(23.4, 9.6, 2, 2), 'E'); g.px(23.4, 9.6, 'w');
+    g.fill(R(27, 9.6, 2, 2), 'E'); g.px(27, 9.6, 'w');
+    g.fill(R(25.4, 11.6, 2, 1), 'N');
+    g.fill(R(24, 14.4, 4.6, 1), 'u'); g.px(23.4, 13.6, 'u'); g.px(28.6, 13.6, 'u');
+    if (alt) g.fill(R(25.6, 15.4, 2, 2), 'P');
     return g.outline();
   }
 
   /* =====================================================================
-   *  6. JULY LA QUEEN — chat persan crème-abricot, regard blasé, couronne et cape
+   *  6. JULY LA QUEEN — chat persan à la face écrasée, regard blasé, couronne et cape
    * ===================================================================== */
   function july(f) {
     const g = new Grid(32, 32), alt = f % 2;
-    // cape violette derrière
-    g.shade(Pg([[7, 17], [25, 17], [29, 31], [3, 31]]), T('M', 'm', 'n'));
-    // queue enroulée à droite
-    g.shade(E(25.6, 27, 3.6, 3), PRI);
-    // corps
-    g.shade(E(16, 24, 9.4, 7.4), PRI);
-    g.recolor(E(16, 25.6, 5, 5), { B: 'W', H: 'Y', D: 'X' });     // plastron crème
-    // pattes avant
+    g.shade(Pg([[6, 18], [26, 18], [30, 31], [2, 31]]), T('M', 'm', 'n'));  // cape
+    g.shade(E(26, 27, 3.6, 3), PRI);                                       // queue
+    g.shade(E(16, 25, 9.6, 6.8), PRI);                                     // corps
+    g.recolor(E(16, 26, 5, 4.6), { B: 'W', H: 'Y', D: 'X' });
     g.shade(E(12, 29.6, 2.8, 2.2), WHT);
     g.shade(E(20, 29.6, 2.8, 2.2), WHT);
-    // tête large et aplatie
-    g.shade(E(16, 12.4, 9, 7.4), PRI);
-    g.shade(Pg([[8.6, 9], [8, 3.4], [12.6, 6.6]]), PRI);          // oreilles
-    g.shade(Pg([[23.4, 9], [24, 3.4], [19.4, 6.6]]), PRI);
-    g.fill(Pg([[9.6, 8.4], [9.4, 5], [11.8, 7]]), 'P');
-    g.fill(Pg([[22.4, 8.4], [22.6, 5], [20.2, 7]]), 'P');
-    // masque abricot autour du nez et des yeux
-    g.recolor(E(16, 13.4, 5.2, 4, ), { B: 'T', H: 'V', D: 'U' });
-    g.fluff('BHDTVU', 3, 0.3);
-    // couronne dorée
-    g.shade(Pg([[10, 7], [10, 2.6], [13, 5], [16, 1.4], [19, 5], [22, 2.6], [22, 7]]), T('G', 'J', 'g'));
-    g.px(16, 4, 'R'); g.px(12.4, 5.6, 'C'); g.px(19.6, 5.6, 'C');
-    // yeux ronds cuivrés, sourcils grincheux
-    for (const x of [10.8, 18.8]) {
-      g.fill(R(x, 10.6, 3, 3), 'Q'); g.fill(R(x + 1, 11.2, 1, 2), 'E'); g.px(x, 10.6, 'w');
+    // tête énorme, large et écrasée, grosses bajoues
+    g.shade(E(16, 13, 11, 7.6), PRI);
+    g.shade(E(9.6, 18.2, 4.4, 3), PRI);
+    g.shade(E(22.4, 18.2, 4.4, 3), PRI);
+    g.shade(Pg([[7.4, 9], [6.6, 3.8], [11.6, 6.8]]), PRI);                // petites oreilles
+    g.shade(Pg([[24.6, 9], [25.4, 3.8], [20.4, 6.8]]), PRI);
+    g.fill(Pg([[8.4, 8.6], [8.2, 5.4], [10.8, 7.2]]), 'P');
+    g.fill(Pg([[23.6, 8.6], [23.8, 5.4], [21.2, 7.2]]), 'P');
+    // masque abricot tassé autour du nez
+    g.recolor(E(16, 14.2, 7, 4.6), { B: 'T', H: 'V', D: 'U' });
+    g.recolor(E(10.4, 18.2, 3, 2), { B: 'T', H: 'V', D: 'U' });
+    g.recolor(E(21.6, 18.2, 3, 2), { B: 'T', H: 'V', D: 'U' });
+    g.fluff('BHDTVU', 3, 0.34);
+    // couronne
+    g.shade(Pg([[11, 7], [11, 2.6], [13.6, 5], [16, 1.4], [18.4, 5], [21, 2.6], [21, 7]]), T('G', 'J', 'g'));
+    g.px(16, 4, 'R'); g.px(13, 5.6, 'C'); g.px(19, 5.6, 'C');
+    // gros yeux ronds collés au nez, sourcils plissés
+    for (const x of [10.6, 18.4]) {
+      g.fill(R(x, 10.4, 3, 3), 'Q'); g.fill(R(x + 1, 11, 1, 2), 'E'); g.px(x, 10.4, 'w');
     }
-    g.fill(Pg([[9.6, 9], [14, 10.4], [14, 9.6], [9.6, 8.2]]), 'U');
-    g.fill(Pg([[22.4, 9], [18, 10.4], [18, 9.6], [22.4, 8.2]]), 'U');
-    g.px(15, 14.4, 'P'); g.px(16, 14.4, 'P');                     // petit nez rose
-    g.px(14, 16, 'u'); g.px(15, 16.4, 'u'); g.px(16, 16.4, 'u'); g.px(17, 16, 'u'); // moue
+    g.fill(Pg([[9.2, 8.6], [14.2, 10.4], [14.2, 9.4], [9.2, 7.6]]), 'U');
+    g.fill(Pg([[22.8, 8.6], [17.8, 10.4], [17.8, 9.4], [22.8, 7.6]]), 'U');
+    g.px(15, 8.6, 'U'); g.px(16, 8.6, 'U'); g.px(15, 9.6, 'U');           // pli entre les yeux
+    // nez minuscule, presque entre les yeux, larmes de persan
+    g.px(15, 13, 'P'); g.px(16, 13, 'P');
+    g.px(11.4, 13.8, 'U'); g.px(11.4, 14.8, 'U'); g.px(11.4, 15.8, 'U');
+    g.px(20.6, 13.8, 'U'); g.px(20.6, 14.8, 'U'); g.px(20.6, 15.8, 'U');
+    // moue de dégoût : bouche en arc vers le bas, bajoues
+    g.px(15, 14.6, 'u'); g.px(16, 14.6, 'u');
+    g.px(14, 15.4, 'u'); g.px(17, 15.4, 'u'); g.px(13, 16.2, 'u'); g.px(18, 16.2, 'u');
+    g.px(12, 17, 'u'); g.px(19, 17, 'u');
     // collier doré à rubis
-    g.fill(R(11.6, 18.2, 8.8, 1.2), 'G'); g.fill(R(15, 19, 2, 2), 'R');
-    if (alt) { g.px(8, 14, 'w'); g.px(24, 14, 'w'); }             // moustaches qui frémissent
+    g.fill(R(11.6, 20.4, 8.8, 1.2), 'G'); g.fill(R(15, 21.2, 2, 2), 'R');
+    if (alt) { g.px(6, 15, 'w'); g.px(26, 15, 'w'); }
     return g.outline();
   }
 
@@ -259,14 +266,15 @@
       G: '#8a8590', Z: '#5a5662', Q: '#9a5a2a', N: '#050308', P: '#d87a8a', R: '#d7263d', u: '#3a2a30' },
     gilbert: { B: '#e8892b', H: '#f7b25a', D: '#b85c17', U: '#a84c14', W: '#fbeed8', Y: '#ffffff', X: '#d8c8a8',
       E: '#49d65a', N: '#0a060c', P: '#f08aa0', u: '#7a3a14', w: '#ffffff' },
-    idylle: { B: '#2a2632', H: '#4a4458', D: '#16121c', W: '#f4f0ea', Y: '#ffffff', X: '#c9c2cc',
-      T: '#c0262d', V: '#e5505f', U: '#8c1023', Q: '#e0a020', N: '#0a060c', P: '#e08a9a', u: '#4a3a40' },
+    idylle: { B: '#d9a96b', H: '#efcb94', D: '#a97a40', W: '#f6e4bc', Y: '#fff4d8', X: '#d8bf90',
+      A: '#3b2a22', E: '#0a0608', N: '#0a0608', P: '#e08a9a', u: '#5a3a28', w: '#ffffff',
+      T: '#c0262d', V: '#e5505f', U: '#8c1023', G: '#ffd23f' },
     july: { B: '#efc79a', H: '#fbe0bc', D: '#cf9c6c', T: '#e0a068', V: '#f0b884', U: '#a8602c',
       W: '#fbf0dc', Y: '#ffffff', X: '#dcc8a8', Q: '#e8a010', E: '#1a0a10', P: '#f08aa0', u: '#7a4a2a',
       M: '#7b2cbf', m: '#a55ae0', n: '#4a1a7a', G: '#ffd23f', J: '#fff08a', g: '#b8861b', R: '#d7263d', C: '#6fc3ff' },
   };
   const animals = { chichi, saphire, bouba, gilbert, idylle, july };
-  const dims = { chichi: [30, 24], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [28, 30], july: [32, 32] };
+  const dims = { chichi: [32, 24], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [30, 22], july: [32, 32] };
   Object.keys(animals).forEach((id) => {
     const fn = animals[id];
     define(id, {
@@ -377,7 +385,7 @@
     return g.outline();
   }
 
-  /* ---------- OLIVER : cheveux gris en mulet, hâlé, t-shirt jaune, sac à dos, signe de paix ---------- */
+  /* ---------- OLIVIER : cheveux gris en mulet, hâlé, t-shirt jaune, sac à dos, signe de paix ---------- */
   function oliver(f) {
     const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
     // mulet gris derrière la tête
@@ -405,59 +413,96 @@
     return g.outline();
   }
 
-  /* ---------- JANIS : mode paysanne, bandana, tresses, chemisier, salopette, bottes ---------- */
+  /* ---------- JANIS : blonde frangée, septum, t-shirt « I ♥ DALI » ---------- */
   function janis(f) {
     const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
-    // tresses
-    g.shade(E(4.4, 17, 1.8, 6), HR); g.shade(E(19.6, 17, 1.8, 6), HR);
-    for (const y of [14, 17, 20]) { g.px(4, y, 'J'); g.px(20, y, 'J'); }
-    g.fill(R(3, 22.6, 3, 1.4), 'R'); g.fill(R(18, 22.6, 3, 1.4), 'R');
-    legs(g, T('O', 'o', 'q'), T('V', 'v', 'k'), {});
-    arm(g, true, 18 + dy, 26, 24, T('C', 'c', 'd')); arm(g, false, 18 + dy, 26, 24, T('C', 'c', 'd'));
-    g.shade(Pg([[5, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [19, 17.4 + dy], [19.6, 26], [4.4, 26]]), CT);
-    g.shade(Pg([[7, 21 + dy], [17, 21 + dy], [17.6, 26.4], [6.4, 26.4]]), OV);       // salopette
-    g.fill(R(7, 17 + dy, 1.6, 4.4), 'O'); g.fill(R(15.4, 17 + dy, 1.6, 4.4), 'O');   // bretelles
-    g.px(8, 21.6 + dy, 'G'); g.px(16, 21.6 + dy, 'G');                                 // boutons
-    g.fill(R(9, 22.8 + dy, 6, 2.6), 'q');                                              // poche
+    // cheveux blonds en couches, mulet
+    g.shade(Pg([[3.6, 6], [4.6, 1.4], [19.4, 1.4], [20.4, 6], [21, 15], [19.6, 22], [16.4, 19], [7.6, 19], [4.4, 22], [3, 15]]), HR);
+    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });
+    arm(g, true, 18 + dy, 26, 22 + dy, CT); arm(g, false, 18 + dy, 26, 22 + dy, CT);
+    g.fill(R(2.6, 23.2 + dy, 3, 1.2), 'V');                      // bracelet brésilien vert
+    g.fill(R(18.4, 23.2 + dy, 3, 1), 'N');                       // bracelet argenté
+    // t-shirt noir « I ♥ DALI »
+    g.shade(Pg([[4.4, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [19.6, 17.4 + dy], [20.2, 26], [3.8, 26]]), CT);
+    g.fill(R(8, 19.4 + dy, 1, 3), 'W');
+    g.px(10, 19.4 + dy, 'R'); g.px(12, 19.4 + dy, 'R'); g.fill(R(10, 20.4 + dy, 3, 1), 'R'); g.px(11, 21.4 + dy, 'R');
+    for (const x of [8, 9, 11, 12, 14, 15, 16]) g.px(x, 23.4 + dy, 'W');
+    g.line(9, 17.6 + dy, 11, 20 + dy, 'N'); g.line(15, 17.6 + dy, 13, 20 + dy, 'N');    // collier
     skinHead(g, dy);
-    // bandana à pois noué
-    g.shade(Pg([[5.4, 8 + dy], [5.6, 3 + dy], [12, 1 + dy], [18.4, 3 + dy], [18.6, 8 + dy], [12, 6.4 + dy]]), T('R', 'r', 'n'));
-    for (const [x, y] of [[8, 4], [12, 3], [15, 5], [10, 6], [17, 7], [7, 7]]) g.px(x, y + dy, 'W');
-    g.shade(Pg([[18.2, 6 + dy], [22, 4 + dy], [22.4, 8.4 + dy], [19, 8.4 + dy]]), T('R', 'r', 'n')); // nœud
-    g.fill(R(5, 8 + dy, 1.4, 3), 'H'); g.fill(R(17.6, 8 + dy, 1.4, 3), 'H');
-    brows(g, dy, 'J', false); eyes(g, dy, f, { lashes: true });
-    g.px(7, 13 + dy, 'R'); g.px(8, 13 + dy, 'R'); g.px(15, 13 + dy, 'R'); g.px(16, 13 + dy, 'R'); // joues rosées
+    // frange rideau, mèches blondes
+    g.shade(E(12, 4.6 + dy, 7.4, 4.4), HR);
+    g.shade(Pg([[5.2, 6 + dy], [12, 6 + dy], [18.8, 6 + dy], [19.4, 14 + dy], [17.4, 9.6 + dy], [14.8, 8.2 + dy], [12, 7 + dy], [9.2, 8.2 + dy], [6.6, 9.6 + dy], [4.8, 14 + dy]]), HR);
+    g.fill(R(5, 9 + dy, 1.4, 6), 'H'); g.fill(R(17.6, 9 + dy, 1.4, 6), 'H');
+    brows(g, dy, 'J', false); eyes(g, dy, f);
+    g.px(7, 13 + dy, 'b'); g.px(8, 13 + dy, 'b'); g.px(15, 13 + dy, 'b'); g.px(16, 13 + dy, 'b');
     g.px(11, 13 + dy, 'D'); g.px(12, 13 + dy, 'D');
-    g.fill(R(10.4, 15 + dy, 3.2, 1), 'M');
-    g.line(15, 14 + dy, 18, 12 + dy, 'Y');                        // brin de blé
+    g.px(11, 14 + dy, 'N'); g.px(12, 14 + dy, 'N');               // anneau de septum
+    g.fill(R(10, 15 + dy, 4, 1), 'w');                            // grand sourire
+    g.px(9, 14.4 + dy, 'M'); g.px(14, 14.4 + dy, 'M'); g.fill(R(10, 16 + dy, 4, 0.8), 'M');
     return g.outline();
   }
 
-  /* ---------- ANNA : mimi baddie, cheveux roses en macarons, crop top, jean baggy ---------- */
+  /* ---------- ANNA : cheveux roses, frange, piercings, grand t-shirt noir ---------- */
   function anna(f) {
     const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
-    g.shade(Pg([[4, 8], [5, 3], [19, 3], [20, 8], [20.6, 20], [17, 20], [7, 20], [3.4, 20]]), HR);   // cheveux longs
-    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });
-    g.fill(R(5, 24, 14, 1.4), 'u');                               // ceinture basse
-    arm(g, true, 18 + dy, 26, 21, CT); arm(g, false, 18 + dy, 26, 21, CT);
-    g.fill(R(2.6, 24 + dy, 3, 1), 'G'); g.fill(R(18.4, 24 + dy, 3, 1), 'G');
-    g.shade(Pg([[5.6, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [18.4, 17.4 + dy], [17.6, 21.4 + dy], [6.4, 21.4 + dy]]), CT);
-    g.shade(Pg([[6.4, 21.4 + dy], [17.6, 21.4 + dy], [18.2, 25.6], [5.8, 25.6]]), SK);   // ventre nu
-    g.px(12, 23.4 + dy, 'G');                                    // piercing
-    g.fill(R(8, 18.4 + dy, 8, 1), 'c');                           // liseré rose
+    // cheveux roses mi-longs ondulés
+    g.shade(Pg([[4, 8], [5, 2.6], [19, 2.6], [20, 8], [20.8, 19], [18.6, 21], [16, 17], [8, 17], [5.4, 21], [3.2, 19]]), HR);
+    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });   // jean baggy
+    arm(g, true, 18 + dy, 26, 23 + dy, CT); arm(g, false, 18 + dy, 26, 23 + dy, CT);
+    g.fill(R(2.6, 24.2 + dy, 3, 1), 'Z');                         // élastique noir au poignet
+    g.fill(R(18.4, 24 + dy, 3, 1), 'G');
+    // grand t-shirt noir oversize
+    g.shade(Pg([[3.4, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [20.6, 17.4 + dy], [21.2, 26.8], [2.8, 26.8]]), CT);
+    g.fill(R(9, 18 + dy, 6, 1), 'c');
     skinHead(g, dy);
-    // frange rideau + mèches colorées
+    // frange droite + mèches
     g.shade(E(12, 4.6 + dy, 7.4, 4.4), HR);
-    g.shade(Pg([[5.2, 6 + dy], [12, 6 + dy], [18.8, 6 + dy], [19, 14 + dy], [17.4, 10 + dy], [14, 7.6 + dy], [12, 8 + dy], [10, 7.6 + dy], [6.6, 10 + dy], [5, 14 + dy]]), HR);
-    // macarons
-    g.shade(E(5.2, 2.6 + dy, 2.8, 2.8), HR); g.shade(E(18.8, 2.6 + dy, 2.8, 2.8), HR);
-    g.fill(R(5, 14 + dy, 1.4, 4), 'I'); g.fill(R(17.6, 14 + dy, 1.4, 4), 'I');
+    g.shade(Pg([[5.2, 6 + dy], [12, 6 + dy], [18.8, 6 + dy], [19, 13 + dy], [17, 9.6 + dy], [15, 8.2 + dy], [12, 8.4 + dy], [9, 8.2 + dy], [7, 9.6 + dy], [5, 13 + dy]]), HR);
+    g.fill(R(5, 13 + dy, 1.4, 5), 'I'); g.fill(R(17.6, 13 + dy, 1.4, 5), 'I');
     brows(g, dy, 'J', false); eyes(g, dy, f, { liner: true, lashes: true });
     g.px(11, 13 + dy, 'D'); g.px(12, 13 + dy, 'D');
+    g.px(13, 13.4 + dy, 'G');                                    // piercing de nez
     g.fill(R(10, 14.8 + dy, 4, 1.6), 'M');                       // gloss rose
-    g.px(11, 14.8 + dy, 'w');
-    g.px(3.6, 12 + dy, 'G'); g.px(3, 13 + dy, 'G'); g.px(3.6, 14 + dy, 'G'); g.px(4.2, 13 + dy, 'G'); // créoles
+    g.px(11, 14.8 + dy, 'w'); g.px(13, 16.2 + dy, 'G');          // piercing de lèvre
+    g.px(3.6, 12 + dy, 'G'); g.px(3, 13 + dy, 'G'); g.px(3.6, 14 + dy, 'G'); g.px(4.2, 13 + dy, 'G');
     g.px(20.4, 12 + dy, 'G'); g.px(21, 13 + dy, 'G'); g.px(20.4, 14 + dy, 'G'); g.px(19.8, 13 + dy, 'G');
+    return g.outline();
+  }
+
+  /* ---------- ADELINE : casquette kaki Ciele, grandes lunettes écaille, sweat rose duveteux ---------- */
+  function adeline(f) {
+    const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
+    // cheveux sombres courts derrière
+    g.shade(Pg([[4, 9], [5, 3], [19, 3], [20, 9], [20.4, 15], [18, 14], [6, 14], [3.6, 15]]), HR);
+    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });
+    arm(g, true, 18 + dy, 26, 25, CT); arm(g, false, 18 + dy, 26, 25, CT);
+    // sweat à capuche rose, texture duveteuse
+    g.shade(Pg([[4.4, 17 + dy], [8, 16.4 + dy], [16, 16.4 + dy], [19.6, 17 + dy], [20.4, 26.4], [3.6, 26.4]]), CT);
+    g.shade(Pg([[7, 16.2 + dy], [17, 16.2 + dy], [16, 19.4 + dy], [8, 19.4 + dy]]), T('c', 'c', 'd'));
+    g.fill(R(10, 16.6 + dy, 4, 3), 'D');
+    g.fill(R(8.4, 22.4 + dy, 7.2, 3), 'd');
+    for (const [x, y] of [[6, 21], [9, 20], [15, 21], [18, 23], [7, 24], [17, 19], [12, 22], [5, 19], [19, 21]]) g.px(x, y + dy, 'c');
+    skinHead(g, dy);
+    g.fill(R(5, 8 + dy, 1.8, 5), 'H'); g.fill(R(17.2, 8 + dy, 1.8, 5), 'H');     // mèches sombres
+    // casquette Ciele
+    g.shade(Pg([[5, 8 + dy], [5.4, 3 + dy], [8.5, 1 + dy], [15.5, 1 + dy], [18.6, 3 + dy], [19, 8 + dy]]), T('Q', 'q', 'z'));
+    g.shade(Pg([[3.2, 7.4 + dy], [20.8, 7.4 + dy], [20, 9.4 + dy], [4, 9.4 + dy]]), T('Z', 'q', 'y'));
+    for (const [x, y] of [[6, 4], [7, 4], [6, 5], [6, 6], [7, 6], [9, 2], [9, 4], [9, 5], [9, 6], [11, 4], [12, 4], [11, 5], [12, 5], [11, 6],
+      [14, 2], [14, 3], [14, 4], [14, 5], [14, 6], [16, 4], [17, 4], [16, 5], [17, 5], [16, 6]]) g.px(x, y + dy, 'w');
+    // grandes lunettes en écaille
+    const ring = (x, y, w, h) => {
+      g.fill(R(x, y, w, 1), 'B'); g.fill(R(x, y + h - 1, w, 1), 'B');
+      g.fill(R(x, y, 1, h), 'B'); g.fill(R(x + w - 1, y, 1, h), 'B');
+    };
+    ring(6, 9 + dy, 6, 5); ring(12, 9 + dy, 6, 5);
+    g.px(7, 9 + dy, 'b'); g.px(13, 9 + dy, 'b'); g.px(5, 10 + dy, 'B'); g.px(18, 10 + dy, 'B');
+    for (const x of [8, 14]) { g.fill(R(x, 10 + dy, 2, 3), 'E'); g.px(x, 10 + dy, 'w'); }
+    if (f === 1) for (const x of [8, 14]) { g.fill(R(x, 10 + dy, 2, 2), 'S'); g.fill(R(x, 12 + dy, 2, 1), 'E'); }
+    g.px(11, 13 + dy, 'D'); g.px(12, 13 + dy, 'D');
+    g.px(13, 13.6 + dy, 'G');                                    // piercing de nez
+    g.px(7, 14.6 + dy, 'D'); g.px(16, 14.6 + dy, 'D'); g.px(9, 14.4 + dy, 'D'); g.px(15, 14.4 + dy, 'D');   // taches de rousseur
+    g.fill(R(10, 15.4 + dy, 4, 1), 'M'); g.px(9, 14.8 + dy, 'M'); g.px(14, 14.8 + dy, 'M');                 // petit sourire
+    g.px(4, 12 + dy, 'G'); g.px(3, 13 + dy, 'G'); g.px(4, 14 + dy, 'G');                                    // créole
     return g.outline();
   }
 
@@ -472,14 +517,19 @@
     oliver: { S: '#d9a07a', L: '#ecb994', D: '#a87250', H: '#9a9aa8', I: '#c4c4d0', J: '#6a6a78',
       C: '#f2c230', c: '#ffdc60', d: '#c9962a', P: '#4a4a62', p: '#62627e', u: '#323248',
       F: '#e8e0d0', f: '#ffffff', g: '#a0988a', Z: '#14101a', E: '#0b0710', w: '#ffffff', M: '#8a4a3a' },
-    janis: { S: '#f0c8a0', L: '#ffdcb8', D: '#c89a70', H: '#7a4a2a', I: '#9a6a3a', J: '#4a2a14',
-      C: '#efe3c2', c: '#fff6dc', d: '#c8b88a', O: '#3a5a8a', o: '#5a7aaa', q: '#26406a', V: '#3a6a3a', v: '#5a8a5a', k: '#244a24',
-      R: '#d7263d', r: '#f0485e', n: '#8c1023', W: '#fff6dc', G: '#ffd23f', Y: '#e8c030', E: '#0b0710', w: '#ffffff', M: '#c04a5a' },
+    janis: { S: '#f2d0b4', L: '#ffe4cc', D: '#c8a084', H: '#e0be74', I: '#f6e0a0', J: '#a8863a',
+      C: '#1b1822', c: '#2e2a38', d: '#0e0c14', P: '#2b3350', p: '#3a4468', u: '#1b2138',
+      F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', R: '#e83a4a', W: '#f4f4f4', N: '#d8d8e8', V: '#3fa34d', b: '#f0a898',
+      E: '#2a1a10', w: '#ffffff', M: '#b04a5a' },
     anna: { S: '#f2c4a8', L: '#ffdcc4', D: '#c8987c', H: '#ff5fa2', I: '#ff94c4', J: '#c02a78',
       C: '#1a1020', c: '#ff5fa2', d: '#0c0610', P: '#6a8ad0', p: '#8aaae8', u: '#4a62a0',
-      F: '#f4ecd8', f: '#ffffff', g: '#b8b0c0', G: '#ffd23f', E: '#0b0710', X: '#0b0710', w: '#ffffff', M: '#ff2e7e' },
+      F: '#f4ecd8', f: '#ffffff', g: '#b8b0c0', G: '#ffd23f', Z: '#14101a', E: '#0b0710', X: '#0b0710', w: '#ffffff', M: '#ff2e7e' },
+    adeline: { S: '#eac2a4', L: '#f6d6bc', D: '#c49878', H: '#2a1c20', I: '#4a3a40', J: '#1a1014',
+      C: '#e0b0b0', c: '#f2cccc', d: '#b88a8c', P: '#3a4262', p: '#4a5478', u: '#262c46',
+      F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', Q: '#8f9a78', q: '#aab494', z: '#6a7458', Z: '#a6aa86', y: '#8a8e6c',
+      B: '#a8734a', b: '#d29a66', G: '#ffd23f', E: '#2a160e', w: '#ffffff', M: '#b8505a' },
   };
-  const humans = { octave, laure, oliver, janis, anna };
+  const humans = { octave, laure, oliver, janis, anna, adeline };
   Object.keys(humans).forEach((id) => {
     const fn = humans[id];
     define(id, { w: 24, h: 32, palette: HUMAN_PAL[id], frames: [0, 1, 2].map((f) => () => fn(f)) });
