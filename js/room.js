@@ -12,7 +12,7 @@
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const ANIMALS = global.DATA.ANIMALS;
 
-  let host = null;            // { count, has, running, auto, ready, progress, boost, busy, say, onVictory, onTap }
+  let host = null;            // { count, has, running, ready, progress, boost, busy, frozen, total, say, onVictory, onTap, onChichi, onThiefGone }
   let canvas = null, ctx = null, floatersEl = null, BG = null;
   let time = 0;
 
@@ -29,13 +29,13 @@
   const POS = {
     octave: { x: 124, y: 146 },
     janis: { x: 46, y: 138 },
-    oliver: { x: 208, y: 120 },
+    oliver: { x: 222, y: 120 },
     adeline: { x: 202, y: 150 },
     ilario: { x: 172, y: 148 },
-    anna: { x: 240, y: 120 },
+    anna: { x: 250, y: 120 },
     laure: { x: 300, y: 128 },
     laureWin: { x: 96, y: 146 },
-    throne: { x: 256, y: 140 },
+    throne: { x: 266, y: 140 },
     tv: { x: 10, y: 80 },
     boxStack: { x: 72, y: 124 },
   };
@@ -213,8 +213,9 @@
    *  Les animaux : ils partent chercher des pizzas quand leur trajet est en cours
    * --------------------------------------------------------------------- */
   let actors = [];
-  // Place des animaux qui restent assis (Chichi sur le tapis, July sur son trône)
-  const SPOTS = { chichi: [150, 166, 1], july: [POS.throne.x + 12, POS.throne.y - 15, -1] };
+  // Chichi vit sur le canapé ; July sur son trône. Godzilla n'a pas de corps dans le salon : il est à la fenêtre.
+  const COUCH = [197, 111], FLOOR = [150, 166];
+  const SPOTS = { chichi: [COUCH[0], COUCH[1], 1], july: [POS.throne.x + 12, POS.throne.y - 15, -1] };
   function makeActor(a, idx) {
     const spot = a.still ? SPOTS[a.id] : null;
     return {
@@ -223,7 +224,7 @@
       y: spot ? spot[1] : rand(152, 176),
       dir: spot ? spot[2] : (Math.random() < 0.5 ? -1 : 1),
       speed: a.speed * rand(0.85, 1.15),
-      walking: false,
+      walking: false, hidden: false, bounce: 0,
       timer: rand(1, 3),
       anim: Math.random() * 4,
       fixed: !!spot,
@@ -231,6 +232,7 @@
   }
   function syncActors(spawnFx) {
     for (const a of ANIMALS) {
+      if (a.window) continue;
       const n = host.count(a.id) > 0 ? 1 : 0;          // un seul animal par espèce, quel que soit son niveau
       const cur = actors.filter((x) => x.id === a.id);
       for (let i = cur.length; i < n; i++) {
@@ -244,10 +246,48 @@
       if (cur.length > n) actors = actors.filter((x) => x.id !== a.id || x.idx < n);
     }
   }
+
+  /* ---- Chichi sur le canapé : de temps en temps elle demande à descendre (puis à remonter) ---- */
+  const CHI = { state: 'couch', t: rand(90, 150), tick: 0, hopT: 0, from: null, to: null, after: 'couch' };
+  const ask = (kind) => host.onChichi && host.onChichi(kind);
+  function chichiHop(ac, to, after) { CHI.state = 'hop'; CHI.hopT = 0; CHI.from = [ac.x, ac.y]; CHI.to = to; CHI.after = after; }
+  function updateChichi(dt, ac) {
+    if (CHI.state === 'hop') {
+      CHI.hopT += dt;
+      const k = Math.min(1, CHI.hopT / 0.7);
+      ac.x = CHI.from[0] + (CHI.to[0] - CHI.from[0]) * k;
+      ac.y = CHI.from[1] + (CHI.to[1] - CHI.from[1]) * k - Math.sin(k * Math.PI) * 18;
+      ac.dir = CHI.to[0] >= CHI.from[0] ? 1 : -1;
+      if (k >= 1) { ac.x = CHI.to[0]; ac.y = CHI.to[1]; ac.dir = 1; CHI.state = CHI.after; CHI.t = CHI.after === 'floor' ? 30 : rand(100, 170); }
+      return;
+    }
+    CHI.t -= dt;
+    if (CHI.state === 'couch' || CHI.state === 'floor') {
+      if (CHI.t <= 0) { CHI.state = CHI.state === 'couch' ? 'askdown' : 'askup'; CHI.t = 24; CHI.tick = 0; }
+    } else {                                        // elle demande de l'aide
+      CHI.tick -= dt;
+      if (CHI.tick <= 0) { ask(CHI.state === 'askdown' ? 'demande_descendre' : 'demande_monter'); CHI.tick = 3.4; }
+      if (CHI.t <= 0) {
+        if (CHI.state === 'askdown') { ask('abandon_descendre'); CHI.state = 'couch'; CHI.t = rand(100, 170); }
+        else { ask('abandon_monter'); chichiHop(ac, COUCH, 'couch'); }
+      }
+    }
+  }
+  function chichiAsking() { return CHI.state === 'askdown' ? 'down' : CHI.state === 'askup' ? 'up' : null; }
+  function chichiHelp() {
+    const ac = actors.find((a) => a.id === 'chichi');
+    if (!ac) return false;
+    if (CHI.state === 'askdown') { chichiHop(ac, FLOOR, 'floor'); ask('merci_descendu'); return true; }
+    if (CHI.state === 'askup') { chichiHop(ac, COUCH, 'couch'); ask('merci_monte'); return true; }
+    return false;
+  }
+
   function updateActors(dt) {
+    const frozen = host.frozen();
     for (const ac of actors) {
+      if (ac.hidden) continue;
       const run = host.running(ac.id);
-      ac.walking = run && !ac.fixed;
+      ac.walking = run && !ac.fixed && !frozen;
       if (ac.walking) {
         ac.timer -= dt;
         if (ac.timer <= 0) { ac.timer = rand(1.5, 4); if (Math.random() < 0.35) ac.dir *= -1; }
@@ -256,13 +296,16 @@
         if (ac.x < 6 + half) { ac.x = 6 + half; ac.dir = 1; }
         if (ac.x > W - 6 - half) { ac.x = W - 6 - half; ac.dir = -1; }
       }
-      ac.anim += dt * (run ? (ac.fixed ? 6 : 5) : 1.4);
+      if (ac.id === 'chichi') updateChichi(dt, ac);
+      if (ac.bounce > 0) ac.bounce = Math.max(0, ac.bounce - dt);
+      ac.anim += dt * (frozen ? 0 : run ? (ac.fixed ? 6 : 5) : 1.4);
     }
   }
   // L'animal le plus proche du doigt (zone de touche généreuse)
   function actorAt(pt) {
     let best = null, bd = 1e9;
     for (const ac of actors) {
+      if (ac.hidden) continue;
       const sz = Sprites.size(ac.id);
       const cx = ac.x, cy = ac.y - sz.h / 2;
       const dx = Math.max(0, Math.abs(pt.x - cx) - sz.w / 2), dy = Math.max(0, Math.abs(pt.y - cy) - sz.h / 2);
@@ -301,8 +344,108 @@
     const sz = Sprites.size(ac.id);
     floatText(text, ac.x, ac.y - sz.h - 6, 'bubble');
   }
+  // Bulle de dialogue au-dessus d'un point du salon (reste le temps de lire)
+  function speakAt(x, y, text, ms) {
+    const el = document.createElement('div');
+    el.className = 'floater speech';
+    el.textContent = text;
+    el.style.left = Math.max(27, Math.min(73, x / W * 100)) + '%';
+    el.style.top = Math.max(14, y / H * 100) + '%';
+    floatersEl.appendChild(el);
+    setTimeout(() => el.remove(), ms || (1900 + text.length * 45));
+  }
+  const humanPos = (id) => (id === 'laure' ? POS.laureWin : POS[id]);
+  function speak(id, text, ms) {
+    const p = humanPos(id);
+    if (!p) return;
+    speakAt(p.x, p.y - 35, text, ms);
+    Audio8.chat();
+  }
+  function speakAnimal(id, text, ms) {
+    const ac = actors.find((a) => a.id === id);
+    if (!ac) return;
+    speakAt(ac.x, ac.y - Sprites.size(id).h - 4, text, ms);
+    Audio8.chat();
+  }
+
+  /* ---- Toucher les personnages ---- */
+  const bounce = {};                                  // petit saut quand on touche un humain
+  function presentHumans() {
+    const list = ['octave'];
+    ['janis', 'oliver', 'adeline', 'ilario', 'anna'].forEach((id) => { if (host.has(id)) list.push(id); });
+    if (host.has('laure') && !cine) list.push('laure');
+    return list;
+  }
+  function humanAt(pt) {
+    let best = null, bd = 1e9;
+    for (const id of presentHumans()) {
+      const p = humanPos(id);
+      const dx = Math.max(0, Math.abs(pt.x - p.x) - 9), dy = Math.max(0, Math.abs(pt.y - (p.y - 16)) - 15);
+      const d = Math.hypot(dx, dy);
+      if (d < 5 && d < bd) { bd = d; best = id; }
+    }
+    return best;
+  }
+  function hop(id) { bounce[id] = 0.32; }
+  const hearts = [];
+  function pet(ac) {                                    // caresse : cœurs qui montent et petit saut
+    const sz = Sprites.size(ac.id);
+    for (let i = 0; i < 3; i++) hearts.push({ x: ac.x - 8 + i * 6 + rand(-2, 2), y: ac.y - sz.h - 2 - i * 3, t: -i * 0.12 });
+    ac.bounce = 0.35;
+  }
+
+  /* ---- Gilbert vole quelque chose et file à travers le salon ---- */
+  let thief = null;
+  const gilbertActor = () => actors.find((a) => a.id === 'gilbert');
+  function startThief(item) {
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    thief = { x: dir > 0 ? -18 : W + 18, y: rand(158, 172), dir, speed: 58, item, t: 0, anim: 0 };
+    const g = gilbertActor();
+    if (g) g.hidden = true;
+    Audio8.steal();
+  }
+  function endThief(caught) {
+    const t = thief;
+    thief = null;
+    const g = gilbertActor();
+    if (g) { g.hidden = false; g.x = Math.max(24, Math.min(W - 24, t.x)); g.y = t.y; }
+    return t;
+  }
+  function updateThief(dt) {
+    if (!thief) return;
+    thief.t += dt; thief.anim += dt * 9;
+    thief.x += thief.dir * thief.speed * dt;
+    thief.y = Math.max(154, Math.min(174, thief.y + Math.sin(thief.t * 4) * 0.5));
+    if (thief.x < -24 || thief.x > W + 24) { endThief(false); host.onThiefGone(); }
+  }
+  const hitThief = (pt) => thief && Math.hypot(pt.x - thief.x, pt.y - (thief.y - 12)) < 20;
+  function catchThief() {
+    const t = endThief(true);
+    puff(t.x, t.y - 12, ['#ffffff', '#ffcf3f', '#e8892b'], 18);
+    return t;
+  }
+
+  /* ---- Le voisin du dessous tape avec son balai ---- */
+  let neighbor = null, shakeT = 0, shakeAmp = 0, flash = 0;
+  function setNeighbor(on) { neighbor = on ? { t: 0, knock: 0.2 } : null; }
+  function shake(sec, amp) { shakeT = Math.max(shakeT, sec); shakeAmp = amp || 1; }
+  function updateNeighbor(dt) {
+    if (!neighbor) return;
+    neighbor.t += dt; neighbor.knock -= dt;
+    if (neighbor.knock <= 0) {
+      neighbor.knock = 0.85;
+      floatText('TOC !', rand(60, 260), 170, 'bubble');
+      Audio8.knock();
+      shake(0.3, 1);
+      puff(rand(50, 270), 178, ['#c9a66b', '#8a6a48', '#f4ecd8'], 5);
+    }
+  }
+  // Alerte kaiju : le sol tremble, un éclair frappe la fenêtre
+  function kaiju() { shake(1.8, 2); flash = 0.9; puff(40, 40, ['#6ad0ff', '#ffffff'], 24); }
+
   // Un animal revient avec ses pizzas
   function collect(id, text) {
+    if (id === 'godzilla') { flash = 0.55; shake(0.5, 2); puff(42, 44, ['#6ad0ff', '#ffffff', '#ffcf3f'], 16); floatText(text, 42, 18); return; }
     const list = actors.filter((a) => a.id === id);
     if (!list.length) return;
     const ac = pick(list), sz = Sprites.size(id);
@@ -329,12 +472,30 @@
   function drawHuman(name, x, y, phase, speed) {
     const sz = Sprites.size(name);
     const frame = Math.floor((time + phase) * (speed || 2)) % Sprites.frames(name);
+    const b = bounce[name] > 0 ? Math.round(Math.sin((1 - bounce[name] / 0.32) * Math.PI) * 4) : 0;
     drawShadow(x, y, 16);
-    Sprites.draw(ctx, name, x - sz.w / 2, y - sz.h, { frame });
+    Sprites.draw(ctx, name, x - sz.w / 2, y - sz.h - b, { frame });
+  }
+  // Godzilla à la fenêtre : seule sa tête dépasse (elle s'illumine quand il attaque)
+  function drawGodzilla() {
+    const attack = host.running('godzilla');
+    const frame = attack ? 2 + (Math.floor(time * 4) % 2) : Math.floor(time * 1.5) % 2;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(15, 15, 54, 46); ctx.clip();
+    Sprites.draw(ctx, 'godzilla', 19, 25 + Math.round(Math.sin(time * 1.6) * 1.5), { frame });
+    ctx.restore();
+    ctx.fillStyle = '#0b0710'; ctx.fillRect(40, 15, 2, 46); ctx.fillRect(15, 37, 54, 2);   // croisillons de la fenêtre
+    if (flash > 0) { ctx.fillStyle = 'rgba(232,251,255,' + Math.min(0.85, flash * 1.6) + ')'; ctx.fillRect(15, 15, 54, 46); }
   }
 
   function render() {
+    ctx.save();
+    if (shakeT > 0) {
+      ctx.fillStyle = '#07040c'; ctx.fillRect(0, 0, W, H);
+      ctx.translate(Math.round(rand(-shakeAmp, shakeAmp)), Math.round(rand(-shakeAmp, shakeAmp)));
+    }
     ctx.drawImage(BG, 0, 0);
+    if (host.count('godzilla') > 0) drawGodzilla();
 
     for (const [sx, sy, ph] of STARS) {
       const on = Math.sin(time * 2 + ph * 3) > -0.2;
@@ -390,14 +551,24 @@
     if (host.has('laure') && !laureCine) ents.push({ y: POS.laureWin.y, draw: () => drawHuman('laure', POS.laureWin.x, POS.laureWin.y, 0.1, 1.2) });
     ents.push({ y: POS.octave.y, draw: () => drawHuman('octave', POS.octave.x, POS.octave.y, 0, host.busy() ? 6 : 2) });
 
+    // Gilbert qui file avec son butin
+    if (thief) ents.push({ y: thief.y, draw: () => {
+      const sz = Sprites.size('gilbert'), it = Sprites.size(thief.item), step = Math.floor(thief.anim) % 2;
+      drawShadow(thief.x, thief.y, 22);
+      Sprites.draw(ctx, 'gilbert', thief.x - sz.w / 2, thief.y - sz.h - step, { frame: 2 + step, flip: thief.dir < 0 });
+      Sprites.draw(ctx, thief.item, thief.x - it.w / 2, thief.y - sz.h - it.h - 3 - step * 2);
+    } });
+
     for (const ac of actors) {
+      if (ac.hidden) continue;
       ents.push({ y: ac.y, draw: () => {
         const sz = Sprites.size(ac.id);
         const step = Math.floor(ac.anim) % 2;
-        const hop = ac.walking && step ? 1 : 0;
+        const hop = (ac.walking && step ? 1 : 0) + (ac.bounce > 0 ? Math.round(Math.sin((1 - ac.bounce / 0.35) * Math.PI) * 4) : 0);
         drawShadow(ac.x, ac.y, sz.w * 0.75);
         Sprites.draw(ctx, ac.id, ac.x - sz.w / 2, ac.y - sz.h - hop, { frame: ac.walking ? 2 + step : step, flip: ac.dir < 0 });
         const top = ac.y - sz.h - 4;
+        if (host.frozen()) { Sprites.drawText(ctx, '!', ac.x - 1, top - 9, '#ff6b7d', 2); return; }
         if (host.running(ac.id)) {                       // jauge de trajet au-dessus de la tête
           const p = Math.max(0, Math.min(1, host.progress(ac.id)));
           ctx.fillStyle = '#0b0710'; ctx.fillRect(Math.round(ac.x - 9), Math.round(top - 2), 18, 4);
@@ -435,7 +606,17 @@
         ctx.fillRect(dx, dy, 2, 2);
       }
     }
+    // le balai du voisin du dessous qui tape à travers le plancher
+    if (neighbor) {
+      const up = Math.floor(time * 9) % 2 ? 4 : 0;
+      ctx.fillStyle = '#8a5a2a'; ctx.fillRect(226, 160 - up, 3, 24);
+      ctx.fillStyle = '#0b0710'; ctx.fillRect(225, 159 - up, 5, 1);
+      ctx.fillStyle = '#d8c070'; ctx.fillRect(224, 156 - up, 7, 4);
+      ctx.fillStyle = '#a8903c'; ctx.fillRect(224, 158 - up, 7, 2);
+    }
+    for (const h of hearts) if (h.t >= 0) Sprites.draw(ctx, 'heart', Math.round(h.x), Math.round(h.y - h.t * 26));
     if (cine) renderCinematic();
+    ctx.restore();
   }
 
   /* ---------------------------------------------------------------------
@@ -500,6 +681,12 @@
   function update(dt) {
     time += dt;
     updateActors(dt); updateParticles(dt);
+    updateThief(dt); updateNeighbor(dt);
+    if (shakeT > 0) shakeT -= dt;
+    if (flash > 0) flash -= dt;
+    Object.keys(bounce).forEach((k) => { if (bounce[k] > 0) bounce[k] -= dt; });
+    for (const h of hearts) h.t += dt * 1.1;
+    for (let i = hearts.length - 1; i >= 0; i--) if (hearts[i].t > 1) hearts.splice(i, 1);
     if (golden) { golden.life -= dt; if (golden.life <= 0) golden = null; }
     if (cine) { cine.t += dt; if (cine.t >= 13) { cine = null; host.onVictory(); } }
   }
@@ -517,7 +704,11 @@
 
   global.Room = {
     W, H, init, update, render, syncActors, actorAt, puff, floatText, bubble, collect, say,
+    speak, speakAt, speakAnimal, humanAt, hop, pet, chichiAsking, chichiHelp,
+    startThief, hitThief, catchThief, setNeighbor, shake, kaiju,
     spawnGolden, hitGolden, takeGolden, startCinematic,
+    get thief() { return !!thief; },
+    _test: { CHI, chichiHop, COUCH, FLOOR },
     get golden() { return golden; },
     get cinematic() { return !!cine; },
   };

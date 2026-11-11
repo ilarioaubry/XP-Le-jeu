@@ -457,3 +457,26 @@ body { gap: 4px; padding-left: calc(4px + env(safe-area-inset-left)); padding-ri
 .stage { padding: 6px; }
 .laure-meter { padding: 6px 12px; }
 .shop { padding: 8px 10px; }
+
+/* ---------- Bulles de dialogue dans le salon ---------- */
+.floater.speech {
+  width: max-content; max-width: 46%; white-space: normal; text-align: center;
+  transform: translate(-50%, -100%);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.05; color: #fff;
+  background: rgba(7, 4, 12, .94); border: 2px solid #fff; padding: 3px 6px; text-shadow: none;
+  animation: speechIn .25s steps(3) both;
+}
+@keyframes speechIn { 0% { opacity: 0; margin-top: 6px; } 100% { opacity: 1; margin-top: 0; } }
+
+/* ---------- Bandeau d'événement surprise ---------- */
+.event-banner {
+  position: absolute; left: 6px; right: 6px; top: 6px; z-index: 4; pointer-events: none;
+  font-family: var(--font-title); font-size: 7px; line-height: 1.5; text-align: center;
+  background: var(--red); color: var(--cheese); border: 3px solid var(--cheese); padding: 4px 6px;
+}
+
+/* ---------- Unlock de Godzilla : tout tremble ---------- */
+.unlock.kaiju .unlock-rays { background: repeating-conic-gradient(rgba(215, 38, 61, .28) 0 7.5deg, transparent 7.5deg 15deg); }
+.unlock.kaiju .unlock-card { animation: quake .12s steps(2) infinite; }
+.unlock.kaiju .unlock-kicker, .unlock.kaiju .unlock-name { color: #ff6b7d; }
+@keyframes quake { 0% { transform: translate(-3px, 2px); } 50% { transform: translate(3px, -2px); } }

@@ -107,7 +107,9 @@
   }
   let buyQty = 1; // 1, 10 ou 'max'
   const qtyFor = (a) => (buyQty === 'max' ? Math.max(1, maxAffordable(a)) : buyQty);
-  const isRevealed = (a) => lvl(a.id) > 0 || S.total >= a.cost * 0.4;
+  const isRevealed = (a) => lvl(a.id) > 0 || (a.postgame ? hasM('laure') && S.total >= a.cost * 0.02 : S.total >= a.cost * 0.4);
+  const animalNames = (m) => m.animals.map((id) => A[id].name).join(' + ');
+  const ownsAny = (m) => m.animals.some((id) => lvl(id) > 0);
 
   /* =====================================================================
    *  FORMATAGE
@@ -208,18 +210,19 @@
       UL.sub.textContent = a.species;
       line = a.desc;
       UL.img.src = Sprites.dataURL(a.id, 5);
-      setTimeout(() => (a.sound === 'meow' ? Audio8.meow(a.pitch, 0.4) : Audio8.bark(a.pitch, 0.5)), 450);
+      setTimeout(() => animalSound(a, 0.5), 450);
     } else {
       const m = M[u.id];
       S.seen['m:' + u.id] = true;
       UL.kicker.textContent = m.boss ? UI.unlock_boss : UI.unlock_manager;
       UL.name.textContent = m.name.toUpperCase();
-      UL.sub.textContent = m.role + ' · ' + fill(UI.unlock_gere, { animal: A[m.animal].name });
+      UL.sub.textContent = m.role + ' · ' + fill(UI.unlock_gere, { animal: m.animals.map((id) => A[id].name).join(' et ') });
       line = '« ' + m.catch + ' »';
       UL.img.src = Sprites.dataURL(m.id, 5);
       setTimeout(() => Audio8.manager(), 450);
     }
     // relance les animations CSS
+    UL.el.classList.toggle('kaiju', u.type === 'animal' && !!A[u.id].window);
     UL.el.classList.remove('hidden', 'play');
     void UL.el.offsetWidth;
     UL.el.classList.add('play');
@@ -265,7 +268,10 @@
   /* =====================================================================
    *  ACTIONS DU JOUEUR
    * ===================================================================== */
-  const animalSound = (a, vol) => (a.sound === 'meow' ? Audio8.meow(a.pitch, vol) : Audio8.bark(a.pitch, vol));
+  function animalSound(a, vol) {
+    const fn = Audio8[a.sound] || Audio8.bark;
+    fn(a.pitch, vol);
+  }
 
   // On touche un animal : il part chercher des pizzas (rien ne se passe s'il est déjà parti)
   function tapAnimal(id) {
@@ -321,12 +327,11 @@
 
   function buyManager(m) {
     if (hasM(m.id)) return;
-    if (!lvl(m.animal)) { Audio8.error(); Room.floatText(fill(UI.manager_verrouille, { animal: A[m.animal].name }), 160, 40, 'gold'); return; }
+    if (!ownsAny(m)) { Audio8.error(); Room.floatText(fill(UI.manager_verrouille, { animal: animalNames(m) }), 160, 40, 'gold'); return; }
     if (S.pizzas < m.cost) { Audio8.error(); return; }
     S.pizzas -= m.cost;
     S.mgr[m.id] = true;
-    const b = S.biz[m.animal];
-    b.run = true; b.t = 0;
+    m.animals.forEach((id) => { const b = S.biz[id]; if (b) { b.run = true; b.t = 0; } });
     queueUnlock({
       type: 'manager', id: m.id,
       onClose: m.boss ? () => { hideDialog(); Room.startCinematic(); } : null,
@@ -370,6 +375,25 @@
     Room.floatText('+' + fmt(reward) + ' ✨', g.x, g.y - 10, 'gold');
   }
 
+  // Cadeau de pizzas (événements surprise) : proportionnel à ce que la meute rapporte
+  function reward(k) {
+    const top = ANIMALS.reduce((m, a) => (lvl(a.id) ? Math.max(m, profit(a)) : m), 0);
+    const gain = Math.max(40, pps() * 15 * k, top * 1.2 * k);
+    S.pizzas += gain; S.total += gain;
+    return gain;
+  }
+
+  // Bandeau d'événement en haut du salon (null = le masquer)
+  let bannerTimer = null;
+  function showBanner(text, ms) {
+    clearTimeout(bannerTimer);
+    const box = $('eventBanner');
+    if (!text) { box.classList.add('hidden'); return; }
+    setText($('eventText'), text);
+    box.classList.remove('hidden');
+    if (ms) bannerTimer = setTimeout(() => box.classList.add('hidden'), ms);
+  }
+
   /* =====================================================================
    *  LIEN AVEC LE SALON
    * ===================================================================== */
@@ -382,6 +406,9 @@
     progress: (id) => { const b = S.biz[id]; return b ? b.t / cycleTime(A[id]) : 0; },
     boost: tourneeOn,
     busy: anyRunning,
+    frozen: () => Life.frozen(),
+    onChichi: (kind) => Life.chichi(kind),
+    onThiefGone: () => Life.thiefGone(),
     total: () => S.total,
     say: showDialog,
     onVictory: () => {
@@ -393,8 +420,13 @@
     onTap: (pt) => {
       Audio8.unlock();
       if (Room.hitGolden(pt)) { catchGolden(); return; }
+      if (Life.tapEvent(pt)) return;                       // voleur, voisin, Chichi qui demande de l'aide
       const ac = Room.actorAt(pt);
-      if (ac) tapAnimal(ac.id);
+      if (ac) {                                            // un animal prêt part en trajet, sinon on le caresse
+        if (host.ready(ac.id)) tapAnimal(ac.id); else Life.pet(ac);
+        return;
+      }
+      Life.tapHuman(pt);                                   // un humain dit une phrase
     },
   };
 
@@ -444,7 +476,7 @@
       item.setAttribute('role', 'button'); item.tabIndex = 0;
       const img = el('img', 'item-icon'); img.src = faceOf(m.id, 3); img.alt = m.name;
       const mid = el('div');
-      const effect = fill(UI.manager_effet, { animal: A[m.animal].name, mult: MANAGER_MULT }) + (m.skill ? UI.manager_competence : '') + (m.boss ? UI.manager_boss : '');
+      const effect = fill(UI.manager_effet, { animal: m.animals.map((id) => A[id].name).join(' et '), mult: MANAGER_MULT }) + (m.skill ? UI.manager_competence : '') + (m.boss ? UI.manager_boss : '');
       const sub = el('div', 'item-sub', m.role);
       const cost = el('div', 'item-cost');
       mid.append(el('div', 'item-name', m.name), sub, el('div', 'item-effect', effect), cost);
@@ -489,6 +521,7 @@
   function refreshShop() {
     for (const r of shop.animals) {
       const a = r.a, n = lvl(a.id), revealed = isRevealed(a);
+      r.root.style.display = a.postgame && !revealed && !n ? 'none' : '';      // Godzilla : surprise après la victoire
       r.root.classList.toggle('locked', !revealed);
       setText(r.name, revealed ? a.name : UI.carte_inconnu);
       setText(r.lv, n ? fill(UI.carte_niveau, { niveau: n }) : '');
@@ -504,10 +537,10 @@
       r.buy.disabled = !revealed;
     }
     for (const r of shop.managers) {
-      const own = hasM(r.m.id), animalOwned = lvl(r.m.animal) > 0;
+      const own = hasM(r.m.id), animalOwned = ownsAny(r.m);
       const can = !own && animalOwned && S.pizzas >= r.m.cost;
       r.item.style.display = animalOwned ? '' : 'none';        // caché tant que son animal n'est pas débloqué
-      setText(r.cost, own ? UI.manager_recrute : animalOwned ? fmt(r.m.cost) + ' 🍕' : fill(UI.manager_verrouille, { animal: A[r.m.animal].name }));
+      setText(r.cost, own ? UI.manager_recrute : animalOwned ? fmt(r.m.cost) + ' 🍕' : fill(UI.manager_verrouille, { animal: animalNames(r.m) }));
       r.cost.classList.toggle('no', !own && !can);
       setText(r.count, own ? '★' : '');
       r.item.classList.toggle('owned', own);
@@ -565,7 +598,7 @@
 
   // Paliers de pizzas racontés par Octave (quand aucune boîte de dialogue n'est ouverte)
   function checkStory() {
-    if (S.story < STORY.length && S.total >= STORY[S.story][0] && !Room.cinematic && !UL.cur &&
+    if (S.story < STORY.length && S.total >= STORY[S.story][0] && !Room.cinematic && !UL.cur && !Life.eventActive() &&
         dlg.el.classList.contains('hidden')) {
       showDialog('pizzaMini', UI.palier_titre, STORY[S.story][1], 6000);
       S.story++;
@@ -600,7 +633,8 @@
     const nowMs = Date.now();
     const elapsed = Math.min(3600, Math.max(0, (nowMs - lastProd) / 1000));   // le temps passe même onglet en veille
     lastProd = nowMs;
-    tick(elapsed);
+    tick(Life.frozen() ? 0 : elapsed);                    // le voisin fige la meute quelques secondes
+    Life.update(dt);
 
     if (!Room.golden && !Room.cinematic && !UL.cur) {
       nextGolden -= dt;
@@ -629,6 +663,11 @@
     $('vicHeart').src = Sprites.dataURL('heart', 6);
     buildShop();
     Room.init($('room'), $('floaters'), host);
+    Life.init({
+      present: (id) => id === 'octave' || hasM(id),
+      count: lvl, total: () => S.total, reward, fmt, banner: showBanner, say: showDialog, animalSound,
+      busy: () => !!UL.cur || Room.cinematic || !dlg.el.classList.contains('hidden') || !$('victory').classList.contains('hidden'),
+    });
 
     const hadSave = load();
     Room.syncActors(false);
@@ -652,11 +691,18 @@
       }
     }
     lastProd = Date.now();
+    if (hasM('laure') && S.victory) maybeKaiju();
     refreshShop(); refreshHud();
     requestAnimationFrame((t) => { last = t; requestAnimationFrame(frame); });
   }
 
-  $('btnContinue').addEventListener('click', () => $('victory').classList.add('hidden'));
+  // Après la victoire : un rugissement… Godzilla arrive à la fenêtre (une seule fois)
+  function maybeKaiju() {
+    if (!hasM('laure') || S.seen.kaiju) return;
+    S.seen.kaiju = true;
+    setTimeout(() => Life.kaiju(), 900);
+  }
+  $('btnContinue').addEventListener('click', () => { $('victory').classList.add('hidden'); maybeKaiju(); });
   // Le navigateur n'autorise le son qu'après un toucher
   ['pointerdown', 'touchstart', 'click'].forEach((ev) => document.addEventListener(ev, () => Audio8.unlock(), { once: true }));
   window.addEventListener('beforeunload', save);

@@ -5,9 +5,15 @@ animal.chichi.desc;Animaux;Chichi : description (sur sa carte tant qu'il n'est p
 animal.saphire.nom;Animaux;Saphire : nom (carte, animation d'unlock);Saphire
 animal.saphire.espece;Animaux;Saphire : espèce, affichée sous son nom dans l'animation d'unlock;Chien
 animal.saphire.desc;Animaux;Saphire : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Flaire les parts oubliées sous le canapé.
+animal.jojo.nom;Animaux;Jojo Lardon : nom (carte, animation d'unlock);Jojo Lardon
+animal.jojo.espece;Animaux;Jojo Lardon : espèce, affichée sous son nom dans l'animation d'unlock;Peluche (singe IKEA)
+animal.jojo.desc;Animaux;Jojo Lardon : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le singe peluche d'IKEA : il ne dort jamais, il te regarde.
 animal.bouba.nom;Animaux;Bouba : nom (carte, animation d'unlock);Bouba
 animal.bouba.espece;Animaux;Bouba : espèce, affichée sous son nom dans l'animation d'unlock;Chien
 animal.bouba.desc;Animaux;Bouba : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le gros tank qui rapporte des boîtes entières.
+animal.brindibou.nom;Animaux;Brindibou : nom (carte, animation d'unlock);Brindibou
+animal.brindibou.espece;Animaux;Brindibou : espèce, affichée sous son nom dans l'animation d'unlock;Pokémon (Plante/Vol)
+animal.brindibou.desc;Animaux;Brindibou : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Petit hibou-plante qui livre des pizzas en silence, la nuit.
 animal.gilbert.nom;Animaux;Gilbert : nom (carte, animation d'unlock);Gilbert
 animal.gilbert.espece;Animaux;Gilbert : espèce, affichée sous son nom dans l'animation d'unlock;Chat
 animal.gilbert.desc;Animaux;Gilbert : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le nouveau chat chaotique qui braque les livreurs.
@@ -17,12 +23,15 @@ animal.idylle.desc;Animaux;Idylle : description (sur sa carte tant qu'il n'est p
 animal.july.nom;Animaux;July la Queen : nom (carte, animation d'unlock);July la Queen
 animal.july.espece;Animaux;July la Queen : espèce, affichée sous son nom dans l'animation d'unlock;Chat Ultime
 animal.july.desc;Animaux;July la Queen : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);La reine absolue sur son trône de cartons.
+animal.godzilla.nom;Animaux;Godzilla : nom (carte, animation d'unlock);Godzilla
+animal.godzilla.espece;Animaux;Godzilla : espèce, affichée sous son nom dans l'animation d'unlock;Kaiju
+animal.godzilla.desc;Animaux;Godzilla : description (sur sa carte tant qu'il n'est pas débloqué, et dans l'animation d'unlock);Le roi des monstres. Il ne rapporte pas des pizzas : il pille les pizzerias.
 manager.janis.nom;Managers;Janis : nom (carte COLOC, animation d'unlock);Janis
-manager.janis.role;Managers;Janis : rôle, affiché sous son nom;Coloc · Mode Paysanne
-manager.janis.phrase;Managers;Janis : phrase phare, écrite pendant l'animation d'unlock;On gaspille rien : même les miettes, on les récolte !
+manager.janis.role;Managers;Janis : rôle, affiché sous son nom;Coloc · Emmaüs & blocus
+manager.janis.phrase;Managers;Janis : phrase phare, écrite pendant l'animation d'unlock;Rien ne se perd, tout se récupère. Comme à Emmaüs !
 manager.anna.nom;Managers;Anna : nom (carte COLOC, animation d'unlock);Anna
-manager.anna.role;Managers;Anna : rôle, affiché sous son nom;Coloc · Mimi Baddie
-manager.anna.phrase;Managers;Anna : phrase phare, écrite pendant l'animation d'unlock;Wesh la coloc ! Cette meute va devenir virale !
+manager.anna.role;Managers;Anna : rôle, affiché sous son nom;Coloc · Artiste
+manager.anna.phrase;Managers;Anna : phrase phare, écrite pendant l'animation d'unlock;Cette meute sera ma plus belle toile. DarlingChouchou va adorer.
 manager.oliver.nom;Managers;Olivier : nom (carte COLOC, animation d'unlock);Olivier
 manager.oliver.role;Managers;Olivier : rôle, affiché sous son nom;Le Père d'Octave
 manager.oliver.phrase;Managers;Olivier : phrase phare, écrite pendant l'animation d'unlock;Santé fiston ! La tournée est pour moi !
@@ -35,6 +44,9 @@ manager.ilario.phrase;Managers;Ilario : phrase phare, écrite pendant l'animatio
 manager.laure.nom;Managers;Laure : nom (carte COLOC, animation d'unlock);Laure
 manager.laure.role;Managers;Laure : rôle, affiché sous son nom;Le Crush Gothique · BOSS FINAL
 manager.laure.phrase;Managers;Laure : phrase phare, écrite pendant l'animation d'unlock;... Ton capital symbolique est fascinant.
+manager.octave.nom;Managers;Octave : nom (carte COLOC, animation d'unlock);Octave
+manager.octave.role;Managers;Octave : rôle, affiché sous son nom;Dresseur de kaiju
+manager.octave.phrase;Managers;Octave : phrase phare, écrite pendant l'animation d'unlock;Assis ! ... Bon, reste debout.
 boost.coupons.nom;Boosts;Boost Coupons Domino's : nom;Coupons Domino's
 boost.coupons.ref;Boosts;Boost Coupons Domino's : sous-titre;Bon plan de la coloc
 boost.coupons.desc;Boosts;Boost Coupons Domino's : description;Les croquettes en promo, la meute à prix cassé.
@@ -47,10 +59,10 @@ boost.egoist.nom;Boosts;Boost Mentalité d'Égoïste : nom;Mentalité d'Égoïst
 boost.egoist.ref;Boosts;Boost Mentalité d'Égoïste : sous-titre;Tattoo Blue Lock
 boost.egoist.desc;Boosts;Boost Mentalité d'Égoïste : description;Chaque chien veut être le numéro 1 de la meute.
 boost.egoist.effet;Boosts;Boost Mentalité d'Égoïste : effet affiché en vert;Chichi, Saphire & Bouba : pizzas x2
-boost.hype.nom;Boosts;Boost Hype TikTok : nom;Hype TikTok
-boost.hype.ref;Boosts;Boost Hype TikTok : sous-titre;La coloc devient virale
-boost.hype.desc;Boosts;Boost Hype TikTok : description;Les livreurs se battent pour livrer à la coloc.
-boost.hype.effet;Boosts;Boost Hype TikTok : effet affiché en vert;Toutes les pizzas +35%
+boost.hype.nom;Boosts;Boost Vernissage de la coloc : nom;Vernissage de la coloc
+boost.hype.ref;Boosts;Boost Vernissage de la coloc : sous-titre;Anna expose
+boost.hype.desc;Boosts;Boost Vernissage de la coloc : description;DarlingChouchou et Théodora ont tout acheté, même les pizzas.
+boost.hype.effet;Boosts;Boost Vernissage de la coloc : effet affiché en vert;Toutes les pizzas +35%
 boost.kaneda.nom;Boosts;Boost Moto de Kaneda : nom;Moto de Kaneda
 boost.kaneda.ref;Boosts;Boost Moto de Kaneda : sous-titre;Tattoo Akira
 boost.kaneda.desc;Boosts;Boost Moto de Kaneda : description;Livraison en dérapage à travers Montpellier.
@@ -81,6 +93,108 @@ palier.05;Paliers;Dialogue quand le total de pizzas atteint 1 000 000;1 MILL
 palier.06;Paliers;Dialogue quand le total de pizzas atteint 10 000 000;10 millions. La coloc est visible depuis la Comédie. Par l'odeur.
 palier.07;Paliers;Dialogue quand le total de pizzas atteint 100 000 000;100 millions. Laure a noté « phénomène de meute » dans son carnet de terrain.
 palier.08;Paliers;Dialogue quand le total de pizzas atteint 1 000 000 000;1 MILLIARD de pizzas. C'est le moment. Laure attend.
+phrase.octave.01;Phrases des personnages;Octave : phrase n°01 (quand on le touche dans le salon, une au hasard);Un milliard de pizzas... c'est un début.
+phrase.octave.02;Phrases des personnages;Octave : phrase n°02 (quand on le touche dans le salon, une au hasard);Laure m'a regardé hier. Enfin, dans ma direction.
+phrase.octave.03;Phrases des personnages;Octave : phrase n°03 (quand on le touche dans le salon, une au hasard);Je suis maître-chien, pas maître de moi-même.
+phrase.octave.04;Phrases des personnages;Octave : phrase n°04 (quand on le touche dans le salon, une au hasard);Quelqu'un a vu mes mangas ? ... Ah, par terre.
+phrase.octave.05;Phrases des personnages;Octave : phrase n°05 (quand on le touche dans le salon, une au hasard);Akira, tome 3. Encore.
+phrase.octave.06;Phrases des personnages;Octave : phrase n°06 (quand on le touche dans le salon, une au hasard);Si Laure me répond, j'arrête la pizza. Peut-être.
+phrase.janis.01;Phrases des personnages;Janis : phrase n°01 (quand on le touche dans le salon, une au hasard);Emmaüs avait des chaises à 5 euros. J'ai pris tout le stock.
+phrase.janis.02;Phrases des personnages;Janis : phrase n°02 (quand on le touche dans le salon, une au hasard);Blocus à Paul-Valéry demain. Ramenez des sandwichs.
+phrase.janis.03;Phrases des personnages;Janis : phrase n°03 (quand on le touche dans le salon, une au hasard);J'ai trouvé Jojo Lardon à Emmaüs. Il me regardait.
+phrase.janis.04;Phrases des personnages;Janis : phrase n°04 (quand on le touche dans le salon, une au hasard);En AG, ils ont voté quelque chose. Personne sait quoi.
+phrase.janis.05;Phrases des personnages;Janis : phrase n°05 (quand on le touche dans le salon, une au hasard);Emmaüs, c'est mon Louvre.
+phrase.janis.06;Phrases des personnages;Janis : phrase n°06 (quand on le touche dans le salon, une au hasard);Pas de cours demain : le blocus s'organise. Les croquettes aussi.
+phrase.anna.01;Phrases des personnages;Anna : phrase n°01 (quand on le touche dans le salon, une au hasard);DarlingChouchou m'a envoyé un croquis. J'en tremble encore.
+phrase.anna.02;Phrases des personnages;Anna : phrase n°02 (quand on le touche dans le salon, une au hasard);Théodora dit que la pizza, c'est de l'art conceptuel.
+phrase.anna.03;Phrases des personnages;Anna : phrase n°03 (quand on le touche dans le salon, une au hasard);Ma prochaine expo : DarlingChouchou et Théodora, techniques mixtes.
+phrase.anna.04;Phrases des personnages;Anna : phrase n°04 (quand on le touche dans le salon, une au hasard);Théodora a posé sa tête sur mon épaule. La muse, quoi.
+phrase.anna.05;Phrases des personnages;Anna : phrase n°05 (quand on le touche dans le salon, une au hasard);J'ai fait le portrait de DarlingChouchou en sauce tomate.
+phrase.anna.06;Phrases des personnages;Anna : phrase n°06 (quand on le touche dans le salon, une au hasard);Sans Théodora, mon trait n'est plus le même.
+phrase.oliver.01;Phrases des personnages;Olivier : phrase n°01 (quand on le touche dans le salon, une au hasard);Le truc avec la bière, c'est qu'elle se boit.
+phrase.oliver.02;Phrases des personnages;Olivier : phrase n°02 (quand on le touche dans le salon, une au hasard);Fiston, une pizza sans fromage, c'est une galette.
+phrase.oliver.03;Phrases des personnages;Olivier : phrase n°03 (quand on le touche dans le salon, une au hasard);J'ai toujours dit : pas de conseils. Voilà, c'est un conseil.
+phrase.oliver.04;Phrases des personnages;Olivier : phrase n°04 (quand on le touche dans le salon, une au hasard);Santé !
+phrase.oliver.05;Phrases des personnages;Olivier : phrase n°05 (quand on le touche dans le salon, une au hasard);À Palavas en 94, j'avais des cheveux.
+phrase.oliver.06;Phrases des personnages;Olivier : phrase n°06 (quand on le touche dans le salon, une au hasard);Moi, la sociologie, j'y ai juste goûté.
+phrase.adeline.01;Phrases des personnages;Adeline : phrase n°01 (quand on le touche dans le salon, une au hasard);Et toi, qu'est-ce que ça te fait de récolter autant de pizzas ?
+phrase.adeline.02;Phrases des personnages;Adeline : phrase n°02 (quand on le touche dans le salon, une au hasard);Le vide qu'on remplit de pizza, tu y as déjà pensé ?
+phrase.adeline.03;Phrases des personnages;Adeline : phrase n°03 (quand on le touche dans le salon, une au hasard);Gilbert exprime peut-être son enfant intérieur.
+phrase.adeline.04;Phrases des personnages;Adeline : phrase n°04 (quand on le touche dans le salon, une au hasard);Qu'est-ce que cette absence réveille chez toi ?
+phrase.adeline.05;Phrases des personnages;Adeline : phrase n°05 (quand on le touche dans le salon, une au hasard);On est tous le chien de quelqu'un.
+phrase.adeline.06;Phrases des personnages;Adeline : phrase n°06 (quand on le touche dans le salon, une au hasard);Respire. Observe la meute. Qu'est-ce que tu ressens ?
+phrase.ilario.01;Phrases des personnages;Ilario : phrase n°01 (quand on le touche dans le salon, une au hasard);Apagnan !
+phrase.ilario.02;Phrases des personnages;Ilario : phrase n°02 (quand on le touche dans le salon, une au hasard);Quoicoubeh.
+phrase.ilario.03;Phrases des personnages;Ilario : phrase n°03 (quand on le touche dans le salon, une au hasard);T'as les cramptés ?
+phrase.ilario.04;Phrases des personnages;Ilario : phrase n°04 (quand on le touche dans le salon, une au hasard);Apagnan, c'est chaud.
+phrase.ilario.05;Phrases des personnages;Ilario : phrase n°05 (quand on le touche dans le salon, une au hasard);T'as les cramptés ou pas ?
+phrase.ilario.06;Phrases des personnages;Ilario : phrase n°06 (quand on le touche dans le salon, une au hasard);Quoicoubeh, mec.
+phrase.laure.01;Phrases des personnages;Laure : phrase n°01 (quand on le touche dans le salon, une au hasard);...
+phrase.laure.02;Phrases des personnages;Laure : phrase n°02 (quand on le touche dans le salon, une au hasard);Bourdieu avait raison. Sur tout.
+phrase.laure.03;Phrases des personnages;Laure : phrase n°03 (quand on le touche dans le salon, une au hasard);Je lis. Merci.
+phrase.laure.04;Phrases des personnages;Laure : phrase n°04 (quand on le touche dans le salon, une au hasard);Le capital symbolique d'un chien est sous-estimé.
+phrase.laure.05;Phrases des personnages;Laure : phrase n°05 (quand on le touche dans le salon, une au hasard);Ne me parle pas de pizza. ... Si, continue.
+dialogue.01.1;Conversations;Conversation n°01 (Olivier + Laure) : réplique 1, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);Bourdieu, c'est pas le gardien de Montpellier ?
+dialogue.01.2;Conversations;Conversation n°01 (Olivier + Laure) : réplique 2, dite par Laure (la conversation n'a lieu que si tous sont dans le salon);...
+dialogue.01.3;Conversations;Conversation n°01 (Olivier + Laure) : réplique 3, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);Santé.
+dialogue.02.1;Conversations;Conversation n°02 (Janis + Anna) : réplique 1, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Y'a un blocus à Paul-Valéry, tu viens ?
+dialogue.02.2;Conversations;Conversation n°02 (Janis + Anna) : réplique 2, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);Théodora dit que le blocus est une performance.
+dialogue.02.3;Conversations;Conversation n°02 (Janis + Anna) : réplique 3, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Théodora ramène des sandwichs ?
+dialogue.03.1;Conversations;Conversation n°03 (Adeline + Octave) : réplique 1, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);Qu'est-ce qui te pousse à vouloir impressionner Laure ?
+dialogue.03.2;Conversations;Conversation n°03 (Adeline + Octave) : réplique 2, dite par Octave (la conversation n'a lieu que si tous sont dans le salon);... Les pizzas ?
+dialogue.03.3;Conversations;Conversation n°03 (Adeline + Octave) : réplique 3, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);Hm. Intéressant.
+dialogue.04.1;Conversations;Conversation n°04 (Ilario + Olivier) : réplique 1, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);Apagnan !
+dialogue.04.2;Conversations;Conversation n°04 (Ilario + Olivier) : réplique 2, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);Santé, fiston.
+dialogue.04.3;Conversations;Conversation n°04 (Ilario + Olivier) : réplique 3, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);Quoicoubeh.
+dialogue.05.1;Conversations;Conversation n°05 (Anna + Adeline) : réplique 1, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);DarlingChouchou dit que tu me comprends trop bien.
+dialogue.05.2;Conversations;Conversation n°05 (Anna + Adeline) : réplique 2, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);Et ça te fait quoi ?
+dialogue.05.3;Conversations;Conversation n°05 (Anna + Adeline) : réplique 3, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);Un tableau.
+dialogue.06.1;Conversations;Conversation n°06 (Janis + Octave) : réplique 1, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);J'ai trouvé un four à Emmaüs.
+dialogue.06.2;Conversations;Conversation n°06 (Janis + Octave) : réplique 2, dite par Octave (la conversation n'a lieu que si tous sont dans le salon);Un four à pizza ?
+dialogue.06.3;Conversations;Conversation n°06 (Janis + Octave) : réplique 3, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Un four. On verra.
+dialogue.07.1;Conversations;Conversation n°07 (Ilario + Adeline) : réplique 1, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);T'as les cramptés ?
+dialogue.07.2;Conversations;Conversation n°07 (Ilario + Adeline) : réplique 2, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);Qu'est-ce que cette question dit de toi ?
+dialogue.07.3;Conversations;Conversation n°07 (Ilario + Adeline) : réplique 3, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);Quoicoubeh.
+dialogue.08.1;Conversations;Conversation n°08 (Olivier + Janis) : réplique 1, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);À Emmaüs j'ai acheté un tonneau.
+dialogue.08.2;Conversations;Conversation n°08 (Olivier + Janis) : réplique 2, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Il est vide ?
+dialogue.08.3;Conversations;Conversation n°08 (Olivier + Janis) : réplique 3, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);Il l'était.
+dialogue.09.1;Conversations;Conversation n°09 (Octave + Ilario) : réplique 1, dite par Octave (la conversation n'a lieu que si tous sont dans le salon);Ton Idylle est bien dressée, Ilario.
+dialogue.09.2;Conversations;Conversation n°09 (Octave + Ilario) : réplique 2, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);Apagnan, c'est elle qui me dresse.
+dialogue.10.1;Conversations;Conversation n°10 (Anna + Laure) : réplique 1, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);Théodora aimerait te peindre, Laure.
+dialogue.10.2;Conversations;Conversation n°10 (Anna + Laure) : réplique 2, dite par Laure (la conversation n'a lieu que si tous sont dans le salon);... Pas aujourd'hui.
+dialogue.10.3;Conversations;Conversation n°10 (Anna + Laure) : réplique 3, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);DarlingChouchou dit pareil.
+dialogue.11.1;Conversations;Conversation n°11 (Adeline + Olivier) : réplique 1, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);Olivier, qu'est-ce que la bière vous apporte ?
+dialogue.11.2;Conversations;Conversation n°11 (Adeline + Olivier) : réplique 2, dite par Olivier (la conversation n'a lieu que si tous sont dans le salon);De la mousse.
+dialogue.11.3;Conversations;Conversation n°11 (Adeline + Olivier) : réplique 3, dite par Adeline (la conversation n'a lieu que si tous sont dans le salon);On creuse.
+dialogue.12.1;Conversations;Conversation n°12 (Janis + Ilario) : réplique 1, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Ilario, tu viens au blocus ?
+dialogue.12.2;Conversations;Conversation n°12 (Janis + Ilario) : réplique 2, dite par Ilario (la conversation n'a lieu que si tous sont dans le salon);Quoicoubeh ?
+dialogue.12.3;Conversations;Conversation n°12 (Janis + Ilario) : réplique 3, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);J'en conclus que oui.
+dialogue.13.1;Conversations;Conversation n°13 (Octave + Laure) : réplique 1, dite par Octave (la conversation n'a lieu que si tous sont dans le salon);Laure, tu veux une part ?
+dialogue.13.2;Conversations;Conversation n°13 (Octave + Laure) : réplique 2, dite par Laure (la conversation n'a lieu que si tous sont dans le salon);... Peut-être.
+dialogue.13.3;Conversations;Conversation n°13 (Octave + Laure) : réplique 3, dite par Octave (la conversation n'a lieu que si tous sont dans le salon);Elle a dit peut-être !!
+dialogue.14.1;Conversations;Conversation n°14 (Anna + Janis) : réplique 1, dite par Anna (la conversation n'a lieu que si tous sont dans le salon);J'expose DarlingChouchou à Paul-Valéry.
+dialogue.14.2;Conversations;Conversation n°14 (Anna + Janis) : réplique 2, dite par Janis (la conversation n'a lieu que si tous sont dans le salon);Pendant le blocus ? Le public sera sur place.
+evenement.voisin.annonce;Événement : le voisin du dessous;Bandeau affiché au début de l'événement;Le voisin du dessous tape au plafond avec son balai ! La meute se fige…
+evenement.voisin.indice;Événement : le voisin du dessous;Dit si Olivier n'est pas encore recruté;Il faudrait quelqu'un pour aller lui parler…
+evenement.voisin.octave;Événement : le voisin du dessous;Dit par Octave pendant que le voisin tape;Chut !! Plus un bruit !
+evenement.voisin.olivier;Événement : le voisin du dessous;Dit par Olivier quand on le touche pour régler ça;Je m'en occupe. J'ai une bière pour lui.
+evenement.voisin.succes;Événement : le voisin du dessous;Quand Olivier règle le problème. {gain} = pizzas offertes;Le voisin est calmé. Il t'offre {gain} pizzas pour la peine.
+evenement.voisin.fin;Événement : le voisin du dessous;Quand le voisin se calme tout seul;Le voisin se calme. Pour l'instant.
+evenement.gilbert.1.annonce;Événement : Gilbert a volé un truc;Vol n°1 : bandeau au début;Gilbert a volé la bière d'Olivier ! Attrape-le !
+evenement.gilbert.1.pris;Événement : Gilbert a volé un truc;Vol n°1 : quand on attrape Gilbert. {gain} = pizzas gagnées;Gilbert lâche la bière. Olivier, ému, te donne {gain} pizzas.
+evenement.gilbert.1.fuite;Événement : Gilbert a volé un truc;Vol n°1 : quand Gilbert s'enfuit;Gilbert s'enfuit avec la bière d'Olivier…
+evenement.gilbert.2.annonce;Événement : Gilbert a volé un truc;Vol n°2 : bandeau au début;Gilbert a volé le carnet de croquis d'Anna ! Attrape-le !
+evenement.gilbert.2.pris;Événement : Gilbert a volé un truc;Vol n°2 : quand on attrape Gilbert. {gain} = pizzas gagnées;Gilbert lâche le carnet. Anna te donne {gain} pizzas contre un croquis de toi.
+evenement.gilbert.2.fuite;Événement : Gilbert a volé un truc;Vol n°2 : quand Gilbert s'enfuit;Gilbert s'enfuit avec le carnet de croquis d'Anna…
+evenement.gilbert.3.annonce;Événement : Gilbert a volé un truc;Vol n°3 : bandeau au début;Gilbert a volé le casque de Bouba ! Attrape-le !
+evenement.gilbert.3.pris;Événement : Gilbert a volé un truc;Vol n°3 : quand on attrape Gilbert. {gain} = pizzas gagnées;Gilbert lâche le casque. Bouba aboie de joie et t'apporte {gain} pizzas.
+evenement.gilbert.3.fuite;Événement : Gilbert a volé un truc;Vol n°3 : quand Gilbert s'enfuit;Gilbert s'enfuit avec le casque de Bouba…
+chichi.demande_descendre;Chichi sur le canapé;Chichi demande à descendre du canapé (touche-la pour l'aider);Quelqu'un peut m'aider à descendre ?
+chichi.merci_descendu;Chichi sur le canapé;Chichi remercie quand on l'a fait descendre. {gain} = pizzas offertes;Merci ! Le sol, c'est la vie. Tiens, {gain} pizzas.
+chichi.abandon_descendre;Chichi sur le canapé;Chichi abandonne si personne ne l'aide à descendre;Bon... je reste là-haut.
+chichi.demande_monter;Chichi sur le canapé;Chichi demande à remonter sur le canapé;Je peux remonter sur le canapé ?
+chichi.merci_monte;Chichi sur le canapé;Chichi remercie quand on l'a fait remonter. {gain} = pizzas offertes;Ah, mon canapé ♥ Tiens, {gain} pizzas.
+chichi.abandon_monter;Chichi sur le canapé;Chichi remonte toute seule si personne ne vient;Tant pis, je remonte toute seule !
 ui.tutoriel;Dialogues;Octave au tout début de la partie, après l'unlock de Chichi;Touche Chichi : il part chercher des pizzas ! Améliore-le pour qu'il en rapporte plus, puis recrute Janis pour qu'il y aille tout seul.
 ui.hors_ligne;Dialogues;Octave au retour dans le jeu (boost « Vers l'infini »). {duree} = temps d'absence, {gain} = pizzas gagnées;Pendant mon absence ({duree}), la meute a ramené {gain} pizzas. Bons chiens.
 ui.cine_laure;Dialogues;Laure pendant la cinématique de victoire;... Ta meute a un capital symbolique fascinant. Bourdieu n'avait pas prévu Chichi. ... On partage cette pizza ?
@@ -123,3 +237,6 @@ ui.manager_verrouille;Cartes des managers;Quand on n'a pas encore l'animal. {ani
 ui.boost_actif;Cartes des boosts;Quand le boost est déjà acheté;ACTIF ✓
 ui.boost_flottant;Messages flottants;Quand on achète un boost. {nom} = nom du boost;BOOST : {nom}
 ui.vitesse_flottant;Messages flottants;Quand un animal passe un palier de vitesse. {animal} = son nom;⚡ {animal} : VITESSE x2 !
+ui.kaiju_alerte;Dialogues;Octave, après la victoire : Godzilla arrive derrière la fenêtre;Le sol tremble… Quelque chose rôde derrière la fenêtre. Un kaiju ?! Il a l'air de chercher des pizzas.
+ui.kaiju_rugissement;Messages flottants;Rugissement de Godzilla (apparaît dans le salon);GRAAAOUUU !
+ui.carte_gere;Cartes des managers;Inutilisé pour l'instant;gère {animal}

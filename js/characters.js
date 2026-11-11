@@ -257,7 +257,140 @@
     return g.outline();
   }
 
+
+  /* =====================================================================
+   *  7. BRINDIBOU — petit hibou-plante de Pokémon : feuille sur la tête, nœud de feuilles
+   * ===================================================================== */
+  function brindibou(f) {
+    const g = new Grid(24, 28), alt = f % 2;
+    const o = f === 2 ? 0 : 1;                                  // petit saut quand il se déplace
+    const BRN = T('B', 'H', 'D'), LEAF = T('V', 'Y', 'G');
+    // ailes
+    g.shade(E(4.4, 18.6 + o - (f === 2 ? 1.4 : 0), 2.5, 4.8), T('D', 'B', 'D'));
+    g.shade(E(19.6, 18.6 + o - (f === 2 ? 1.4 : 0), 2.5, 4.8), T('D', 'B', 'D'));
+    // corps et ventre clair
+    g.shade(E(12, 18 + o, 7.6, 7), BRN);
+    g.shade(E(12, 19.4 + o, 4.8, 5.2), WHT);
+    for (const [x, y] of [[10, 17], [12, 18], [14, 17], [11, 20], [13, 20], [12, 22]]) g.px(x, y + o, 'X');
+    // tête ronde
+    g.shade(E(12, 10.6 + o, 8.6, 6.8), BRN);
+    g.shade(E(8.4, 11.4 + o, 3.8, 3.6), WHT); g.shade(E(15.6, 11.4 + o, 3.8, 3.6), WHT);   // disque facial
+    // gros yeux sombres
+    const blink = f === 1;
+    for (const x of [7, 14]) {
+      if (blink) g.fill(R(x, 11.4 + o, 3, 1), 'E');
+      else { g.fill(R(x, 9.6 + o, 3, 4), 'E'); g.px(x, 9.6 + o, 'w'); g.px(x + 1.4, 10.8 + o, 'w'); }
+    }
+    g.fill(R(11, 12.6 + o, 2, 1.6), 'O');                      // bec
+    // feuille sur la tête + nœud de feuilles
+    g.shade(Pg([[12, 0.4 + o], [15.6, 3 + o], [13.6, 5.6 + o], [10.4, 5.6 + o], [8.4, 3 + o]]), LEAF);
+    g.line(12, 1.4 + o, 12, 5 + o, 'G');
+    g.shade(Pg([[8.8, 15.2 + o], [4.6, 13.8 + o], [5.6, 18 + o], [9.6, 17.2 + o]]), LEAF);
+    g.shade(Pg([[15.2, 15.2 + o], [19.4, 13.8 + o], [18.4, 18 + o], [14.4, 17.2 + o]]), LEAF);
+    g.fill(R(11, 15.6 + o, 2, 2), 'G');
+    // pattes
+    g.fill(R(8.4, 24.4 + o - (alt && f > 1 ? 1 : 0), 2.6, 1.6), 'O'); g.fill(R(13.2, 24.4 + o, 2.6, 1.6), 'O');
+    return g.outline();
+  }
+
+  /* =====================================================================
+   *  8. JOJO LARDON — le singe en peluche d'IKEA, bras interminables, regard fixe
+   * ===================================================================== */
+  function jojo(f) {
+    const g = new Grid(24, 28), alt = f % 2;
+    const o = f === 2 ? 0 : 1;
+    const BRN = T('B', 'H', 'D'), CRM = T('W', 'Y', 'X');
+    // queue
+    g.shade(Pg([[17.4, 24 + o], [22, 22 + o], [22.6, 17 + o], [20.8, 17 + o], [20.6, 21 + o], [17.2, 22.6 + o]]), BRN);
+    // jambes et pieds
+    g.shade(Pg([[7, 22 + o], [11.2, 22 + o], [11, 26 + o], [6.6, 26 + o]]), BRN);
+    g.shade(Pg([[12.8, 22 + o], [17, 22 + o], [17.4, 26 + o], [13, 26 + o]]), BRN);
+    g.shade(E(8.2, 26.6 + o, 3, 1.4), CRM); g.shade(E(15.8, 26.6 + o, 3, 1.4), CRM);
+    // corps
+    g.shade(E(12, 19 + o, 6.6, 6.4), BRN);
+    g.recolor(E(12, 20 + o, 3.6, 4), { B: 'W', H: 'Y', D: 'X' });
+    // bras très longs qui pendent (l'un se balance)
+    const sw = alt ? 1 : 0;
+    g.shade(Pg([[5.8, 15.6 + o], [3, 17 + o], [2 - sw, 25.6 + o], [4.4 - sw, 26 + o], [6.2, 19 + o]]), BRN);
+    g.shade(Pg([[18.2, 15.6 + o], [21, 17 + o], [22 + sw, 25.6 + o], [19.6 + sw, 26 + o], [17.8, 19 + o]]), BRN);
+    g.shade(E(3.2 - sw, 26 + o, 2, 1.5), CRM); g.shade(E(20.8 + sw, 26 + o, 2, 1.5), CRM);
+    // oreilles rondes
+    g.shade(E(4.6, 9.8 + o, 2.8, 2.8), BRN); g.shade(E(19.4, 9.8 + o, 2.8, 2.8), BRN);
+    g.fill(E(4.6, 9.8 + o, 1.4, 1.4), 'W'); g.fill(E(19.4, 9.8 + o, 1.4, 1.4), 'W');
+    // grosse tête et masque clair
+    g.shade(E(12, 9.6 + o, 7.4, 6.4), BRN);
+    g.shade(E(12, 11.2 + o, 5.6, 4.4), CRM);
+    g.shade(E(9.2, 9.4 + o, 2.8, 2.4), CRM); g.shade(E(14.8, 9.4 + o, 2.8, 2.4), CRM);
+    // visage fixe, un peu inquiétant
+    g.fill(R(8.2, 9 + o, 1.8, 2), 'E'); g.fill(R(14, 9 + o, 1.8, 2), 'E');
+    g.px(8.2, 9 + o, 'w'); g.px(14, 9 + o, 'w');
+    g.fill(R(11, 12 + o, 2, 1.2), 'D');
+    g.px(10, 14 + o, 'u'); g.px(11, 14.6 + o, 'u'); g.px(12, 14.6 + o, 'u'); g.px(13, 14 + o, 'u');
+    // coutures de peluche
+    for (const y of [17, 18.4]) g.px(12, y + o, 'u');
+    return g.outline();
+  }
+
+  /* =====================================================================
+   *  9. GODZILLA — la tête du roi des monstres à la fenêtre, dos hérissé de plaques bleues
+   * ===================================================================== */
+  function godzilla(f) {
+    const g = new Grid(46, 38), atk = f >= 2, alt = f % 2;
+    // plaques dorsales (bleues, elles brillent quand il attaque)
+    const fin = atk ? T('F', 'f', 'F') : T('F', 'q', 'G');
+    g.shade(Pg([[7, 22], [5, 11], [12, 17]]), fin);
+    g.shade(Pg([[12, 18], [12, 5], [19, 14]]), fin);
+    g.shade(Pg([[18, 13], [21, 1], [26, 9]]), fin);
+    g.shade(Pg([[2, 36], [1, 24], [8, 30]]), fin);
+    // cou et épaules
+    g.shade(E(24, 35, 21, 12), T('B', 'H', 'D'));
+    g.recolor(E(32, 36, 8, 8), { B: 'S', H: 'S', D: 'S' });
+    // tête et museau
+    g.shade(E(23, 15, 14, 10.4), T('B', 'H', 'D'));
+    g.shade(E(34, 17, 9, 6.4), T('B', 'H', 'D'));
+    // mâchoire du bas : la bouche s'ouvre davantage quand il attaque
+    const gap = atk ? 8 : 3;
+    g.shade(Pg([[15, 21], [41, 21 + gap * 0.35], [38, 27 + gap], [19, 28 + gap * 0.6]]), T('D', 'D', 'D'));
+    g.fill(Pg([[17, 21], [41, 21 + gap * 0.35], [40, 23 + gap * 0.7], [18, 24 + gap * 0.5]]), 'R');   // intérieur de la gueule
+    if (atk) g.fill(E(36, 23 + gap * 0.5, 6, 3.4), alt ? 'f' : 'F');                                   // souffle atomique
+    // dents
+    for (let x = 20; x <= 38; x += 3) { g.px(x, 21.4, 't'); g.px(x + 1, 21.4, 't'); g.px(x, 22.4, 't'); }
+    for (let x = 22; x <= 36; x += 4) { g.px(x, 24 + gap * 0.5, 't'); g.px(x, 23 + gap * 0.5, 't'); }
+    // œil jaune, arcade sourcilière, narine
+    g.fill(R(22, 9, 5, 3), 'Y'); g.fill(R(24, 9, 1.4, 3), 'E');
+    g.fill(Pg([[20, 7.6], [30, 10], [30, 8.4], [20, 6]]), 'D');
+    g.fill(R(38, 12.4, 2, 1.4), 'E');
+    // écailles
+    for (const [x, y] of [[12, 14], [16, 10], [10, 18], [14, 24], [26, 5], [30, 26], [8, 30], [20, 31], [28, 33], [36, 31], [3, 34]]) g.px(x, y, 'H');
+    return g.outline();
+  }
+
+  /* ---------- objets volés par Gilbert ---------- */
+  define('itemSketch', {
+    w: 12, h: 14, palette: { C: '#2a8a8a', c: '#4ac0c0', k: '#1a5a5a', W: '#ffffff', Y: '#ffd23f' },
+    frames: [() => {
+      const g = new Grid(12, 14);
+      g.shade(Pg([[1.5, 1], [11, 1], [11, 13], [1.5, 13]]), T('C', 'c', 'k'));
+      for (let y = 2; y < 13; y += 2.4) g.px(1, y, 'W');                       // spirale
+      g.fill(R(4, 4, 5, 3), 'Y'); g.fill(R(5, 8, 4, 1), 'W');                  // étiquette « croquis »
+      return g.outline();
+    }],
+  });
+  define('itemHelmet', {
+    w: 14, h: 10, palette: { J: '#ffcf1f', j: '#fff27a', k: '#c8960a' },
+    frames: [() => {
+      const g = new Grid(14, 10);
+      g.shade(Pg([[2, 7], [2.6, 3.6], [5, 1.6], [9, 1.6], [11.4, 3.6], [12, 7]]), T('J', 'j', 'k'));
+      g.shade(Pg([[0.6, 6.6], [13.4, 6.6], [13, 8.4], [1, 8.4]]), T('J', 'j', 'k'));
+      g.fill(R(6.2, 1.8, 1.6, 5), 'k');
+      return g.outline();
+    }],
+  });
+
   const ANIMAL_PAL = {
+    jojo: { B: '#8c5a34', H: '#b07848', D: '#5e3a1e', W: '#ead6ac', Y: '#f8ecd0', X: '#c8b088', E: '#14080a', u: '#4a2a14' },
+    brindibou: { B: '#8a6a48', H: '#b08a60', D: '#5a4228', W: '#f2e6c8', X: '#d8c8a0', V: '#4aa845', Y: '#7ad86a', G: '#2e7030', E: '#1a1008', O: '#f0a030' },
+    godzilla: { B: '#3e5a48', H: '#5f8a6c', D: '#25382c', S: '#8a9a7a', F: '#6ad0ff', f: '#e8fbff', q: '#3a7aa8', G: '#2a5a8a', Y: '#ffd23f', E: '#0a0608', R: '#8a1f2a', t: '#f0ead8' },
     chichi: { B: '#8d90a0', H: '#b9bccb', D: '#585a6e', A: '#2c2c3a', a: '#4a4a5c', Z: '#1a1a24',
       T: '#c98a4e', V: '#e5b078', U: '#8f5a2c', W: '#efe8de', Y: '#ffffff', X: '#c9c0b8',
       E: '#120a10', N: '#0a060c', P: '#e08a9a', R: '#d7263d', u: '#5a3a28' },
@@ -275,8 +408,8 @@
       W: '#fbf0dc', Y: '#ffffff', X: '#dcc8a8', Q: '#e8a010', E: '#1a0a10', P: '#f08aa0', u: '#7a4a2a',
       M: '#7b2cbf', m: '#a55ae0', n: '#4a1a7a', G: '#ffd23f', J: '#fff08a', g: '#b8861b', R: '#d7263d', C: '#6fc3ff' },
   };
-  const animals = { chichi, saphire, bouba, gilbert, idylle, july };
-  const dims = { chichi: [28, 26], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [30, 22], july: [32, 32] };
+  const animals = { chichi, saphire, jojo, bouba, brindibou, gilbert, idylle, july, godzilla };
+  const dims = { jojo: [24, 28], brindibou: [24, 28], godzilla: [46, 38], chichi: [28, 26], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [30, 22], july: [32, 32] };
   Object.keys(animals).forEach((id) => {
     const fn = animals[id];
     define(id, {
