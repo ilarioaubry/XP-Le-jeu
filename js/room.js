@@ -31,6 +31,7 @@
     janis: { x: 46, y: 138 },
     oliver: { x: 208, y: 120 },
     adeline: { x: 202, y: 150 },
+    ilario: { x: 172, y: 148 },
     anna: { x: 240, y: 120 },
     laure: { x: 300, y: 128 },
     laureWin: { x: 96, y: 146 },
@@ -212,13 +213,15 @@
    *  Les animaux : ils partent chercher des pizzas quand leur trajet est en cours
    * --------------------------------------------------------------------- */
   let actors = [];
+  // Place des animaux qui restent assis (Chichi sur le tapis, July sur son trône)
+  const SPOTS = { chichi: [150, 166, 1], july: [POS.throne.x + 12, POS.throne.y - 15, -1] };
   function makeActor(a, idx) {
-    const spot = a.id === 'july' ? [POS.throne.x + 12, POS.throne.y - 15] : null;
+    const spot = a.still ? SPOTS[a.id] : null;
     return {
       id: a.id, idx, def: a,
       x: spot ? spot[0] : rand(30, 290),
       y: spot ? spot[1] : rand(152, 176),
-      dir: Math.random() < 0.5 ? -1 : 1,
+      dir: spot ? spot[2] : (Math.random() < 0.5 ? -1 : 1),
       speed: a.speed * rand(0.85, 1.15),
       walking: false,
       timer: rand(1, 3),
@@ -228,7 +231,7 @@
   }
   function syncActors(spawnFx) {
     for (const a of ANIMALS) {
-      const n = Math.min(host.count(a.id), a.cap);
+      const n = host.count(a.id) > 0 ? 1 : 0;          // un seul animal par espèce, quel que soit son niveau
       const cur = actors.filter((x) => x.id === a.id);
       for (let i = cur.length; i < n; i++) {
         const act = makeActor(a, i);
@@ -382,6 +385,7 @@
       if (host.boost()) Sprites.draw(ctx, 'beer', POS.oliver.x + 8, POS.oliver.y - 17 + Math.round(Math.sin(time * 12) * 2));
     } });
     if (host.has('adeline')) ents.push({ y: POS.adeline.y, draw: () => drawHuman('adeline', POS.adeline.x, POS.adeline.y, 0.5, 2) });
+    if (host.has('ilario')) ents.push({ y: POS.ilario.y, draw: () => drawHuman('ilario', POS.ilario.x, POS.ilario.y, 0.9, 2) });
     if (host.has('anna')) ents.push({ y: POS.anna.y, draw: () => drawHuman('anna', POS.anna.x, POS.anna.y, 1.1, 2.5) });
     if (host.has('laure') && !laureCine) ents.push({ y: POS.laureWin.y, draw: () => drawHuman('laure', POS.laureWin.x, POS.laureWin.y, 0.1, 1.2) });
     ents.push({ y: POS.octave.y, draw: () => drawHuman('octave', POS.octave.x, POS.octave.y, 0, host.busy() ? 6 : 2) });
@@ -464,7 +468,7 @@
     // dialogue
     if (t > 5 && !cine.said) {
       cine.said = true;
-      host.say('laure', 'LAURE', "... Ta meute a un capital symbolique fascinant. Bourdieu n'avait pas prévu Chichi. ... On partage cette pizza ?", 6000);
+      host.say('laure', global.DATA.MANAGERS.find((m) => m.id === 'laure').name.toUpperCase(), global.DATA.UI.cine_laure, 6000);
     }
     // cœurs qui montent
     if (t > 5 && t < 11) {
@@ -482,13 +486,13 @@
         Audio8.victory();
         for (let i = 0; i < 6; i++) puff(rand(40, 280), rand(20, 80), ['#ff2e7e', '#ffcf3f', '#c77dff', '#3ad6c5', '#ffffff'], 18);
       }
-      const txt = 'VICTOIRE !';
+      const txt = global.DATA.UI.cine_victoire;
       const sc = 4;
       const tw = Sprites.textWidth(txt, sc);
       const col = ['#ffcf3f', '#ff2e7e', '#ffffff', '#c77dff'][Math.floor(t * 8) % 4];
       Sprites.drawText(ctx, txt, (W - tw) / 2 + 2, 22, '#0b0710', sc);
       Sprites.drawText(ctx, txt, (W - tw) / 2, 20, col, sc);
-      const sub = 'LAURE A DIT OUI';
+      const sub = global.DATA.UI.cine_soustitre;
       Sprites.drawText(ctx, sub, (W - Sprites.textWidth(sub, 2)) / 2, 46, '#f4ecd8', 2);
     }
   }

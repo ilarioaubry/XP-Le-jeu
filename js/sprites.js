@@ -339,28 +339,6 @@
   /* =====================================================================
    *  ICÔNES D'UPGRADES (tattoos d'Octave)
    * ===================================================================== */
-  define('icoHaki', {
-    palette: { Y: '#f5d061', y: '#b8902a', R: '#d7263d' },
-    frames: [[
-      '..P..........P..',
-      '.P.....PP.....P.',
-      '................',
-      '.....KKKKKK.....',
-      '....KYYYYYYK....',
-      '...KYYYYYYYYK...',
-      '...KYYYYYYYYK...',
-      '...KRRRRRRRRK...',
-      '...KRRRRRRRRK...',
-      '.KKKYYYYYYYYKKK.',
-      'KYYYYYYYYYYYYYYK',
-      'KyYYYYYYYYYYYYyK',
-      '.KKyyyyyyyyyyKK.',
-      '...KKKKKKKKKK...',
-      '.P............P.',
-      '..P..........P..',
-    ]],
-  });
-
   define('icoEgoist', {
     palette: { B: '#2a8bff', W: '#f4f4ff' },
     frames: [[

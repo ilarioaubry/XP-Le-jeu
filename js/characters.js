@@ -29,47 +29,45 @@
   }
 
   /* =====================================================================
-   *  1. CHICHI — chihuahua merle, bien enrobé
+   *  1. CHICHI — chihuahua merle, bien enrobé, assis sur son gros derrière (il ne bouge pas)
    * ===================================================================== */
   function chichi(f) {
-    const g = new Grid(32, 24), s = Math.round(stride(f) / 2), alt = f % 2;
-    // queue en tire-bouchon posée sur le dos rebondi
-    g.shade(Pg([[6, 11], [3.4, 9.8], [2.8, 6.8], [4.4, 5.2], [6.2, 5.6], [5.4, 7.8], [6.8, 9.6], [8, 11.6]]), PRI);
-    g.fill(R(3.8, 5.2, 2, 1.6), 'A');
-    // pattes lointaines, minuscules
-    leg(g, 9, 20, 23, 2.4, s, FAR, 'U');
-    leg(g, 20, 20, 23, 2.4, -s, FAR, 'U');
-    // énorme corps tout rond
-    g.shade(E(14, 15.2, 11.6, 6.9), PRI);
-    g.recolor(E(14, 20.6, 9, 2), { B: 'D', H: 'D' });             // ventre qui touche presque le sol
-    g.recolor(E(21.2, 17, 3.8, 4.4), { B: 'W', H: 'Y', D: 'X' }); // plastron blanc
-    // pattes proches : deux moignons sous le ventre
-    leg(g, 6, 20, 23, 2.8, -s, PRI, 'T');
-    leg(g, 18.4, 20, 23, 2.8, s, PRI, 'T');
-    // cou inexistant, double menton, tête ronde
-    g.shade(E(23.4, 13.6, 4.2, 3), PRI);
-    g.shade(E(23.6, 10.2, 5.4, 4.9), PRI);
-    g.shade(E(28.6, 12.2, 2.9, 2.3), SEC);
+    const g = new Grid(28, 26), alt = f % 2;
+    // petite queue en tire-bouchon derrière
+    g.shade(Pg([[3.8, 22], [1.4, 20.4], [1.2, 17.2], [3, 16.2], [3.4, 18.4], [4.6, 20]]), PRI);
+    g.fill(R(1.6, 16.6, 1.6, 1.4), 'A');
+    // énorme corps en poire
+    g.shade(E(11, 17.6, 8.8, 7.6), PRI);
+    g.shade(E(7, 21.6, 4.6, 3.6), T('D', 'B', 'D'));                 // cuisse repliée
+    g.shade(E(11.4, 24.4, 3.8, 1.6), SEC);                            // patte arrière tendue
+    g.recolor(E(15.6, 18.4, 3.6, 5), { B: 'W', H: 'Y', D: 'X' });     // gros ventre blanc
+    // pattes avant
+    g.shade(Pg([[12.4, 19], [15.4, 19], [15.6, 25.4], [12.2, 25.4]]), FAR);
+    g.shade(Pg([[15.2, 18.6], [18.6, 18.6], [18.8, 25.4], [15, 25.4]]), PRI);
+    g.fill(R(15, 23.8, 3.8, 1.8), 'T'); g.fill(R(12.2, 24, 3.2, 1.6), 'U');
+    // double menton, tête ronde, museau
+    g.shade(E(18.2, 13.4, 4.2, 2.6), PRI);
+    g.shade(E(18.4, 9.6, 5.6, 5), PRI);
+    g.shade(E(22.8, 11.8, 3, 2.3), SEC);
     // oreilles
-    g.shade(Pg([[19.8, 7.6], [18.8, 1.6], [23.6, 5.4]]), FAR);
-    g.shade(Pg([[24, 5.2], [27.6, 1], [29.4, 7.4]]), PRI);
-    g.fill(Pg([[25.2, 5.6], [27.4, 2.4], [28.2, 6.6]]), 'P');
+    g.shade(Pg([[14.8, 7.6], [13.4, 1.4], [18.6, 5.2]]), FAR);
+    g.shade(Pg([[19, 5.2 + (alt ? 0.6 : 0)], [22.6, 0.6 + (alt ? 0.6 : 0)], [24.4, 7.2]]), PRI);
+    g.fill(Pg([[20.2, 5.6], [22.4, 2.4], [23.2, 6.6]]), 'P');
     // taches merle
     const m = { B: 'A', H: 'a', D: 'Z' };
-    g.recolor(E(9.6, 13, 3.4, 2.6), m);
-    g.recolor(E(17.2, 18.6, 2.6, 2), m);
-    g.recolor(E(6.4, 17.6, 2, 1.8), m);
-    g.recolor(E(21.4, 8, 2.2, 2.2), m);
-    g.recolor(E(12.6, 19.2, 1.6, 1.1), m);
+    g.recolor(E(8.4, 15, 3.2, 2.6), m);
+    g.recolor(E(12.6, 21, 2.2, 1.8), m);
+    g.recolor(E(5, 19.4, 1.8, 1.6), m);
+    g.recolor(E(16.4, 7.4, 2.2, 2.2), m);
     // bourrelets
-    for (const [x, y] of [[10, 11], [9, 12], [9, 13], [10, 14], [15, 10], [14, 11], [14, 12], [15, 13], [19, 12], [18, 13], [18, 14]]) g.fill(R(x, y, 1, 1), 'D', 'BHAa');
+    for (const [x, y] of [[9, 12], [8, 13], [8, 14], [9, 15], [4, 18], [4, 19], [5, 20]]) g.fill(R(x, y, 1, 1), 'D', 'BHAa');
     // visage
-    g.fill(R(24.4, 6.6, 3, 1), 'T', 'BHDA');
-    g.fill(R(25, 8, 2, 2), 'E'); g.px(25, 8, 'w');
-    g.fill(R(30, 10.4, 2, 2), 'N');
-    g.fill(R(26.6, 14, 4, 1), 'u');
-    if (alt) g.fill(R(28.4, 14.4, 2, 2), 'P');                    // langue pendante
-    g.fill(R(19.6, 14.2, 3.4, 1.6), 'R'); g.px(21, 15.8, 'G');    // collier qui serre
+    g.fill(R(19.6, 6, 3, 1), 'T', 'BHDA');
+    g.fill(R(20.4, 7.6, 2, 2), 'E'); g.px(20.4, 7.6, 'w');
+    g.fill(R(24.8, 10.4, 2, 2), 'N');
+    g.fill(R(21, 13.4, 4.4, 1), 'u');
+    if (alt) g.fill(R(23, 13.8, 2, 2), 'P');                          // langue pendante
+    g.fill(R(14.2, 12.8, 3.8, 1.6), 'R'); g.px(16, 14.6, 'G');        // collier qui serre
     return g.outline();
   }
 
@@ -108,33 +106,36 @@
   }
 
   /* =====================================================================
-   *  3. BOUBA — le tank : long poil noir, sourcils et bottes feu
+   *  3. BOUBA — le tank : long poil noir, bottes feu, casque de chantier jaune
    * ===================================================================== */
   function bouba(f) {
     const g = new Grid(34, 26), s = stride(f), alt = f % 2;
-    // queue en panache
-    g.shade(E(5.5, 12 + (alt ? 0.8 : 0), 4.2, 5.8), PRI);
+    g.shade(E(5.5, 12 + (alt ? 0.8 : 0), 4.2, 5.8), PRI);                 // queue en panache
     leg(g, 11, 17, 25, 3, s, FAR, 'U');
     leg(g, 21, 17, 25, 3, -s, FAR, 'U');
     g.shade(E(16, 16.4, 11, 6), PRI);
-    g.shade(E(9, 18, 4, 4.4), PRI);                           // cuisse
-    g.recolor(E(23.6, 18, 3.4, 4), { B: 'T', H: 'V', D: 'U' }); // poitrail feu
+    g.shade(E(9, 18, 4, 4.4), PRI);                                       // cuisse
+    g.recolor(E(23.6, 18, 3.4, 4), { B: 'T', H: 'V', D: 'U' });           // poitrail feu
     leg(g, 7, 19, 25, 3.2, -s, SEC, 'U');
     leg(g, 22, 19, 25, 3.2, s, SEC, 'U');
     g.shade(E(25.6, 13, 4.2, 4), PRI);
-    g.shade(E(27, 10.4, 5.6, 5), PRI);                        // tête
-    g.shade(E(31.2, 12.4, 2.8, 2.4), T('G', 'G', 'Z'));       // museau gris
-    // oreilles à franges
-    g.shade(Pg([[23.4, 8], [22.4, 1.8], [27.4, 5.6]]), T('D', 'B', 'D'));
-    g.shade(Pg([[27.6, 5.6], [31.6, 1.4], [32.8, 8.4]]), PRI);
-    g.fill(Pg([[28.6, 6], [31.2, 3], [31.8, 7.6]]), 'P');
+    g.shade(E(27, 10.4, 5.6, 5), PRI);                                    // tête
+    g.shade(E(31.2, 12.4, 2.8, 2.4), T('G', 'G', 'Z'));                   // museau gris
+    // oreilles tombantes de chaque côté du casque
+    g.shade(Pg([[22.6, 8.4], [21.2, 14.6], [24.8, 13.8], [25.4, 9]]), T('D', 'B', 'D'));
+    g.shade(Pg([[30.4, 8.4], [32.8, 14.6], [29.4, 13.8], [28.6, 9]]), PRI);
     g.fluff('BHD', 5 + f, 0.42);
-    g.fill(R(27, 6.6, 2, 1), 'T'); g.fill(R(31, 7.4, 2, 1), 'T'); // sourcils feu
-    g.fill(R(28, 8, 2, 2), 'Q'); g.px(28, 8, 'w');             // œil brun
+    // casque de chantier
+    g.shade(Pg([[21.8, 8], [22.4, 4.6], [24.6, 2.8], [27.2, 2.2], [29.8, 2.8], [31.6, 4.6], [32.2, 8]]), T('J', 'j', 'k'));
+    g.shade(Pg([[20.4, 7.8], [33.6, 7.8], [33.2, 9.4], [20.8, 9.4]]), T('J', 'j', 'k'));  // visière
+    g.fill(R(26.4, 2.4, 1.6, 5.4), 'k');                                  // arête centrale
+    g.px(25, 4, 'j'); g.px(25, 5, 'j');
+    // visage sous la visière
+    g.fill(R(27, 10, 2, 2), 'Q'); g.px(27, 10, 'w');
     g.fill(R(32, 11, 2, 2), 'N');
-    g.fill(R(29, 14.4, 4, 1), 'u');
-    if (alt) g.fill(R(31, 15, 2, 2), 'P');
-    g.fill(R(22.8, 14, 3.6, 1.6), 'R'); g.px(24, 15.6, 'G');   // collier
+    g.fill(R(28, 14.4, 4, 1), 'u');
+    if (alt) g.fill(R(30, 15, 2, 2), 'P');
+    g.fill(R(22.8, 14, 3.6, 1.6), 'R'); g.px(24, 15.6, 'G');              // collier
     return g.outline();
   }
 
@@ -263,7 +264,8 @@
     saphire: { W: '#f6f1ea', Y: '#ffffff', X: '#d6cdc3', E: '#14101a', N: '#0a060c', P: '#e8a0ae',
       C: '#2a6bff', S: '#6fc3ff', u: '#7a6a5c' },
     bouba: { B: '#241e2a', H: '#453c52', D: '#120e18', T: '#b8743a', V: '#d9a066', U: '#7a4a24',
-      G: '#8a8590', Z: '#5a5662', Q: '#9a5a2a', N: '#050308', P: '#d87a8a', R: '#d7263d', u: '#3a2a30' },
+      G: '#8a8590', Z: '#5a5662', Q: '#9a5a2a', N: '#050308', P: '#d87a8a', R: '#d7263d', u: '#3a2a30',
+      J: '#ffcf1f', j: '#fff27a', k: '#c8960a' },
     gilbert: { B: '#e8892b', H: '#f7b25a', D: '#b85c17', U: '#a84c14', W: '#fbeed8', Y: '#ffffff', X: '#d8c8a8',
       E: '#49d65a', N: '#0a060c', P: '#f08aa0', u: '#7a3a14', w: '#ffffff' },
     idylle: { B: '#d9a96b', H: '#efcb94', D: '#a97a40', W: '#f6e4bc', Y: '#fff4d8', X: '#d8bf90',
@@ -274,11 +276,11 @@
       M: '#7b2cbf', m: '#a55ae0', n: '#4a1a7a', G: '#ffd23f', J: '#fff08a', g: '#b8861b', R: '#d7263d', C: '#6fc3ff' },
   };
   const animals = { chichi, saphire, bouba, gilbert, idylle, july };
-  const dims = { chichi: [32, 24], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [30, 22], july: [32, 32] };
+  const dims = { chichi: [28, 26], saphire: [32, 26], bouba: [34, 26], gilbert: [32, 28], idylle: [30, 22], july: [32, 32] };
   Object.keys(animals).forEach((id) => {
     const fn = animals[id];
     define(id, {
-      w: dims[id][0], h: dims[id][1], palette: ANIMAL_PAL[id],
+      w: dims[id][0], h: dims[id][1], palette: Object.assign({ w: '#ffffff' }, ANIMAL_PAL[id]),
       frames: [0, 1, 2, 3].map((f) => () => fn(f)),
     });
   });
@@ -469,6 +471,35 @@
     return g.outline();
   }
 
+
+  /* ---------- ILARIO : cheveux blonds en bataille, barbe de quelques jours, pull noir à zip, AirPods, téléphone ---------- */
+  function ilario(f) {
+    const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
+    legs(g, T('P', 'p', 'u'), T('F', 'f', 'g'), { sole: true });
+    arm(g, true, 18 + dy, 26, 25, CT); arm(g, false, 18 + dy, 25, 25, CT);
+    // pull noir à col zippé
+    g.shade(Pg([[4.6, 17.4 + dy], [8, 16.6 + dy], [16, 16.6 + dy], [19.4, 17.4 + dy], [20, 26], [4, 26]]), CT);
+    g.shade(Pg([[8.4, 16 + dy], [15.6, 16 + dy], [15.2, 19 + dy], [8.8, 19 + dy]]), T('c', 'c', 'd'));   // col montant
+    g.fill(R(11.6, 17 + dy, 0.9, 3.6), 'N'); g.px(12, 20.8 + dy, 'N');                                  // zip
+    // le téléphone (coque sombre, autocollant jaune) tenu devant
+    g.shade(Pg([[14.4, 20.4 + dy], [18.6, 20.4 + dy], [18.6, 26.4 + dy], [14.4, 26.4 + dy]]), T('Z', 'z', 'y'));
+    g.fill(R(15, 21 + dy, 1.4, 1.4), 'E'); g.fill(R(15.6, 23.6 + dy, 2, 1.8), 'Y'); g.px(16, 24 + dy, 'q');
+    g.shade(E(14.6, 25.6 + dy, 1.8, 1.4), SK);
+    skinHead(g, dy);
+    // cheveux blonds en bataille, mèches sur le front
+    g.shade(E(12, 4.4 + dy, 7.8, 5), HR);
+    g.shade(Pg([[4.8, 6 + dy], [12, 5.6 + dy], [19.2, 6 + dy], [19.6, 12 + dy], [18, 9.4 + dy], [16.4, 8.6 + dy], [14.2, 8.2 + dy], [12, 7.4 + dy], [9.6, 8.4 + dy], [7, 9.2 + dy], [5.2, 10.4 + dy], [4.6, 12 + dy]]), HR);
+    for (const [x, y] of [[5, 2], [18.6, 2.4], [8, 0.4], [15.4, 0.8], [4.4, 5], [19.4, 5.4], [11, 8.6], [13.6, 8.8]]) g.px(x, y + dy, 'I');
+    g.fill(R(4.4, 8 + dy, 1.4, 4), 'H'); g.fill(R(18.2, 8 + dy, 1.4, 4), 'H');
+    brows(g, dy, 'J', false); eyes(g, dy, f);
+    g.px(11, 13 + dy, 'D'); g.px(12, 13 + dy, 'D');
+    g.fill(R(9, 14 + dy, 6, 1), 'J');                              // moustache blonde
+    g.fill(R(10.6, 15.2 + dy, 2.8, 1), 'M');
+    g.fill(R(10, 16 + dy, 4, 1), 'J'); g.px(8, 14.6 + dy, 'D'); g.px(15, 14.6 + dy, 'D'); g.px(7, 15.4 + dy, 'D'); g.px(16, 15.4 + dy, 'D');   // barbe de quelques jours
+    g.px(4, 11 + dy, 'w'); g.px(4, 12 + dy, 'w'); g.px(19, 11 + dy, 'w'); g.px(19, 12 + dy, 'w');                                            // AirPods
+    return g.outline();
+  }
+
   /* ---------- ADELINE : casquette kaki Ciele, grandes lunettes écaille, sweat rose duveteux ---------- */
   function adeline(f) {
     const g = new Grid(24, 32), dy = f === 2 ? 1 : 0;
@@ -524,12 +555,16 @@
     anna: { S: '#f2c4a8', L: '#ffdcc4', D: '#c8987c', H: '#ff5fa2', I: '#ff94c4', J: '#c02a78',
       C: '#1a1020', c: '#ff5fa2', d: '#0c0610', P: '#6a8ad0', p: '#8aaae8', u: '#4a62a0',
       F: '#f4ecd8', f: '#ffffff', g: '#b8b0c0', G: '#ffd23f', Z: '#14101a', E: '#0b0710', X: '#0b0710', w: '#ffffff', M: '#ff2e7e' },
+    ilario: { S: '#f0d0b4', L: '#ffe4cc', D: '#c8a084', H: '#e6cb82', I: '#f8e8b0', J: '#b8944a',
+      C: '#17151d', c: '#2c2a34', d: '#0a0a10', P: '#262632', p: '#363644', u: '#16161e',
+      F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', N: '#d8d8e8', Z: '#3a3a40', z: '#55555d', y: '#25252b', Y: '#ffc41f', q: '#8a5a10',
+      E: '#2a3c4c', w: '#ffffff', M: '#b07070', R: '#e8a090' },
     adeline: { S: '#eac2a4', L: '#f6d6bc', D: '#c49878', H: '#2a1c20', I: '#4a3a40', J: '#1a1014',
       C: '#e0b0b0', c: '#f2cccc', d: '#b88a8c', P: '#3a4262', p: '#4a5478', u: '#262c46',
       F: '#f4ecd8', f: '#ffffff', g: '#b8b0a0', Q: '#8f9a78', q: '#aab494', z: '#6a7458', Z: '#a6aa86', y: '#8a8e6c',
       B: '#a8734a', b: '#d29a66', G: '#ffd23f', E: '#2a160e', w: '#ffffff', M: '#b8505a' },
   };
-  const humans = { octave, laure, oliver, janis, anna, adeline };
+  const humans = { octave, laure, oliver, janis, anna, adeline, ilario };
   Object.keys(humans).forEach((id) => {
     const fn = humans[id];
     define(id, { w: 24, h: 32, palette: HUMAN_PAL[id], frames: [0, 1, 2].map((f) => () => fn(f)) });
@@ -547,6 +582,17 @@
       g.fill(R(0, 7, 1, 2), 'K'); g.fill(R(15, 7, 1, 2), 'K');                    // encoches du ticket
       for (let x = 3; x < 14; x += 2) { g.px(x, 4, 'o'); g.px(x, 11, 'o'); }       // pointillés
       g.fill(R(4, 6, 2, 2), 'R'); g.fill(R(9, 9, 2, 2), 'R'); g.line(10, 5, 5, 11, 'R');   // le signe %
+      return g.outline();
+    }],
+  });
+  define('icoHaki', {
+    w: 16, h: 16, palette: { Y: '#ffd23f', y: '#b8861b', W: '#fff6d8', R: '#d7263d' },
+    frames: [() => {
+      const g = new Grid(16, 16);
+      const cross = (x, y) => R(6, 0.6, 4, 14.8)(x, y) || R(2.4, 4.6, 11.2, 4)(x, y);   // une croix
+      g.shade(cross, T('Y', 'W', 'y'));
+      g.fill(R(7, 5.6, 2, 2), 'R');                                                  // gemme au centre
+      g.px(0, 2, 'W'); g.px(15, 12, 'W'); g.px(14, 1, 'W');
       return g.outline();
     }],
   });
