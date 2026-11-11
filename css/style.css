@@ -54,14 +54,9 @@ body {
   line-height: 1.15;
   /* Plein écran fixe : le jeu ne défile pas, ne rebondit pas, respecte l'encoche et la barre iPhone */
   position: fixed;
-  top: 0; bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
+  top: 0; bottom: 0; left: 0; right: 0;     /* la hauteur suit exactement l'écran visible (Safari, écran d'accueil, Android) */
+  margin: 0 auto;                            /* centré sans « transform » (qui perturbe les touchers sur iOS) */
   max-width: 640px;
-  height: 100vh;
-  height: var(--app-h, 100vh);   /* mesuré en JS : fiable même avec la barre d'adresse mobile */
-  height: 100dvh;
   overflow: hidden;
   overscroll-behavior: none;
   display: flex;
