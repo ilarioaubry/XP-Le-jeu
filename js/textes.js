@@ -142,14 +142,14 @@
   }
 
   function load(url) {
-    if (typeof fetch !== 'function') return Promise.resolve(0);
+    if (typeof fetch !== 'function' || typeof Promise !== 'function') return Promise.resolve(0);
     const ctl = typeof AbortController === 'function' ? new AbortController() : null;
-    const timer = setTimeout(() => ctl && ctl.abort(), 3000);
-    return fetch(url, { cache: 'no-cache', signal: ctl ? ctl.signal : undefined })
+    const request = fetch(url, { cache: 'no-cache', signal: ctl ? ctl.signal : undefined })
       .then((r) => (r.ok ? r.text() : ''))
-      .then((t) => apply(t))
-      .catch(() => 0)
-      .then((n) => { clearTimeout(timer); return n; });
+      .then((text) => apply(text))
+      .catch(() => 0);
+    const timeout = new Promise((resolve) => setTimeout(() => { if (ctl) ctl.abort(); resolve(0); }, 2000));
+    return Promise.race([request, timeout]);     // jamais bloqué plus de 2 secondes
   }
 
   // Textes placés directement dans la page : <span data-ui="onglet_meute">
