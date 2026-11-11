@@ -22,12 +22,21 @@ générés avec la Web Audio API : aucun fichier image ou son externe.
 
 | Animal | Manager | Phrase phare |
 |---|---|---|
-| Chichi | Janis | « On gaspille rien : même les miettes, on les récolte ! » |
-| Saphire | Anna | « Wesh la coloc ! Cette meute va devenir virale ! » |
+| Chichi (sur le canapé) et Jojo Lardon (singe peluche IKEA) | Janis | « Rien ne se perd, tout se récupère. Comme à Emmaüs ! » |
+| Saphire et Brindibou (Pokémon) | Anna | « Cette meute sera ma plus belle toile. DarlingChouchou va adorer. » |
 | Bouba | Olivier | « Santé fiston ! La tournée est pour moi ! » (débloque la *Tournée Générale* : x3 pendant 15 s) |
 | Gilbert | Adeline | « Je repère les bons plans avant tout le monde. De rien ! » |
 | Idylle | Ilario | « Au pied ! Et que ça saute ! » |
 | July la Queen | Laure | « ... Ton capital symbolique est fascinant. » (production x10 000 et victoire) |
+| Godzilla (après la victoire, à la fenêtre) | Octave | « Assis ! ... Bon, reste debout. » |
+
+### La vie dans le salon
+
+- **Conversations** entre les personnages (toutes les 30 à 60 secondes) et une **phrase au hasard** quand on touche un humain.
+- **Caresser** : toucher un animal qui n'est pas prêt à partir (déjà en trajet ou automatisé) le fait sauter et fait monter des cœurs.
+- **Chichi** vit sur le canapé et demande de temps en temps à descendre (puis à remonter) : touche-la pour l'aider, elle te remercie avec des pizzas.
+- **Événements surprise** : le voisin du dessous tape au plafond (la meute se fige 5 secondes, touche Olivier pour régler ça) ; Gilbert vole un objet et file à travers le salon (attrape-le pour gagner un gros paquet de pizzas).
+- **Godzilla** apparaît à la fenêtre après la victoire.
 
 ### Modifier les textes (tableur)
 
@@ -59,5 +68,6 @@ Pour tester dans la console du navigateur : `DoggyParty.give(1e9)`.
 | `js/textes.js` | Charge `data/textes.csv` et remplace les textes par défaut |
 | `data/textes.csv` | Tableur de tous les textes, modifiable |
 | `js/audio.js` | Bruitages 8-bit générés avec la Web Audio API |
-| `js/room.js` | Le salon animé (canvas) : décor, animaux en déplacement, pizza dorée, cinématique de victoire |
+| `js/room.js` | Le salon animé (canvas) : décor, animaux, Chichi sur le canapé, bulles, pizza dorée, cinématique |
+| `js/vie.js` | La vie du salon : conversations, événements surprise, toucher et caresser |
 | `js/game.js` | Économie, interface, boucle de jeu, sauvegarde `localStorage` |

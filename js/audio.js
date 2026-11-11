@@ -153,6 +153,50 @@
       [0.55, 0.65, 0.75, 0.85].forEach((d, i) => tone({ type: 'sine', freq: NOTE(96 + i * 2), dur: 0.14, vol: 0.12, delay: d }));
     },
 
+    // Peluche (singe IKEA) : petits couinements aigus
+    squeak(pitch, vol) {
+      pitch = pitch || 1.5; vol = vol == null ? 0.35 : vol;
+      [0, 0.1, 0.2].forEach((d) => tone({ type: 'square', freq: 900 * pitch, to: 1500 * pitch, dur: 0.07, vol: vol * 0.6, delay: d }));
+    },
+
+    // Hibou : « hou… hou… »
+    hoot(pitch, vol) {
+      pitch = pitch || 1; vol = vol == null ? 0.4 : vol;
+      tone({ type: 'sine', freq: 430 * pitch, to: 350 * pitch, dur: 0.24, vol, attack: 0.04 });
+      tone({ type: 'sine', freq: 430 * pitch, to: 330 * pitch, dur: 0.32, vol, attack: 0.04, delay: 0.32 });
+    },
+
+    // Rugissement de kaiju : grave, long, qui gronde
+    roar(pitch, vol) {
+      pitch = pitch || 0.5; vol = vol == null ? 0.5 : vol;
+      tone({ type: 'sawtooth', freq: 280 * pitch, dur: 1.3, vol, attack: 0.1, curve: [[0.25, 520 * pitch], [1, 120 * pitch]] });
+      tone({ type: 'square', freq: 95, to: 38, dur: 1.3, vol: vol * 0.55 });
+      noise({ dur: 1.2, freq: 320, q: 0.6, vol: vol * 0.7, filter: 'lowpass' });
+    },
+
+    // Le voisin tape au plafond : toc… toc…
+    knock() {
+      [0, 0.17].forEach((d) => {
+        tone({ type: 'square', freq: 120, to: 55, dur: 0.09, vol: 0.5, delay: d });
+        noise({ dur: 0.08, freq: 220, q: 1, vol: 0.4, filter: 'lowpass', delay: d });
+      });
+    },
+
+    // Caresse : trois notes douces
+    pet() {
+      arp([NOTE(84), NOTE(88), NOTE(91)], 0.05, { type: 'triangle', vol: 0.22 });
+    },
+
+    // Gilbert file avec son butin
+    steal() {
+      tone({ type: 'square', freq: 1300, to: 280, dur: 0.28, vol: 0.22 });
+    },
+
+    // Petit bip quand un personnage parle
+    chat() {
+      tone({ type: 'square', freq: 640 + Math.random() * 90, dur: 0.045, vol: 0.07 });
+    },
+
     golden() {
       arp([NOTE(84), NOTE(88), NOTE(91), NOTE(96)], 0.04, { type: 'triangle', vol: 0.35 });
     },

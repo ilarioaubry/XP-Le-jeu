@@ -48,6 +48,54 @@
     add('palier.' + n, 'Paliers', 'Dialogue quand le total de pizzas atteint ' + p[0].toLocaleString('fr-FR'), () => D.STORY[i][1], (v) => { D.STORY[i][1] = v; });
   });
 
+
+  /* ---- Phrases quand on touche un personnage ---- */
+  const NAME = {};
+  D.MANAGERS.forEach((m) => { NAME[m.id] = m.name; });
+  NAME.octave = 'Octave';
+  Object.keys(D.TALK).forEach((who) => {
+    D.TALK[who].forEach((t, i) => {
+      const n = String(i + 1).padStart(2, '0');
+      add('phrase.' + who + '.' + n, 'Phrases des personnages', NAME[who] + ' : phrase n°' + n + ' (quand on le touche dans le salon, une au hasard)', () => D.TALK[who][i], (v) => { D.TALK[who][i] = v; });
+    });
+  });
+
+  /* ---- Conversations entre personnages ---- */
+  D.CHATS.forEach((c, ci) => {
+    const n = String(ci + 1).padStart(2, '0');
+    const who = c.lines.map((l) => NAME[l[0]]).filter((x, i, a) => a.indexOf(x) === i).join(' + ');
+    c.lines.forEach((l, li) => {
+      add('dialogue.' + n + '.' + (li + 1), 'Conversations', 'Conversation n°' + n + ' (' + who + ') : réplique ' + (li + 1) + ', dite par ' + NAME[l[0]] + ' (la conversation n\'a lieu que si tous sont dans le salon)', () => c.lines[li][1], (v) => { c.lines[li][1] = v; });
+    });
+  });
+
+  /* ---- Événements surprise ---- */
+  const EV = D.EVENTS;
+  const evWhere = {
+    annonce: 'Bandeau affiché au début de l\'événement',
+    indice: 'Dit si Olivier n\'est pas encore recruté',
+    octave: 'Dit par Octave pendant que le voisin tape',
+    olivier: 'Dit par Olivier quand on le touche pour régler ça',
+    succes: 'Quand Olivier règle le problème. {gain} = pizzas offertes',
+    fin: 'Quand le voisin se calme tout seul',
+  };
+  Object.keys(evWhere).forEach((k) => add('evenement.voisin.' + k, 'Événement : le voisin du dessous', evWhere[k], () => EV.voisin[k], (v) => { EV.voisin[k] = v; }));
+  EV.gilbert.forEach((it, i) => {
+    const n = i + 1;
+    add('evenement.gilbert.' + n + '.annonce', 'Événement : Gilbert a volé un truc', 'Vol n°' + n + ' : bandeau au début', () => it.annonce, (v) => { it.annonce = v; });
+    add('evenement.gilbert.' + n + '.pris', 'Événement : Gilbert a volé un truc', 'Vol n°' + n + ' : quand on attrape Gilbert. {gain} = pizzas gagnées', () => it.pris, (v) => { it.pris = v; });
+    add('evenement.gilbert.' + n + '.fuite', 'Événement : Gilbert a volé un truc', 'Vol n°' + n + ' : quand Gilbert s\'enfuit', () => it.fuite, (v) => { it.fuite = v; });
+  });
+  const chWhere = {
+    demande_descendre: 'Chichi demande à descendre du canapé (touche-la pour l\'aider)',
+    merci_descendu: 'Chichi remercie quand on l\'a fait descendre. {gain} = pizzas offertes',
+    abandon_descendre: 'Chichi abandonne si personne ne l\'aide à descendre',
+    demande_monter: 'Chichi demande à remonter sur le canapé',
+    merci_monte: 'Chichi remercie quand on l\'a fait remonter. {gain} = pizzas offertes',
+    abandon_monter: 'Chichi remonte toute seule si personne ne vient',
+  };
+  Object.keys(chWhere).forEach((k) => add('chichi.' + k, 'Chichi sur le canapé', chWhere[k], () => EV.chichi[k], (v) => { EV.chichi[k] = v; }));
+
   /* ---- Dialogues et interface ---- */
   const UI_WHERE = {
     tutoriel: ['Dialogues', 'Octave au tout début de la partie, après l\'unlock de Chichi'],
@@ -92,6 +140,9 @@
     boost_actif: ['Cartes des boosts', 'Quand le boost est déjà acheté'],
     boost_flottant: ['Messages flottants', 'Quand on achète un boost. {nom} = nom du boost'],
     vitesse_flottant: ['Messages flottants', 'Quand un animal passe un palier de vitesse. {animal} = son nom'],
+    kaiju_alerte: ['Dialogues', 'Octave, après la victoire : Godzilla arrive derrière la fenêtre'],
+    kaiju_rugissement: ['Messages flottants', 'Rugissement de Godzilla (apparaît dans le salon)'],
+    carte_gere: ['Cartes des managers', 'Inutilisé pour l\'instant'],
   };
   Object.keys(D.UI).forEach((k) => {
     const w = UI_WHERE[k] || ['Interface', k];
