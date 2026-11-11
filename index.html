@@ -14,9 +14,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
+  <!-- Si quelque chose plante sur un téléphone, l'erreur s'affiche en bas de l'écran -->
+  <script>
+    (function () {
+      function show(msg) {
+        var b = document.getElementById('errBox');
+        if (!b) {
+          b = document.createElement('div'); b.id = 'errBox';
+          b.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:999;background:#8c1023;color:#fff;font:14px monospace;padding:8px 10px;max-height:40%;overflow:auto';
+          b.onclick = function () { b.style.display = 'none'; };
+          document.body.appendChild(b);
+        }
+        b.style.display = 'block';
+        b.textContent = 'Oups, une erreur : ' + msg + ' (touche pour fermer)';
+      }
+      window.addEventListener('error', function (e) {
+        show((e.message || 'inconnue') + (e.filename ? ' [' + String(e.filename).split('/').pop().split('?')[0] + ':' + e.lineno + ']' : ''));
+      });
+      window.addEventListener('unhandledrejection', function (e) { show(String(e.reason)); });
+    })();
+  </script>
   <!-- ============ EN-TÊTE ============ -->
   <header class="topbar pixel-box">
     <div class="brand">
@@ -118,12 +138,12 @@
     </div>
   </div>
 
-  <script src="js/sprites.js"></script>
-  <script src="js/characters.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/textes.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/room.js"></script>
-  <script src="js/game.js"></script>
+  <script src="js/sprites.js?v=4"></script>
+  <script src="js/characters.js?v=4"></script>
+  <script src="js/data.js?v=4"></script>
+  <script src="js/textes.js?v=4"></script>
+  <script src="js/audio.js?v=4"></script>
+  <script src="js/room.js?v=4"></script>
+  <script src="js/game.js?v=4"></script>
 </body>
 </html>

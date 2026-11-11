@@ -509,7 +509,7 @@
     ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
     BG = buildBackground();
-    canvas.addEventListener('pointerdown', (e) => {
+    canvas.addEventListener(global.PointerEvent ? 'pointerdown' : 'click', (e) => {
       const r = canvas.getBoundingClientRect();
       host.onTap({ x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H });
     });

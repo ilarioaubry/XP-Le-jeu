@@ -12,9 +12,16 @@
   const $ = (id) => document.getElementById(id);
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const A = Object.fromEntries(ANIMALS.map((a) => [a.id, a]));
-  const M = Object.fromEntries(MANAGERS.map((m) => [m.id, m]));
+  const byId = (list) => list.reduce((o, x) => { o[x.id] = x; return o; }, {});
+  const A = byId(ANIMALS);
+  const M = byId(MANAGERS);
   const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna', 'adeline', 'ilario'];
+
+  /* ---- Hauteur réelle de l'écran, mesurée en JS (les vieux navigateurs mobiles se trompent avec 100vh) ---- */
+  const setAppHeight = () => document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px');
+  setAppHeight();
+  window.addEventListener('resize', setAppHeight);
+  window.addEventListener('orientationchange', () => setTimeout(setAppHeight, 200));
 
   /* ---- Pas de zoom : pincement, double-tap et menu contextuel bloqués ---- */
   ['gesturestart', 'gesturechange', 'gestureend'].forEach((ev) =>
@@ -656,7 +663,8 @@
   }
 
   $('btnContinue').addEventListener('click', () => $('victory').classList.add('hidden'));
-  document.addEventListener('pointerdown', () => Audio8.unlock(), { once: true });
+  // Le navigateur n'autorise le son qu'après un toucher
+  ['pointerdown', 'touchstart', 'click'].forEach((ev) => document.addEventListener(ev, () => Audio8.unlock(), { once: true }));
   window.addEventListener('beforeunload', save);
   document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
 
@@ -666,6 +674,15 @@
     state: () => S,
   };
 
-  // Les textes du tableur (data/textes.csv) sont chargés avant de démarrer
-  Texts.load('data/textes.csv').then(() => { Texts.applyDom(); init(); });
+  // Les textes du tableur (data/textes.csv) sont chargés avant de démarrer.
+  // Si le fichier tarde ou est bloqué (réseau, navigateur intégré à une appli), le jeu démarre quand même.
+  let started = false;
+  const go = () => {
+    if (started) return;
+    started = true;
+    try { Texts.applyDom(); } catch (e) { /* textes par défaut */ }
+    init();
+  };
+  try { Texts.load('data/textes.csv').then(go, go); } catch (e) { go(); }
+  setTimeout(go, 2200);
 })();

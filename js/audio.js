@@ -175,5 +175,12 @@
     },
   };
 
+  // Un navigateur sans Web Audio (ou qui la refuse) ne doit jamais faire planter le jeu
+  Object.keys(Audio8).forEach((k) => {
+    const fn = Audio8[k];
+    if (typeof fn !== 'function') return;
+    Audio8[k] = function () { try { return fn.apply(Audio8, arguments); } catch (e) { return undefined; } };
+  });
+
   global.Audio8 = Audio8;
 })(window);
