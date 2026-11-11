@@ -17,12 +17,6 @@
   const M = byId(MANAGERS);
   const HUMANS = ['octave', 'laure', 'oliver', 'janis', 'anna', 'adeline', 'ilario'];
 
-  /* ---- Hauteur réelle de l'écran, mesurée en JS (les vieux navigateurs mobiles se trompent avec 100vh) ---- */
-  const setAppHeight = () => document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px');
-  setAppHeight();
-  window.addEventListener('resize', setAppHeight);
-  window.addEventListener('orientationchange', () => setTimeout(setAppHeight, 200));
-
   /* ---- Pas de zoom : pincement, double-tap et menu contextuel bloqués ---- */
   ['gesturestart', 'gesturechange', 'gestureend'].forEach((ev) =>
     document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
