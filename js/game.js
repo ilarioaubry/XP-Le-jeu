@@ -505,6 +505,7 @@
     for (const r of shop.managers) {
       const own = hasM(r.m.id), animalOwned = lvl(r.m.animal) > 0;
       const can = !own && animalOwned && S.pizzas >= r.m.cost;
+      r.item.style.display = animalOwned ? '' : 'none';        // caché tant que son animal n'est pas débloqué
       setText(r.cost, own ? UI.manager_recrute : animalOwned ? fmt(r.m.cost) + ' 🍕' : fill(UI.manager_verrouille, { animal: A[r.m.animal].name }));
       r.cost.classList.toggle('no', !own && !can);
       setText(r.count, own ? '★' : '');
